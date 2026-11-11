@@ -1,0 +1,106 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+.checkbox {
+    // Component variables
+    --checkbox-size: 18px;
+    --checkbox-border-radius: 4px;
+    --checkbox-gap: 0.5rem;
+
+    // Base styles
+    display: inline-flex;
+    gap: var(--checkbox-gap);
+    align-items: flex-start;
+    cursor: pointer;
+    user-select: none;
+
+    // Hidden native input
+    .checkbox-input {
+        position: absolute;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    // Custom checkbox mark
+    .checkbox-mark {
+        position: relative;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        width: var(--checkbox-size);
+        height: var(--checkbox-size);
+        margin-top: 2px;
+        background-color: var(--color-white);
+        border: 1px solid var(--border-color);
+        border-radius: var(--checkbox-border-radius);
+        transition: all 0.2s ease-in-out;
+
+        &::after {
+            display: none;
+            width: 5px;
+            height: 9px;
+            content: "";
+            border-right: 2px solid var(--color-white);
+            border-bottom: 2px solid var(--color-white);
+            transform: rotate(45deg) translate(-1px, -1px);
+        }
+    }
+
+    // Checkbox text
+    .checkbox-text {
+        font-family: var(--font-family-primary);
+        font-size: 0.875rem;
+        line-height: 1.5;
+        color: var(--color-black);
+
+        a {
+            color: var(--color-primary);
+            text-decoration: underline;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+
+    // Checked state
+    .checkbox-input:checked + .checkbox-mark {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+
+        &::after {
+            display: block;
+        }
+    }
+
+    // Focus state
+    .checkbox-input:focus-visible + .checkbox-mark {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+    }
+
+    // Hover state
+    &:hover .checkbox-mark {
+        border-color: var(--border-color-active);
+    }
+
+    // Disabled state
+    .checkbox-input:disabled + .checkbox-mark {
+        cursor: not-allowed;
+        background-color: var(--block-bg-color);
+        opacity: 0.6;
+    }
+
+    .checkbox-input:disabled ~ .checkbox-text {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    // Error state
+    &.error .checkbox-mark {
+        border-color: var(--color-red);
+    }
+}

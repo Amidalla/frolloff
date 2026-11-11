@@ -1,0 +1,85 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+.textarea {
+    // Component variables
+    --textarea-font-size-sm: 14px;
+    --textarea-font-size-md: 16px;
+    --textarea-font-size-lg: 18px;
+    --textarea-padding-sm: 8px;
+    --textarea-padding-md: 10px;
+    --textarea-padding-lg: 12px;
+
+    @include bp.mq(laptop) {
+        --textarea-font-size-md: 15px;
+    }
+
+    // Base styles
+    display: block;
+    width: 100%;
+    font-family: var(--font-family-primary);
+    font-size: var(--textarea-font-size-md);
+    line-height: 1.5;
+    color: var(--color-black);
+    resize: vertical;
+    outline: none;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-5);
+    border-radius: 7px;
+    transition: all 0.2s ease-in-out;
+
+    &::placeholder {
+        color: var(--color-4);
+        opacity: 1;
+    }
+
+    // Focus state
+    &:focus,
+    &:focus-within:not(:read-only) {
+        border-color: var(--color-4);
+    }
+
+    // Disabled state
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    // Readonly state
+    &:read-only {
+        cursor: default;
+        opacity: 0.6;
+    }
+
+    // Error state
+    &.error {
+        border-color: var(--color-red);
+
+        &:focus {
+            border-color: var(--color-red);
+        }
+
+        &:hover {
+            border-color: var(--color-red) !important;
+        }
+    }
+
+    // --------------------------------------
+    // Sizes
+    // --------------------------------------
+
+    &.sm {
+        padding: var(--textarea-padding-sm);
+        font-size: var(--textarea-font-size-sm);
+    }
+
+    &.md {
+        padding: var(--textarea-padding-md);
+        font-size: var(--textarea-font-size-md);
+    }
+
+    &.lg {
+        padding: var(--textarea-padding-lg);
+        font-size: var(--textarea-font-size-lg);
+    }
+}

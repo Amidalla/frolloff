@@ -1,0 +1,27 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+.copyright {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 150%;
+    color: var(--color-white);
+
+    @include bp.mq(laptop) {
+        flex-wrap: wrap;
+        font-size: 15px;
+    }
+
+    a {
+        width: fit-content;
+        color: var(--color-primary);
+
+        &:nth-of-type(2) {
+            color: var(--color-white);
+        }
+    }
+}

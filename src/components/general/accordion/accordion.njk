@@ -1,0 +1,51 @@
+{% macro render(
+        items=[],
+        openFirst=true,
+        id="",
+        class="",
+        data={},
+        aria={}
+    ) %}
+    {% set accordionClasses = "accordion" %}
+    {% if class %}
+        {% set accordionClasses = accordionClasses + " " + class %}
+    {% endif %}
+
+    {% from "components/general/button/button.njk" import render as button %}
+
+    <div
+        class="{{ accordionClasses }}"
+        data-accordion="component"
+        {% if id %}id="{{ id }}"{% endif %}
+        {% if data %}
+            {% for key, val in data %}
+                data-{{ key | replace("_", "-") }}="{{ val }}"
+            {% endfor %}
+        {% endif %}
+        {% if aria %}
+            {% for key, val in aria %}
+                aria-{{ key | replace("_", "-") }}="{{ val }}"
+            {% endfor %}
+        {% endif %}
+    >
+        {% for item in items %}
+            <div class="item" data-accordion-item>
+                <button
+                    type="button"
+                    class="panel"
+                    aria-expanded="{% if openFirst and loop.first %}true{% else %}false{% endif %}"
+                    aria-controls="accordion-content-{{ loop.index }}"
+                >
+                    <span class="name">{{ item.name }}</span>
+                    <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="collapse" id="accordion-content-{{ loop.index }}" role="region">
+                    <div class="wrap">
+                        {{ item.content | safe }}
+                        {{ button(text="Подробнее", href="#", type="link", variant="secondary", size="lg") }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

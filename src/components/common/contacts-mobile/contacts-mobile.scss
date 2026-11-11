@@ -1,0 +1,73 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mixin;
+
+.contacts-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+
+    .item {
+        display: flex;
+        gap: 9px;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1;
+        white-space: nowrap;
+
+        svg {
+            margin-top: -1px;
+        }
+
+        a {
+            display: flex;
+            color: var(--color-primary);
+
+            &:hover {
+                color: var(--color-primary-dark);
+                text-decoration: none;
+            }
+        }
+
+        &.phones {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+
+            a {
+                display: flex;
+                flex-direction: column;
+                transition: all 0.3s;
+
+                &:hover {
+                    color: var(--color-primary-dark);
+                    text-decoration: none;
+                }
+
+                small {
+                    font-size: 14px;
+                    font-weight: 400;
+                    line-height: normal;
+                    color: var(--color-4);
+                }
+            }
+        }
+
+        button {
+            padding: 0;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1;
+            color: var(--color-primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: all 0.3s;
+
+            &:hover {
+                color: var(--color-primary-dark);
+            }
+        }
+    }
+}

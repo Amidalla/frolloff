@@ -1,0 +1,91 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+.navigation-mobile {
+    ul {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+
+        > li {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--color-5);
+
+            > .item {
+                display: flex;
+                gap: 0.5rem;
+                align-items: center;
+                justify-content: space-between;
+
+                > a {
+                    display: flex;
+                    font-size: 16px;
+                    font-weight: 500;
+                    line-height: 150%;
+                    color: var(--color-2);
+                    transition: all 0.3s;
+
+                    &:hover {
+                        color: var(--color-primary);
+                        text-decoration: none;
+                    }
+                }
+
+                .toggle {
+                    display: flex;
+                    flex-shrink: 0;
+                    align-items: center;
+                    justify-content: center;
+                    width: 26px;
+                    height: 26px;
+                    padding: 0;
+                    color: var(--color-black);
+                    cursor: pointer;
+                    background: none;
+                    border: none;
+                    transition: transform 0.3s;
+
+                    &:hover {
+                        color: var(--color-primary);
+                    }
+                }
+            }
+
+            &.is-open {
+                > .item .toggle {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+
+    // Submenu
+    .submenu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+
+        ul {
+            padding-left: 15px;
+            margin-top: 8px;
+
+            > li {
+                border-bottom: unset;
+
+                > .item {
+                    a {
+                        font-size: 16px;
+                        font-weight: 400;
+                        line-height: 130%;
+                    }
+                }
+            }
+        }
+    }
+}

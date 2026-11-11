@@ -1,0 +1,37 @@
+{% macro render(
+        title="",
+        items=[],
+        class="",
+        ariaLabel="Навигация"
+    ) %}
+    {% set navClasses = "navigation-bottom" %}
+    {% if class %}
+        {% set navClasses = navClasses + " " + class %}
+    {% endif %}
+
+    <nav class="{{ navClasses }}" aria-label="{{ ariaLabel }}">
+        {% if title %}
+            <div class="title">{{ title }}</div>
+        {% endif %}
+        <ul>
+            {% for item in items %}
+                <li {% if item.class %}class="{{ item.class }}" {% endif %}>
+                    <a
+                        href="{{ item.href }}"
+                        {% if item.title %}
+                            title="{{ item.title }}"
+                        {% endif %}
+                        {% if item.target %}
+                            target="{{ item.target }}"
+                        {% endif %}
+                        {% if item.ariaCurrent %}
+                            aria-current="{{ item.ariaCurrent }}"
+                        {% endif %}
+                    >
+                        {{ item.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+{% endmacro %}

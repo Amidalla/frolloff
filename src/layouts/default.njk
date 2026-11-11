@@ -1,0 +1,32 @@
+{% from "components/general/consent-notice/consent-notice.njk" import render as consentNotice %}
+
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        {% include "blocks/general/meta/meta.njk" %}
+        <link rel="stylesheet" href="./css/bundle.css" />
+    </head>
+    <body>
+        <div class="site">
+            {% include "blocks/general/header/header.njk" %}
+            <main class="page">
+                {% block content %}{% endblock %}
+            </main>
+            {% include "blocks/general/footer/footer.njk" %}
+
+            {% include "components/general/menu/menu.njk" %}
+
+            {% include "components/common/popup-callback/popup-callback.njk" %}
+            {% include "components/common/popup-callback-success/popup-callback-success.njk" %}
+            {% include "components/common/popup-feedback/popup-feedback.njk" %}
+            {% include "components/common/popup-feedback-success/popup-feedback-success.njk" %}
+
+            {% set consentContent %}
+                Мы используем файлы cookie и сервис веб-аналитики Яндекс Метрика для улучшения работы сайта. Оставаясь на
+                сайте, вы соглашаетесь с <a href="#">Политикой конфиденциальности</a>.
+            {% endset %}
+            {{ consentNotice(content=consentContent) }}
+        </div>
+        <script src="./js/bundle.js"></script>
+    </body>
+</html>

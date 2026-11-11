@@ -1,0 +1,46 @@
+{% macro render(
+        text="",
+        id="",
+        name="",
+        value="",
+        checked=false,
+        disabled=false,
+        required=false,
+        error=false,
+        class="",
+        data={},
+        aria={}
+    ) %}
+    {% set checkboxClasses = "checkbox" %}
+    {% if error %}
+        {% set checkboxClasses = checkboxClasses + " error" %}
+    {% endif %}
+    {% if class %}
+        {% set checkboxClasses = checkboxClasses + " " + class %}
+    {% endif %}
+
+    <label class="{{ checkboxClasses }}">
+        <input
+            type="checkbox"
+            class="checkbox-input"
+            {% if id %}id="{{ id }}"{% endif %}
+            {% if name %}name="{{ name }}"{% endif %}
+            {% if value %}value="{{ value }}"{% endif %}
+            {% if checked %}checked{% endif %}
+            {% if disabled %}disabled{% endif %}
+            {% if required %}required{% endif %}
+            {% if data %}
+                {% for key, val in data %}
+                    data-{{ key | replace("_", "-") }}="{{ val }}"
+                {% endfor %}
+            {% endif %}
+            {% if aria %}
+                {% for key, val in aria %}
+                    aria-{{ key | replace("_", "-") }}="{{ val }}"
+                {% endfor %}
+            {% endif %}
+        />
+        <span class="checkbox-mark"></span>
+        {% if text %}<span class="checkbox-text">{{ text | safe }}</span>{% endif %}
+    </label>
+{% endmacro %}

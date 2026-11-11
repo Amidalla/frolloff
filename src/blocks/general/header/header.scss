@@ -1,0 +1,141 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+header.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--header-height);
+    background: var(--color-white);
+    transition: box-shadow 0.3s ease;
+
+    &.is-sticky {
+        box-shadow: 0 2px 10px rgb(0 0 0 / 10%);
+    }
+
+    .header-top {
+        height: var(--header-top-height);
+        background: var(--color-1);
+
+        .block {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 11px 0;
+
+            @include bp.mq(tablet) {
+                padding: 5px 0;
+            }
+
+            .wrap {
+                &:nth-child(1) {
+                    margin-right: 52px;
+
+                    @include bp.mq(laptop) {
+                        display: none;
+                    }
+                }
+
+                &:nth-child(2) {
+                    @include bp.mq(laptop) {
+                        width: 100%;
+                    }
+                }
+
+                &:nth-child(3) {
+                    display: none;
+                    @include bp.mq(laptop) {
+                        display: flex;
+                    }
+                }
+            }
+        }
+    }
+
+    .header-main {
+        height: var(--header-main-height);
+        background: var(--color-white);
+
+        .block {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+
+            @include bp.mq(laptop-l) {
+                padding: 8px 0;
+            }
+
+            @include bp.mq(tablet) {
+                display: grid;
+                grid-template-columns: min-content auto min-content;
+                gap: 6px 0;
+            }
+
+            @include bp.mq(mobile-l) {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .wrap {
+                &:nth-child(1) {
+                    margin-right: 52px;
+
+                    @include bp.mq(laptop-l) {
+                        flex: 0 0 336px;
+                        margin-right: 30px;
+                    }
+                    @include bp.mq(laptop) {
+                        flex: 0 0 262px;
+                        margin-right: 16px;
+                    }
+                    @include bp.mq(tablet) {
+                        flex: 0 0 auto;
+                    }
+                }
+
+                &:nth-child(2) {
+                    margin-right: 10px;
+
+                    @include bp.mq(tablet) {
+                        order: 4;
+                    }
+                }
+
+                &:nth-child(3) {
+                    display: flex;
+                    width: 100%;
+                    max-width: 446px;
+                    margin-right: 10px;
+
+                    @include bp.mq(laptop-l) {
+                        flex: 0 1 346px;
+                    }
+                    @include bp.mq(laptop) {
+                        flex: 1 1 96px;
+                        margin-right: 20px;
+                    }
+                    @include bp.mq(tablet) {
+                        grid-column: span 2;
+                        order: 5;
+                        max-width: unset;
+                        margin-right: unset;
+                    }
+                }
+
+                &:nth-child(4) {
+                    margin-right: 40px;
+                    margin-left: auto;
+
+                    @include bp.mq(laptop-l) {
+                        margin-right: 20px;
+                    }
+                    @include bp.mq(laptop) {
+                        margin-right: 16px;
+                    }
+                }
+            }
+        }
+    }
+}

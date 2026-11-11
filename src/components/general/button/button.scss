@@ -1,0 +1,214 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+.button {
+    // Component variables
+    --button-border-radius: 7px;
+    --button-font-size-sm: 14px;
+    --button-font-size-md: 16px;
+    --button-font-size-lg: 20px;
+    --button-height-sm: 40px;
+    --button-height-md: 45px;
+    --button-height-lg: 50px;
+    --button-padding-sm: 0 26px;
+    --button-padding-md: 0 32px;
+    --button-padding-lg: 0 40px;
+    --button-gap-sm: 0.3125rem;
+    --button-gap-md: 0.375rem;
+    --button-bg: transparent;
+    --button-hover-bg: var(--color-primary-dark);
+
+    @include bp.mq(laptop) {
+        --button-height-md: 42px;
+        --button-font-size-md: 15px;
+    }
+
+    // Base styles
+    position: relative;
+    z-index: 0;
+    display: inline-flex;
+    gap: var(--button-gap-md);
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    overflow: hidden;
+    font-family: var(--font-family-secondary);
+    font-size: var(--button-font-size-md);
+    font-weight: 400;
+    line-height: 1.25rem;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--button-border-radius);
+    isolation: isolate;
+    transition:
+        color 0.3s,
+        border-color 0.3s;
+
+    // Основной фон
+    &::after {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        content: "";
+        background-color: var(--button-bg);
+    }
+
+    // Hover фон (въезжает снизу)
+    &::before {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        content: "";
+        background-color: var(--button-hover-bg);
+        transform: translateY(100%);
+        transition: transform 0.3s ease-out;
+    }
+
+    &:hover:not(:disabled, .disabled)::before {
+        transform: translateY(0);
+    }
+
+    // Focus state (accessibility)
+    &:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+    }
+
+    // Disabled state
+    &:disabled,
+    &.disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    // --------------------------------------
+    // Variants
+    // --------------------------------------
+
+    &.primary {
+        --button-bg: var(--color-primary);
+        --button-hover-bg: var(--color-primary-dark);
+
+        color: var(--color-white);
+    }
+
+    &.outline {
+        --button-bg: transparent;
+        --button-hover-bg: var(--color-primary);
+
+        color: var(--color-black);
+        border-color: var(--color-primary);
+
+        &:hover:not(:disabled, .disabled) {
+            color: var(--color-white);
+        }
+    }
+
+    &.dashed {
+        --button-bg: transparent;
+        --button-hover-bg: var(--color-primary);
+
+        color: var(--color-black);
+        border-color: var(--color-primary);
+        border-style: dashed;
+
+        &:hover:not(:disabled, .disabled) {
+            color: var(--color-white);
+            border-style: solid;
+        }
+    }
+
+    &.ghost {
+        --button-bg: transparent;
+        --button-hover-bg: var(--color-primary);
+
+        color: var(--color-black);
+        border-color: transparent;
+
+        &:hover:not(:disabled, .disabled) {
+            color: var(--color-white);
+        }
+    }
+
+    &.link {
+        height: fit-content;
+        padding: 0;
+        overflow: visible;
+        color: var(--color-primary);
+        border-color: transparent;
+        border-radius: 0;
+
+        &::before,
+        &::after {
+            display: none;
+        }
+
+        &:hover:not(:disabled, .disabled) {
+            color: var(--color-primary);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        &:active:not(:disabled, .disabled) {
+            transform: none;
+        }
+
+        &.underline-solid {
+            text-decoration: underline;
+            text-decoration-style: solid;
+            text-underline-offset: 4px;
+        }
+
+        &.underline-dashed {
+            text-decoration: underline;
+            text-decoration-style: dashed;
+            text-underline-offset: 4px;
+        }
+    }
+
+    // --------------------------------------
+    // Sizes
+    // --------------------------------------
+
+    &.sm {
+        gap: var(--button-gap-sm);
+        height: var(--button-height-sm);
+        padding: var(--button-padding-sm);
+        font-size: var(--button-font-size-sm);
+    }
+
+    &.md {
+        gap: var(--button-gap-md);
+        height: var(--button-height-md);
+        padding: var(--button-padding-md);
+        font-size: var(--button-font-size-md);
+    }
+
+    &.lg {
+        gap: var(--button-gap-md);
+        height: var(--button-height-lg);
+        padding: var(--button-padding-lg);
+        font-size: var(--button-font-size-lg);
+    }
+
+    // --------------------------------------
+    // Shapes
+    // --------------------------------------
+
+    &.default {
+        border-radius: var(--button-border-radius);
+    }
+
+    &.rounded {
+        border-radius: 9999px;
+    }
+}

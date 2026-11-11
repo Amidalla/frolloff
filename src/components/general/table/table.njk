@@ -1,0 +1,10 @@
+{% macro render(class="") %}
+    {% set componentClasses = "table" %}
+    {% if class %}
+        {% set componentClasses = componentClasses + " " + class %}
+    {% endif %}
+
+    <div class="{{ componentClasses }}">
+        {{ caller() }}
+    </div>
+{% endmacro %}

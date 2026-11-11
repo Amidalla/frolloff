@@ -1,0 +1,76 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mixin;
+
+footer.footer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 43px 0 53px;
+    background: var(--color-6);
+
+    @include bp.mq(laptop) {
+        gap: 24px;
+        padding: 43px 0 28px;
+    }
+    @include bp.mq(tablet) {
+        padding: 43px 0 19px;
+    }
+
+    .footer-main {
+        .block {
+            display: grid;
+            grid-template-columns: 5fr 3fr 4fr;
+            gap: 30px;
+
+            @include bp.mq(laptop) {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px 20px;
+            }
+            @include bp.mq(tablet) {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .column {
+                display: flex;
+                flex-direction: column;
+                grid-row: span 2;
+                gap: 40px;
+
+                @include bp.mq(laptop) {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    grid-row: unset;
+                    grid-column: span 2;
+                    gap: 20px;
+                }
+
+                @include bp.mq(tablet) {
+                    grid-template-columns: 1fr;
+                    grid-column: unset;
+                    gap: unset;
+                }
+
+                .wrap {
+                    @include bp.mq(laptop) {
+                        display: contents;
+                    }
+                }
+            }
+
+            > *:nth-child(4) {
+                grid-column: span 2;
+                margin-top: calc(54px - 30px);
+
+                @include bp.mq(laptop) {
+                    margin-top: unset;
+                }
+
+                @include bp.mq(tablet) {
+                    grid-column: unset;
+                }
+            }
+        }
+    }
+}

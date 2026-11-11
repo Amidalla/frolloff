@@ -1,0 +1,25 @@
+@use "core/breakpoints" as bp;
+
+.ya-maps {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-weight: 400;
+    line-height: normal;
+    color: var(--color-primary);
+    transition: color 0.3s;
+
+    @include bp.mq(laptop) {
+        font-size: 15px;
+    }
+
+    .icon {
+        display: flex;
+        flex: 0 0 auto;
+    }
+
+    &:hover {
+        color: var(--color-primary-dark);
+        text-decoration: none;
+    }
+}

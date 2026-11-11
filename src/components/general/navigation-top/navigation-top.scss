@@ -1,0 +1,112 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+.navigation-top {
+    ul {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+
+        > li {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 8px;
+
+            a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 500;
+                line-height: normal;
+                color: var(--color-2);
+                white-space: nowrap;
+                transition: color 0.3s ease;
+
+                &:hover {
+                    color: var(--color-primary);
+                    text-decoration: none;
+                }
+            }
+
+            // Элементы с подменю
+            &.has-children {
+                > a {
+                    position: relative;
+                    padding-right: calc(10px + 5px);
+
+                    // Иконка стрелки вниз
+                    &::after {
+                        position: absolute;
+                        top: 50%;
+                        right: 0;
+                        width: 10px;
+                        height: 6px;
+                        content: "";
+                        background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.5 0.5L4.25671 4.67412C4.65395 5.1155 5.34605 5.1155 5.74329 4.67412L9.5 0.5' stroke='%23322F2F' stroke-linecap='round'/%3E%3C/svg%3E%0A");
+                        transform: translateY(-50%);
+                        transform-origin: center center;
+                        transition: all 0.3s ease;
+                    }
+                }
+
+                &:hover > a::after {
+                    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.5 0.5L4.25671 4.67412C4.65395 5.1155 5.34605 5.1155 5.74329 4.67412L9.5 0.5' stroke='%23B42F2D' stroke-linecap='round'/%3E%3C/svg%3E%0A");
+                    transform: translateY(-50%) scaleY(-1);
+                }
+
+                // Выпадающее подменю
+                .submenu {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    z-index: 100;
+                    display: flex;
+                    visibility: hidden;
+                    flex-direction: column;
+                    gap: 0;
+                    width: max-content;
+                    min-width: 200px;
+                    padding: 10px 0;
+                    background: var(--color-white);
+                    border-radius: 10px;
+                    box-shadow: 0 4px 20px rgb(0 0 0 / 10%);
+                    opacity: 0;
+                    transition:
+                        opacity 0.3s ease,
+                        visibility 0.3s ease;
+
+                    > li {
+                        width: 100%;
+                        padding-bottom: unset;
+
+                        a {
+                            justify-content: flex-start;
+                            width: 100%;
+                            padding: 6px 16px;
+                            font-size: 15px;
+                            font-weight: 400;
+                            line-height: 130%;
+                            text-transform: unset;
+
+                            &:hover {
+                                color: var(--color-4);
+                                text-decoration: none;
+                            }
+                        }
+                    }
+                }
+
+                &:hover .submenu {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,56 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mixin;
+
+@mixin popup($max-width: 456px) {
+    position: relative;
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    max-width: $max-width;
+    padding: 20px;
+    background: var(--color-white);
+    border-radius: 20px;
+    box-shadow: 0 4px 16.8px 0 rgb(0 0 0 / 10%);
+
+    .block {
+        .heading {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 16px;
+
+            .title {
+                padding-right: 40px;
+                margin-top: 0;
+                margin-bottom: 8px;
+                font-size: 26px;
+                font-weight: 500;
+                line-height: 1.1;
+            }
+
+            .subtitle {
+                margin-bottom: 8px;
+                font-size: 20px;
+                font-weight: 700;
+                line-height: normal;
+                color: var(--color-primary);
+            }
+
+            .text {
+                margin-bottom: 8px;
+            }
+
+            @include mixin.reset-child-outer-margins;
+        }
+
+        @include mixin.reset-child-outer-margins;
+    }
+
+    .f-button.is-close-button {
+        top: 20px;
+        right: 20px;
+
+        svg path {
+            stroke: var(--color-6);
+        }
+    }
+}

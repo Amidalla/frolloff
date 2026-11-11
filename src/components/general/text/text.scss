@@ -1,0 +1,19 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+.text {
+    @include mix.reset-child-outer-margins;
+
+    &.center {
+        text-align: center;
+    }
+
+    a {
+        font-weight: 600;
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}

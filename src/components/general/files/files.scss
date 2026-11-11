@@ -1,0 +1,65 @@
+@use "core/breakpoints" as bp;
+
+.files {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: fit-content;
+
+    .item {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        text-decoration: none;
+        transition: all 0.3s;
+
+        &:hover {
+            .name {
+                color: var(--color-primary-dark);
+            }
+
+            .size {
+                color: var(--color-primary-dark);
+            }
+        }
+
+        .icon {
+            display: flex;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+
+            svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        .info {
+            display: flex;
+            gap: 6px;
+        }
+
+        .name {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 150%;
+            color: var(--color-primary);
+
+            @include bp.mq(laptop) {
+                font-size: 15px;
+            }
+        }
+
+        .size {
+            padding-top: 1px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 150%;
+            color: var(--color-primary);
+            white-space: nowrap;
+        }
+    }
+}
