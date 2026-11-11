@@ -1,0 +1,230 @@
+@use "sass:list";
+@use "sass:map";
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Beauty — «Красота начинается изнутри» (Figma: 1920 / 1440 / 768 / 375)
+// Десктоп: слева заголовок и текст, внизу слева — композиция со стиками,
+// справа карточки 2×2. Планшет: всё по центру, карточки 2×2.
+// Мобильный: карточки в одну колонку.
+// --------------------------------------
+
+// Композиция со стиками: [left, top, width, height] в % от блока .beauty-visual
+// (значения сняты с макетов; у каждого разрешения свои пропорции)
+$visual-layouts: (
+    // 1920: блок 661×612
+    desktop:
+        (
+            ratio: "661 / 612",
+            leaf: (0%, 0%, 49.47%, 90.69%),
+            shadow-1: (26.02%, 5.07%, 44.93%, 72.06%),
+            shadow-2: (44.63%, 37.25%, 44.63%, 68.14%),
+            sticks: (35.85%, 2.12%, 54.77%, 87.75%),
+        ),
+    // 1440: блок 548×438
+    laptop:
+        (
+            ratio: "548 / 438",
+            leaf: (0%, 1.83%, 45.99%, 97.72%),
+            shadow-1: (34.65%, 3.03%, 39.62%, 73.68%),
+            shadow-2: (51.06%, 35.89%, 39.42%, 69.61%),
+            sticks: (43.36%, 0%, 48.38%, 89.74%),
+        ),
+    // 768: блок 394×336
+    tablet:
+        (
+            ratio: "394 / 336",
+            leaf: (0.07%, 2.33%, 45.85%, 91.31%),
+            shadow-1: (37.82%, 7.92%, 33.54%, 76.95%),
+            shadow-2: (65.61%, 27.96%, 27.88%, 72.7%),
+            sticks: (46.14%, 6.79%, 53.91%, 93.73%),
+        ),
+    // 375: блок 351×336
+    mobile:
+        (
+            ratio: "351 / 336",
+            leaf: (0%, 0%, 44.02%, 78.09%),
+            shadow-1: (27.5%, 5.54%, 37.65%, 76.95%),
+            shadow-2: (58.69%, 25.58%, 31.29%, 72.7%),
+            sticks: (36.84%, 4.41%, 60.51%, 93.73%),
+        )
+);
+
+@mixin visual-layout($name) {
+    $layout: map.get($visual-layouts, $name);
+
+    aspect-ratio: #{map.get($layout, ratio)};
+
+    @each $part in (leaf, shadow-1, shadow-2, sticks) {
+        $box: map.get($layout, $part);
+
+        .#{$part} {
+            top: list.nth($box, 2);
+            left: list.nth($box, 1);
+            width: list.nth($box, 3);
+            height: list.nth($box, 4);
+        }
+    }
+}
+
+.beauty {
+    position: relative;
+    padding: mix.fluid(58px, 85px) 0 mix.fluid(90px, 178px);
+    overflow: hidden;
+    background: var(--color-cream);
+    border-bottom: var(--section-border);
+
+    @include bp.mq(desktop-s) {
+        padding: 58px 0 90px;
+    }
+
+    @include bp.mq(tablet-l) {
+        padding: var(--section-padding) 0;
+    }
+}
+
+.beauty-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) mix.fluid(640px, 965px);
+    column-gap: 24px;
+    align-items: start;
+
+    @include bp.mq(desktop-s) {
+        grid-template-columns: minmax(0, 1fr) 640px;
+    }
+
+    @include bp.mq(tablet-l) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+// --------------------------------------
+// Заголовок и текст
+// --------------------------------------
+
+.beauty-header {
+    grid-column: 1;
+    margin-bottom: 0;
+
+    .section-title {
+        max-width: mix.fluid(495px, 684px);
+
+        @include bp.mq(desktop-s) {
+            max-width: 495px;
+        }
+
+        @include bp.mq(tablet-l) {
+            max-width: none;
+        }
+    }
+
+    .section-text {
+        @include mix.text-lg;
+
+        max-width: mix.fluid(574px, 684px);
+
+        @include bp.mq(desktop-s) {
+            max-width: 574px;
+        }
+
+        @include bp.mq(tablet-l) {
+            max-width: 564px;
+        }
+
+        @include bp.mq(tablet) {
+            margin-top: 24px;
+        }
+
+        b {
+            font-weight: 600;
+        }
+    }
+}
+
+// --------------------------------------
+// Композиция со стиками
+// --------------------------------------
+
+.beauty-visual {
+    position: absolute;
+    bottom: 0;
+    left: calc(max(var(--container-padding), round(down, (100% - var(--container-width)) / 2, 1px)) - #{mix.fluid(0px, 110px)});
+    width: mix.fluid(548px, 661px);
+    pointer-events: none;
+
+    @include visual-layout(desktop);
+
+    @include bp.mq(desktop-s) {
+        left: var(--container-padding);
+        width: 548px;
+
+        @include visual-layout(laptop);
+    }
+
+    @include bp.mq(tablet-l) {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        width: 394px;
+        max-width: 100%;
+        margin: 23px 0 24px;
+
+        @include visual-layout(tablet);
+    }
+
+    @include bp.mq(tablet) {
+        width: 100%;
+        margin: 26px 0 12px;
+
+        @include visual-layout(mobile);
+    }
+
+    .leaf,
+    .shadow,
+    .sticks {
+        position: absolute;
+        display: block;
+        max-width: none;
+    }
+
+    // Мягкие тени под стиками (Figma: Ellipse 7, Ellipse 8)
+    .shadow {
+        background: radial-gradient(closest-side, #b5b5a1, rgb(241 241 222 / 0%));
+        border-radius: 50%;
+    }
+
+    .sticks {
+        object-fit: contain;
+    }
+}
+
+// --------------------------------------
+// Карточки
+// --------------------------------------
+
+.beauty-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    gap: mix.fluid(24px, 30px);
+    margin-top: mix.fluid(22px, 47px);
+
+    @include bp.mq(desktop-s) {
+        gap: 24px;
+        margin-top: 22px;
+    }
+
+    @include bp.mq(tablet-l) {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    @include bp.mq(tablet) {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+}

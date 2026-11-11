@@ -1,0 +1,28 @@
+{% from "data/home.njk" import heroSlides %}
+{% from "blocks/common/hero/hero-slide.njk" import render as heroSlide %}
+{% from "components/general/slider-arrow/slider-arrow.njk" import render as sliderArrow %}
+{% from "components/general/image/image.njk" import render as image %}
+
+<section class="hero" data-hero>
+    <div class="swiper hero-slider">
+        <div class="swiper-wrapper">
+            {% for slide in heroSlides %}
+                {{ heroSlide(slide, titleTag="h1" if loop.first else "h2") }}
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if heroSlides | length > 1 %}
+        <div class="hero-controls">
+            <div class="container">
+                <div class="hero-arrows">
+                    {{ sliderArrow(direction="prev", variant="banner", class="hero-prev") }}
+                    {{ sliderArrow(direction="next", variant="banner", class="hero-next") }}
+                </div>
+            </div>
+            <div class="swiper-pagination static hero-pagination"></div>
+        </div>
+    {% endif %}
+
+    {{ image(src="./assets/images/system/hero-wordmark.svg", width=86, height=533, class="hero-wordmark", decorative=true) }}
+</section>

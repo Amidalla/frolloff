@@ -1,141 +1,129 @@
 @use "core/breakpoints" as bp;
 @use "core/mixins" as mix;
 
-header.header {
-    position: sticky;
+// --------------------------------------
+// Header (Figma: 1920 / 1440 / 768 / 375)
+// Фиксированный, прозрачный поверх первого экрана;
+// после прокрутки — тёмно-синий фон.
+// Бургер вместо меню — с 1279px.
+// --------------------------------------
+
+.header {
+    position: fixed;
     top: 0;
+    right: 0;
+    left: 0;
     z-index: 100;
-    height: var(--header-height);
-    background: var(--color-white);
-    transition: box-shadow 0.3s ease;
+    color: var(--color-milk);
+    border-bottom: 1px solid rgb(215 155 87 / 60%);
+    transition:
+        background var(--transition),
+        backdrop-filter var(--transition);
 
     &.is-sticky {
-        box-shadow: 0 2px 10px rgb(0 0 0 / 10%);
+        background: rgb(12 35 72 / 92%);
+        backdrop-filter: blur(10px);
     }
 
-    .header-top {
-        height: var(--header-top-height);
-        background: var(--color-1);
+    .header-inner {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        justify-content: space-between;
+        height: var(--header-height);
 
-        .block {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-            justify-content: space-between;
-            padding: 11px 0;
-
-            @include bp.mq(tablet) {
-                padding: 5px 0;
-            }
-
-            .wrap {
-                &:nth-child(1) {
-                    margin-right: 52px;
-
-                    @include bp.mq(laptop) {
-                        display: none;
-                    }
-                }
-
-                &:nth-child(2) {
-                    @include bp.mq(laptop) {
-                        width: 100%;
-                    }
-                }
-
-                &:nth-child(3) {
-                    display: none;
-                    @include bp.mq(laptop) {
-                        display: flex;
-                    }
-                }
-            }
+        @include bp.mq(laptop) {
+            gap: 16px;
         }
     }
 
-    .header-main {
-        height: var(--header-main-height);
-        background: var(--color-white);
+    // Меню по центру между логотипом и кнопкой
+    .header-nav {
+        margin: 0 auto;
+    }
 
-        .block {
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding: 15px 0;
+    // Размер логотипа задаётся целой высотой (--header-logo-height в variables.scss)
+    .header-logo {
+        flex: 0 0 auto;
 
-            @include bp.mq(laptop-l) {
-                padding: 8px 0;
-            }
-
-            @include bp.mq(tablet) {
-                display: grid;
-                grid-template-columns: min-content auto min-content;
-                gap: 6px 0;
-            }
-
-            @include bp.mq(mobile-l) {
-                display: flex;
-                flex-wrap: wrap;
-            }
-
-            .wrap {
-                &:nth-child(1) {
-                    margin-right: 52px;
-
-                    @include bp.mq(laptop-l) {
-                        flex: 0 0 336px;
-                        margin-right: 30px;
-                    }
-                    @include bp.mq(laptop) {
-                        flex: 0 0 262px;
-                        margin-right: 16px;
-                    }
-                    @include bp.mq(tablet) {
-                        flex: 0 0 auto;
-                    }
-                }
-
-                &:nth-child(2) {
-                    margin-right: 10px;
-
-                    @include bp.mq(tablet) {
-                        order: 4;
-                    }
-                }
-
-                &:nth-child(3) {
-                    display: flex;
-                    width: 100%;
-                    max-width: 446px;
-                    margin-right: 10px;
-
-                    @include bp.mq(laptop-l) {
-                        flex: 0 1 346px;
-                    }
-                    @include bp.mq(laptop) {
-                        flex: 1 1 96px;
-                        margin-right: 20px;
-                    }
-                    @include bp.mq(tablet) {
-                        grid-column: span 2;
-                        order: 5;
-                        max-width: unset;
-                        margin-right: unset;
-                    }
-                }
-
-                &:nth-child(4) {
-                    margin-right: 40px;
-                    margin-left: auto;
-
-                    @include bp.mq(laptop-l) {
-                        margin-right: 20px;
-                    }
-                    @include bp.mq(laptop) {
-                        margin-right: 16px;
-                    }
-                }
-            }
+        img {
+            display: block;
+            width: auto;
+            height: var(--header-logo-height);
         }
+    }
+
+    .header-cta {
+        --button-height: #{mix.fluid(38px, 54px)};
+        --button-padding: 0 #{mix.fluid(15px, 20px)};
+        --button-font-size: #{mix.fluid(16px, 20px)};
+
+        flex: 0 0 auto;
+
+        // Целая ширина: кнопка прижата вправо, иначе её рамка встаёт на дробную координату
+        width: mix.fluid(231px, 291px);
+
+        @include bp.mq(desktop-s) {
+            width: 231px;
+
+            --button-height: 39px;
+            --button-padding: 0 15px;
+            --button-font-size: 16px;
+        }
+
+        @include bp.mq(laptop) {
+            --button-font-size: 14px;
+
+            width: 206px;
+        }
+    }
+
+    // Кнопку и бургер ставим на целый пиксель по вертикали
+    .header-cta,
+    .menu-open {
+        align-self: flex-start;
+        margin-top: round(down, calc((var(--header-height) - var(--button-height, 34px)) / 2), 1px);
+    }
+
+    .header-nav,
+    .header-cta {
+        @include bp.mq(tablet-xl) {
+            display: none;
+        }
+    }
+
+    .menu-open {
+        display: none;
+
+        @include bp.mq(tablet-xl) {
+            display: flex;
+        }
+    }
+}
+
+// Первая секция страницы уходит под фиксированную шапку
+.page > .section:first-child {
+    padding-top: calc(var(--section-padding) + var(--header-height));
+}
+
+// --------------------------------------
+// Overlay под меню (Figma: modal menu mobile)
+// --------------------------------------
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 110;
+    visibility: hidden;
+    background: rgb(12 35 72 / 80%);
+    opacity: 0;
+    backdrop-filter: blur(3.55px);
+    transition:
+        opacity var(--transition),
+        visibility var(--transition);
+
+    &.is-active {
+        visibility: visible;
+        opacity: 1;
     }
 }

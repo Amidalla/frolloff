@@ -1,0 +1,40 @@
+{#
+    Шапка секции: метка + заголовок + текст
+    {% from "blocks/general/section/section-header.njk" import render as sectionHeader %}
+    {{ sectionHeader(label="Как принимать", title="Просто — 1 стик в день", text="...") }}
+
+    align: "" (слева на десктопе, по центру с планшета) | center | left
+    tag:   тег заголовка, по умолчанию h2
+#}
+{% macro render(
+        label="",
+        title="",
+        text="",
+        subtitle="",
+        tag="h2",
+        align="",
+        class=""
+    ) %}
+    {% set headerClasses = "section-header" %}
+    {% if align %}
+        {% set headerClasses = headerClasses + " " + align %}
+    {% endif %}
+    {% if class %}
+        {% set headerClasses = headerClasses + " " + class %}
+    {% endif %}
+
+    <div class="{{ headerClasses }}">
+        {% if label %}
+            <p class="section-label">{{ label | safe }}</p>
+        {% endif %}
+        {% if title %}
+            <{{ tag }} class="section-title">{{ title | safe }}</{{ tag }}>
+        {% endif %}
+        {% if subtitle %}
+            <p class="section-subtitle">{{ subtitle | safe }}</p>
+        {% endif %}
+        {% if text %}
+            <div class="section-text">{{ text | safe }}</div>
+        {% endif %}
+    </div>
+{% endmacro %}

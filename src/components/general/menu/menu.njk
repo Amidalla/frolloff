@@ -1,42 +1,22 @@
+{% from "data/site.njk" import mainNav, contacts, cta %}
 {% from "components/general/navigation-mobile/navigation-mobile.njk" import render as navigationMobile %}
+{% from "components/general/button/button.njk" import render as button %}
+{% from "components/common/contacts-list/contacts-list.njk" import render as contactsList %}
+{% from "components/general/image/image.njk" import render as image %}
 
-<div class="menu" data-dropdown="menu">
+<div class="menu" id="menu" data-dropdown="menu">
     <div class="menu-header">
         <span class="menu-title">Меню</span>
-        <button class="menu-close" type="button" aria-label="Закрыть меню" data-toggle="menu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect
-                    x="4.92893"
-                    y="17.6569"
-                    width="18"
-                    height="2"
-                    rx="1"
-                    transform="rotate(-45 4.92893 17.6569)"
-                    fill="currentColor"
-                />
-                <rect
-                    x="6.34314"
-                    y="4.92893"
-                    width="18"
-                    height="2"
-                    rx="1"
-                    transform="rotate(45 6.34314 4.92893)"
-                    fill="currentColor"
-                />
-            </svg>
-        </button>
+        {% include "components/general/menu/menu-close.njk" %}
     </div>
-    <div class="menu-navigation">
-        {{ navigationMobile(
-            items=[
-                { title: "О нас", href: "#about" },
-                { title: "Услуги", href: "#services" },
-                { title: "Вопросы", href: "#faq" },
-                { title: "Контакты", href: "#contacts" }
-            ]
-        ) }}
+
+    <div class="menu-body">
+        {{ navigationMobile(items=mainNav, ariaLabel="Меню") }}
+
+        {{ button(text=cta.text, href=cta.href, type="link", variant="border", size="s", class="medium menu-cta") }}
+
+        {{ contactsList(items=contacts, class="menu-contacts") }}
     </div>
-    <div class="menu-contacts">
-        {% include "components/common/contacts-mobile/contacts-mobile.njk" %}
-    </div>
+
+    {{ image(src="./assets/images/system/wordmark.svg", width=66, height=383, class="menu-wordmark", decorative=true) }}
 </div>

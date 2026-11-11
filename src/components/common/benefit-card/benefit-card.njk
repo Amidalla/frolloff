@@ -1,0 +1,18 @@
+{#
+    Карточка пользы: круглое фото + заголовок + текст с золотым выделением.
+    card: { image, title, lead, text }
+#}
+{% from "components/general/image/image.njk" import render as image %}
+
+{% macro render(card, class="") %}
+    <article class="benefit-card{% if class %} {{ class }}{% endif %}">
+        <div class="photo">
+            {{ image(src=card.image, width=300, height=300) }}
+        </div>
+        <h3 class="title">{{ card.title }}</h3>
+        <p class="text">
+            {% if card.lead %}<span class="lead">{{ card.lead }}</span>{% endif %}
+            {{ card.text | safe }}
+        </p>
+    </article>
+{% endmacro %}

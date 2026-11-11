@@ -1,83 +1,211 @@
 @use "core/breakpoints" as bp;
 @use "core/mixins" as mix;
 
+// --------------------------------------
+// Menu (Figma: Mobile menu / Tablet menu)
+// Планшет: панель справа 416px на всю высоту
+// Мобильный: панель сверху на всю ширину
+// --------------------------------------
+
 .menu {
     position: fixed;
     top: 0;
     right: 0;
-    z-index: 101;
-    width: 100%;
-    max-width: 394px;
+    z-index: 120;
+    display: flex;
+    visibility: hidden;
+    flex-direction: column;
+    width: 416px;
+    max-width: 100%;
     height: 100dvh;
-    min-height: 100dvh;
-    padding: 15px;
-    overflow-y: auto;
-    background: var(--color-white);
-    box-shadow: 0 4px 28px 0 rgb(0 0 0 / 25%);
+    padding: 8px 36px 40px 29px;
+    overflow: hidden auto;
+    color: var(--color-ink);
+    background: var(--color-milk);
     transform: translateX(100%);
-    transition: transform 0.3s;
+    transition:
+        transform var(--transition),
+        visibility var(--transition);
+
+    @include bp.mq(tablet) {
+        width: 100%;
+        height: auto;
+        max-height: 100dvh;
+        padding: 8px 12px 54px;
+        transform: translateY(-100%);
+    }
 
     &.is-open {
-        transform: translateX(0);
+        visibility: visible;
+        transform: none;
     }
 
     .menu-header {
-        display: none;
-
-        @include bp.mq(laptop) {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 22px;
-        }
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 14px;
     }
 
     .menu-title {
-        font-size: 20px;
+        padding-top: 14px;
+        font-family: var(--font-family-secondary);
+        font-size: 24px;
         font-weight: 600;
-        color: var(--color-2);
+        line-height: 28px;
+
+        @include mix.text-gold;
     }
 
-    .menu-close {
-        display: none;
+    .menu-body {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-        @include bp.mq(laptop) {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            padding: 0;
-            color: var(--color-2);
-            cursor: pointer;
-            background: none;
-            border: none;
-            border-radius: 8px;
-            transition: background 0.2s;
+    .navigation-mobile {
+        margin-bottom: 24px;
+    }
 
-            &:hover {
-                background: var(--color-gray-100, #f5f5f5);
+    .menu-cta {
+        margin-bottom: 22px;
+    }
+
+    .menu-wordmark {
+        position: absolute;
+        top: 85px;
+        right: 35px;
+        width: 66px;
+        height: auto;
+        pointer-events: none;
+
+        @include bp.mq(tablet) {
+            top: 15.6%;
+            right: 2.93%;
+            bottom: 15.6%;
+            width: auto;
+            height: 68.8%;
+        }
+    }
+}
+
+// --------------------------------------
+// Кнопка закрытия
+// --------------------------------------
+
+.menu-close {
+    position: relative;
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    cursor: pointer;
+    background: var(--color-milk);
+    border: 0.8px solid var(--color-gold);
+    border-radius: 50%;
+    transition: background var(--transition);
+
+    &::before,
+    &::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 32px;
+        height: 1.6px;
+        content: "";
+        background: var(--color-gold);
+        border-radius: 2px;
+        transition: background var(--transition);
+    }
+
+    &::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    &:hover {
+        background: var(--color-gold);
+
+        &::before,
+        &::after {
+            background: var(--color-milk);
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--color-gold);
+        outline-offset: 2px;
+    }
+}
+
+// --------------------------------------
+// Бургер (Figma: Frame 4): планшет 59×34, мобильный 48×34
+// Рамка и полоски — CSS, браузер рисует их по пиксельной сетке.
+// --------------------------------------
+
+.menu-open {
+    position: relative;
+    flex: 0 0 auto;
+    width: 59px;
+    height: 34px;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--color-gold);
+    border-radius: 999px;
+    transition: background var(--transition);
+
+    @include bp.mq(tablet) {
+        width: 48px;
+    }
+
+    // Полоски: толщина 2px, правый край на 11px от края, шаг 6px (как в макете)
+    .line {
+        position: absolute;
+        right: 10px;
+        height: 2px;
+        background: linear-gradient(90deg, #c49d5a 0%, #feca85 50%, #c49d5a 100%);
+        border-radius: 2px;
+        transition: width var(--transition);
+
+        &:nth-child(1) {
+            top: 9px;
+            width: 37px;
+        }
+
+        &:nth-child(2) {
+            top: 15px;
+            width: 34px;
+        }
+
+        &:nth-child(3) {
+            top: 21px;
+            width: 18px;
+        }
+
+        @include bp.mq(tablet) {
+            &:nth-child(1),
+            &:nth-child(2) {
+                width: 26px;
             }
         }
     }
 
-    .menu-navigation {
-        margin-bottom: 40px;
+    &:hover {
+        background: rgb(241 241 222 / 8%);
+
+        .line:nth-child(3) {
+            width: 26px;
+        }
     }
 
-    .menu-search {
-        margin-bottom: 40px;
+    &:focus-visible {
+        outline: 2px solid var(--color-gold);
+        outline-offset: 3px;
     }
-}
-
-.menu-open {
-    display: flex;
-    flex: 0 0 auto;
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    background: unset;
-    border: none;
 }

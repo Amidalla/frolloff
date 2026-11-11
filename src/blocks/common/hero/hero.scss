@@ -1,0 +1,257 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Hero — первый экран (Figma: 1920 / 1440 / 768 / 375)
+// Слайдер: на десктопе стрелки, на планшете и мобильном — точки.
+// Картинка с продуктами — <img> с масками из макета:
+// растушёвка снизу (hero-mask-fade) + контур продуктов (hero-mask-shape).
+// --------------------------------------
+
+.hero {
+    // Высота первого экрана (шапка поверх него)
+    --hero-height: #{mix.fluid(727px, 941px)};
+    --hero-content-top: #{mix.fluid(101px, 153px)};
+
+    // Картинка: позиция от левого/верхнего края экрана
+    --hero-media-left: max(#{mix.fluid(572px, 633px)}, calc(50% - 327px));
+    --hero-media-top: #{mix.fluid(77px, 101px)};
+    --hero-media-width: #{mix.fluid(870px, 1174px)};
+
+    position: relative;
+    overflow: hidden;
+    color: var(--color-milk);
+
+    // Свечения за продуктами (Figma: Ellipse 13, Ellipse 14)
+    background:
+        radial-gradient(34.8% 32.1% at 66.4% 38.8%, #1e4e91, rgb(23 30 82 / 0%)),
+        radial-gradient(52.9% 59.1% at 36.6% 65.7%, #021228, rgb(23 30 82 / 0%)), var(--gradient-navy);
+
+    // Золотая линия по нижнему краю (видна по бокам от карточки «Преимущества»)
+    border-bottom: var(--section-border);
+
+    @include bp.mq(desktop-s) {
+        --hero-height: 727px;
+        --hero-content-top: 101px;
+        --hero-media-left: 39.72vw;
+        --hero-media-top: 77px;
+        --hero-media-width: 60.45vw;
+
+        background:
+            radial-gradient(34.2% 30.7% at 61.9% 38.5%, #1e4e91, rgb(23 30 82 / 0%)),
+            radial-gradient(52% 56.4% at 32.5% 64.3%, #021228, rgb(23 30 82 / 0%)), var(--gradient-navy);
+    }
+
+    @include bp.mq(tablet-l) {
+        background:
+            radial-gradient(37% 22.9% at 70.3% 48.6%, #1e4e91, rgb(23 30 82 / 0%)),
+            radial-gradient(56.4% 42% at 38.5% 67.7%, #021228, rgb(23 30 82 / 0%)), var(--gradient-navy);
+        border-bottom: none;
+
+        --hero-height: max(564px, round(73.44vw, 1px));
+        --hero-content-top: 81px;
+        --hero-media-left: 33.52vw;
+        --hero-media-top: 22.88vw;
+        --hero-media-width: 67.91vw;
+    }
+
+    @include bp.mq(tablet) {
+        --hero-height: auto;
+        --hero-content-top: 88px;
+
+        background:
+            radial-gradient(61.5% 16.3% at 47.9% 76.8%, #1e4e91, rgb(23 30 82 / 0%)),
+            radial-gradient(93.5% 30% at -4.9% 90.5%, #021228, rgb(23 30 82 / 0%)), var(--gradient-navy);
+    }
+}
+
+// --------------------------------------
+// Слайд
+// --------------------------------------
+
+.hero-slide {
+    position: relative;
+
+    > .container {
+        position: relative;
+        z-index: 1;
+        min-height: var(--hero-height);
+        padding-top: var(--hero-content-top);
+    }
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.hero-title {
+    @include mix.h1;
+
+    // Перенос как в макете: «Морской коллаген / в желе-стиках»
+    max-width: 9.2em;
+}
+
+.hero-subtitle {
+    @include mix.subtitle;
+
+    // Перенос как в макете: «…и энергия / из глубины океана»
+    max-width: 16.5em;
+    margin-top: mix.fluid(16px, 18px);
+
+    @include bp.mq(desktop-s) {
+        margin-top: 16px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-top: 18px;
+    }
+
+    @include bp.mq(tablet) {
+        margin-top: 17px;
+    }
+}
+
+.hero-list {
+    margin-top: mix.fluid(18px, 24px);
+    font-size: mix.fluid(16px, 18px);
+    line-height: 1.22;
+
+    @include bp.mq(desktop-s) {
+        margin-top: 18px;
+        font-size: 16px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-top: 16px;
+    }
+}
+
+.button.hero-button {
+    --button-height: #{mix.fluid(50px, 58px)};
+    --button-font-size: #{mix.fluid(16px, 20px)};
+
+    min-width: mix.fluid(269px, 290px);
+    margin-top: 25px;
+
+    @include bp.mq(desktop-s) {
+        --button-height: 50px;
+        --button-font-size: 16px;
+
+        min-width: 269px;
+        margin-top: 32px;
+    }
+
+    @include bp.mq(tablet-l) {
+        --button-height: 40px;
+
+        min-width: 197px;
+        margin-top: 23px;
+    }
+
+    @include bp.mq(tablet) {
+        margin-top: 20px;
+    }
+}
+
+// --------------------------------------
+// Картинка с продуктами
+// --------------------------------------
+
+.hero-media {
+    position: absolute;
+    top: var(--hero-media-top);
+    left: var(--hero-media-left);
+    width: var(--hero-media-width);
+    aspect-ratio: 1173.84 / 898.3;
+    pointer-events: none;
+
+    @include bp.mq(tablet) {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: calc(100% - 2px);
+        margin: 16px auto -10%;
+    }
+}
+
+.hero-picture {
+    position: absolute;
+    inset: 0;
+    mask:
+        url("../assets/images/system/hero-mask-fade.svg") 0 0 / 100% 100% no-repeat,
+        url("../assets/images/system/hero-mask-shape.svg") 59.3% 12.92% / 93.1% 77.64% no-repeat;
+    mask-composite: intersect;
+
+    img {
+        position: absolute;
+        top: -2.706%;
+        left: -9.185%;
+        width: 109.23%;
+        max-width: none;
+        height: auto;
+    }
+}
+
+// --------------------------------------
+// Управление слайдером
+// --------------------------------------
+
+.hero-controls {
+    position: absolute;
+    top: mix.fluid(557px, 722px);
+    right: 0;
+    left: 0;
+    z-index: 2;
+
+    @include bp.mq(desktop-s) {
+        top: 557px;
+    }
+
+    @include bp.mq(tablet-l) {
+        top: auto;
+        bottom: 48px;
+    }
+
+    @include bp.mq(tablet) {
+        bottom: 32px;
+    }
+}
+
+.hero-arrows {
+    display: flex;
+    gap: mix.fluid(19px, 28px);
+
+    @include bp.mq(desktop-s) {
+        gap: 19px;
+    }
+
+    @include bp.mq(tablet-l) {
+        display: none;
+    }
+}
+
+.hero .hero-pagination {
+    display: none;
+
+    @include bp.mq(tablet-l) {
+        display: flex;
+    }
+}
+
+// Вертикальный логотип справа — только на широком десктопе
+.hero-wordmark {
+    position: absolute;
+    top: 19.64%;
+    right: max(109px, calc(50% - 851px));
+    z-index: 1;
+    display: none;
+    width: 86px;
+    height: auto;
+    pointer-events: none;
+
+    @media (width >= 1700px) {
+        display: block;
+    }
+}

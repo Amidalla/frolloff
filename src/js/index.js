@@ -11,6 +11,8 @@ import { navigationMobile } from "../components/general/navigation-mobile/naviga
 import { popupCallback } from "../components/common/popup-callback/popup-callback.js";
 import { popupFeedback } from "../components/common/popup-feedback/popup-feedback.js";
 import { header } from "../blocks/general/header/header.js";
+import { hero } from "../blocks/common/hero/hero.js";
+import { flavors } from "../blocks/common/flavors/flavors.js";
 import { showToast } from "../components/general/toast/toast.js";
 import { showPopup } from "./utils/popup.js";
 
@@ -26,7 +28,9 @@ const components = [
     navigationMobile,
     popupCallback,
     popupFeedback,
-    header
+    header,
+    hero,
+    flavors
 ];
 
 function init(context = document) {

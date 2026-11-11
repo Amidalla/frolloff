@@ -1,0 +1,19 @@
+{#
+    Слайд вкуса: название + бейдж (например «Топ-1») + фото.
+    slide: { name, badge, image, alt }
+#}
+{% from "components/general/image/image.njk" import render as image %}
+
+{% macro render(slide, class="") %}
+    <div class="swiper-slide flavor-slide{% if class %} {{ class }}{% endif %}">
+        <div class="head">
+            <p class="name">{{ slide.name }}</p>
+            {% if slide.badge %}
+                <p class="badge">{{ slide.badge }}</p>
+            {% endif %}
+        </div>
+        <div class="media">
+            {{ image(src=slide.image, width=1024, height=765, alt=slide.alt) }}
+        </div>
+    </div>
+{% endmacro %}

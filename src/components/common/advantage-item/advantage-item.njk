@@ -1,0 +1,18 @@
+{#
+    Пункт преимущества: иконка + текст.
+    item: { icon, iconText, text }
+    iconText — надпись поверх иконки (например «98%»)
+#}
+{% from "components/general/image/image.njk" import render as image %}
+
+{% macro render(item, class="") %}
+    <li class="advantage-item{% if class %} {{ class }}{% endif %}">
+        <span class="icon" aria-hidden="true">
+            {{ image(src=item.icon) }}
+            {% if item.iconText %}
+                <span class="icon-text">{{ item.iconText }}</span>
+            {% endif %}
+        </span>
+        <p class="text">{{ item.text | safe }}</p>
+    </li>
+{% endmacro %}

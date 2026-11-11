@@ -1,6 +1,8 @@
-{% set meta = { title: "Froloff" } %}
+{% set meta = { title: "Froloff — морской коллаген в желе-стиках" } %}
 {% extends "layouts/default.njk" %}
 {% block content %}
-    {% set text = "<p>Здесь будут секции лендинга.</p>" %}
-    {% include "blocks/general/section/section.njk" %}
+    {% include "blocks/common/hero/hero.njk" %}
+    {% include "blocks/common/advantages/advantages.njk" %}
+    {% include "blocks/common/beauty/beauty.njk" %}
+    {% include "blocks/common/flavors/flavors.njk" %}
 {% endblock %}

@@ -17,6 +17,7 @@
 @use "./core/fonts";
 @use "./core/mixins";
 @use "./core/globals";
+@use "./core/typography";
 
 // --------------------------------------
 // -- Components
@@ -25,6 +26,7 @@
 @use "../components/general/text/text";
 @use "../components/general/heading/heading";
 @use "../components/general/button/button";
+@use "../components/general/slider-arrow/slider-arrow";
 @use "../components/general/textarea/textarea";
 @use "../components/general/input/input";
 @use "../components/general/select/select";
@@ -46,11 +48,10 @@
 @use "../components/general/toast/toast";
 @use "../components/general/table/table";
 
-@use "../components/common/contacts-header/contacts-header";
-@use "../components/common/contacts-footer/contacts-footer";
-@use "../components/common/contacts-mobile/contacts-mobile";
-@use "../components/common/email-footer/email-footer";
-@use "../components/common/copyright/copyright";
+@use "../components/common/contacts-list/contacts-list";
+@use "../components/common/advantage-item/advantage-item";
+@use "../components/common/benefit-card/benefit-card";
+@use "../components/common/flavor-slide/flavor-slide";
 @use "../components/common/ya-maps/ya-maps";
 @use "../components/common/popup-callback/popup-callback";
 @use "../components/common/popup-callback-success/popup-callback-success";
@@ -63,3 +64,9 @@
 @use "../blocks/general/header/header";
 @use "../blocks/general/footer/footer";
 @use "../blocks/general/section/section";
+
+@use "../blocks/common/hero/hero";
+@use "../blocks/common/advantages/advantages";
+@use "../blocks/common/beauty/beauty";
+@use "../blocks/common/flavors/flavors";
+@use "../blocks/general/ui-kit/ui-kit";

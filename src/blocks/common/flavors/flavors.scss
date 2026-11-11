@@ -1,0 +1,239 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Flavors — «Выбирайте настроение каждый день» (Figma: 1920 / 1440 / 768 / 375)
+// Табы по граммовке, в каждой вкладке — слайдер вкусов.
+// Стрелки: золотая — активная, светлая — неактивная (крайний слайд).
+// --------------------------------------
+
+.flavors {
+    // Слайдер (значения сняты с макетов)
+    --flavor-slide-height: #{mix.fluid(664px, 835px)};
+    --flavor-head-width: #{mix.fluid(850px, 1117px)};
+    --flavor-image-width: #{mix.fluid(1026px, 1272px)};
+    --flavor-image-top: calc(#{mix.fluid(102px, 106px)} * -1);
+
+    position: relative;
+    padding: var(--section-padding) 0 mix.fluid(56px, 80px);
+    overflow: hidden;
+    background: #efedd8;
+    border-bottom: var(--section-border);
+
+    @include bp.mq(desktop-s) {
+        --flavor-slide-height: 664px;
+        --flavor-head-width: 850px;
+        --flavor-image-width: 1026px;
+        --flavor-image-top: -102px;
+
+        padding-bottom: 56px;
+    }
+
+    @include bp.mq(tablet-l) {
+        --flavor-slide-height: 486px;
+        --flavor-head-width: 558px;
+        --flavor-image-width: 742px;
+        --flavor-image-top: -68px;
+
+        padding-bottom: 48px;
+    }
+
+    @include bp.mq(tablet) {
+        --flavor-slide-height: 305px;
+        --flavor-image-width: 111%;
+        --flavor-image-top: -30px;
+    }
+}
+
+.flavors-header {
+    margin-bottom: 0;
+
+    // В макете заголовок в одну строку
+    .section-title {
+        max-width: none;
+    }
+
+    .section-text {
+        @include mix.text-lg;
+
+        max-width: 684px;
+
+        @include bp.mq(tablet) {
+            max-width: 334px;
+        }
+    }
+}
+
+// --------------------------------------
+// Табы
+// --------------------------------------
+
+.flavors-tabs.tabs {
+    gap: 0;
+    margin-top: mix.fluid(33px, 28px);
+
+    @include bp.mq(tablet-l) {
+        margin-top: 32px;
+    }
+
+    @include bp.mq(tablet) {
+        margin-top: 24px;
+    }
+
+    .nav-wrap {
+        margin: 0;
+        overflow: visible;
+    }
+
+    .nav {
+        gap: mix.fluid(24px, 35px);
+        width: 100%;
+        max-width: mix.fluid(583px, 749px);
+        padding: 0;
+        margin: 0 auto;
+
+        @include bp.mq(desktop-s) {
+            gap: 24px;
+            max-width: 583px;
+        }
+
+        @include bp.mq(tablet-l) {
+            max-width: 535px;
+        }
+
+        @include bp.mq(tablet) {
+            flex-direction: column;
+            gap: 16px;
+            max-width: 266px;
+        }
+    }
+
+    .nav-item {
+        flex: 1 0 0;
+        padding: mix.fluid(8px, 17px) mix.fluid(15px, 20px);
+        font-size: mix.fluid(16px, 20px);
+
+        @include bp.mq(desktop-s) {
+            padding: 8px 15px;
+            font-size: 16px;
+        }
+
+        @include bp.mq(tablet) {
+            flex: none;
+            padding: 10px;
+            font-size: 16px;
+        }
+    }
+
+    .panels {
+        margin-top: 33px;
+
+        @include bp.mq(desktop-s) {
+            margin-top: 55px;
+        }
+
+        @include bp.mq(tablet-l) {
+            margin-top: 59px;
+        }
+
+        @include bp.mq(tablet) {
+            margin-top: 30px;
+        }
+    }
+}
+
+// --------------------------------------
+// Слайдер и стрелки
+// --------------------------------------
+
+.flavors-slider {
+    position: relative;
+
+    .swiper {
+        overflow: hidden;
+    }
+}
+
+.flavors-arrows {
+    position: absolute;
+    top: mix.fluid(261px, 292px);
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    width: mix.fluid(994px, 1171px);
+    max-width: 100%;
+    pointer-events: none;
+    transform: translateX(-50%);
+
+    @include bp.mq(desktop-s) {
+        top: 261px;
+        width: 994px;
+    }
+
+    @include bp.mq(tablet-l) {
+        top: 408px;
+        gap: 18px;
+        justify-content: center;
+        width: auto;
+    }
+
+    @include bp.mq(tablet) {
+        top: 300px;
+    }
+
+    .slider-arrow {
+        pointer-events: auto;
+
+        @include bp.mq(tablet-l) {
+            --arrow-size: 44px;
+            --arrow-stroke-width: 1px;
+        }
+    }
+}
+
+// --------------------------------------
+// Кнопка «Где купить» — поверх нижней части фото
+// --------------------------------------
+
+.flavors-action {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    margin-top: calc(#{mix.fluid(94px, 117px)} * -1);
+
+    @include bp.mq(desktop-s) {
+        margin-top: -94px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-top: -15px;
+    }
+
+    @include bp.mq(tablet) {
+        margin-top: 64px;
+    }
+}
+
+.button.flavors-button {
+    --button-height: #{mix.fluid(40px, 58px)};
+    --button-font-size: #{mix.fluid(16px, 20px)};
+
+    min-width: mix.fluid(204px, 290px);
+
+    @include bp.mq(desktop-s) {
+        --button-height: 40px;
+        --button-font-size: 16px;
+
+        min-width: 204px;
+    }
+
+    @include bp.mq(tablet-l) {
+        --button-font-size: 14px;
+    }
+
+    @include bp.mq(tablet) {
+        min-width: 215px;
+    }
+}

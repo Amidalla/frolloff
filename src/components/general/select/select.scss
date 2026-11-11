@@ -139,3 +139,10 @@
 
     // }
 }
+
+// Ховеры nice-select — тот же переход, что и на всём сайте
+.nice-select,
+.nice-select::after,
+.nice-select .option {
+    transition: all var(--transition);
+}

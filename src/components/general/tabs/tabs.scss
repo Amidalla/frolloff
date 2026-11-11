@@ -1,104 +1,125 @@
 @use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Tabs (Figma: tabs)
+// default — полупрозрачный белый, hover — золотой градиент,
+// active — молочный с золотой рамкой 2px
+// --------------------------------------
 
 .tabs {
-    --tabs-gap: 14px;
+    --tabs-gap: 40px;
 
     display: flex;
     flex-direction: column;
     gap: var(--tabs-gap);
+
+    @include bp.mq(tablet-l) {
+        --tabs-gap: 24px;
+    }
 
     // --------------------------------------
     // Navigation
     // --------------------------------------
 
     .nav-wrap {
-        // overflow-x: auto;
-        // scrollbar-width: none;
+        @include bp.mq(tablet-l) {
+            margin: 0 calc(var(--container-padding) * -1);
+            overflow-x: auto;
+            scrollbar-width: none;
 
-        // &::-webkit-scrollbar {
-        //     display: none;
-        // }
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
     }
 
     .nav {
         display: flex;
-        gap: 10px;
+        gap: 24px;
+        width: 100%;
+        max-width: 872px;
+        margin: 0 auto;
 
-        @include bp.mq(laptop) {
-            flex-wrap: wrap;
+        @include bp.mq(tablet-l) {
+            gap: 12px;
+        }
+
+        @include bp.mq(tablet-l) {
+            width: max-content;
+            max-width: none;
+            padding: 2px var(--container-padding);
         }
     }
 
     .nav-item {
-        position: relative;
-        flex: 0 0 auto;
-        padding: 14px 30px;
+        display: flex;
+        flex: 1 0 0;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+        min-height: 40px;
+        padding: 8px 15px;
         font-family: var(--font-family-primary);
-        font-size: 24px;
-        font-weight: 400;
-        line-height: 150%;
-        color: var(--color-29);
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1.2;
+        position: relative;
+        isolation: isolate;
+        color: var(--color-ink);
         text-align: center;
-        letter-spacing: 0.48px;
         white-space: nowrap;
         cursor: pointer;
-        background: transparent;
-        border: none;
-        transition: all 0.3s;
+        background-color: rgb(255 255 255 / 50%);
+        border: 1px solid var(--color-milk);
+        border-radius: var(--radius-tab);
+        box-shadow: inset 0 0 0 0 var(--color-gold);
+        transition:
+            background-color var(--transition),
+            border-color var(--transition),
+            box-shadow var(--transition);
 
-        @include bp.mq(laptop) {
-            padding: 8px 20px;
-            font-size: 16px;
-            letter-spacing: 0.32px;
-        }
-
-        &:hover {
-            color: var(--color-primary);
-
-            // background: var(--color-white);
-        }
-
+        // Золотой градиент ховера — отдельным слоем: градиенты не анимируются,
+        // а прозрачность слоя меняется плавно
         &::before {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             z-index: -1;
-            width: 100%;
-            height: 100%;
+            pointer-events: none;
             content: "";
-            background: var(--color-white);
-            border-radius: 5px;
-            box-shadow: 0 0 18px 0 rgb(0 0 0 / 10%);
+            background: var(--gradient-gold);
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        @include bp.mq(tablet-l) {
+            flex: 0 0 auto;
+        }
+
+        @include bp.mq(tablet) {
+            font-size: 14px;
+        }
+
+        &:hover:not(.is-active) {
+            border-color: var(--color-gold);
+            box-shadow: inset 0 0 0 1px var(--color-gold);
+
+            &::before {
+                opacity: 1;
+            }
         }
 
         &.is-active {
-            color: var(--color-primary);
-            background: var(--color-white);
+            cursor: default;
+            background: var(--color-milk);
+            border-color: var(--color-gold);
+            box-shadow: inset 0 0 0 1px var(--color-gold);
+        }
 
-            // font-weight: 600;
-
-            &::before {
-                height: calc(100% + 14px);
-
-                @include bp.mq(laptop) {
-                    height: 100%;
-                }
-            }
-
-            &::after {
-                position: absolute;
-                bottom: -28px;
-                left: 0;
-                z-index: 1;
-                width: 100%;
-                height: 28px;
-                content: "";
-                background: var(--color-white);
-
-                @include bp.mq(laptop) {
-                    display: none;
-                }
-            }
+        &:focus-visible {
+            outline: 2px solid var(--color-gold);
+            outline-offset: 2px;
         }
     }
 
@@ -112,14 +133,6 @@
 
     .panel {
         display: none;
-        padding: 30px;
-        overflow-x: clip;
-        border-radius: 5px;
-        box-shadow: 0 0 18px 0 rgb(0 0 0 / 10%);
-
-        @include bp.mq(laptop) {
-            padding: 20px;
-        }
 
         &.is-active {
             display: block;

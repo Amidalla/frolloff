@@ -59,6 +59,19 @@ export function menu(context = document) {
     };
 
     toggles.forEach((btn) => btn.addEventListener("click", toggle, { signal }));
+
+    // Переход по якорю из меню — закрываем меню
+    root.addEventListener(
+        "click",
+        (e) => {
+            if (e.target.closest("a[href]")) close();
+        },
+        { signal }
+    );
+
+    // Меню не нужно на десктопе: закрываем при расширении окна
+    const desktop = window.matchMedia("(min-width: 1280px)");
+    desktop.addEventListener("change", (e) => e.matches && close(), { signal });
     overlay?.addEventListener("click", close, { signal });
 
     document.addEventListener("click", onDocClick, { signal });

@@ -10,59 +10,99 @@
     --color-gray: #8f8f8f;
     --color-gray-dark: #525252;
     --color-gray-light: #d9dadb;
-    --color-red: #f04f36;
-    --color-green: #81a451;
-    --color-green-light: #e8f9d1;
-    --color-yellow: #d8b74b;
+    --color-red: #c0392b;
 
     // --------------------------------------
-    // -- Brand Сolors
+    // -- Brand Сolors (Figma: Premium / Secondary)
     // --------------------------------------
-    --color-primary: #b42f2d;
-    --color-primary-dark: #8d1a1c;
+    --color-gold: #d79b57; // Premium/gold
+    --color-gold-dark: #c49d5a;
+    --color-gold-light: #feca85;
+    --color-navy: #0c2348; // Premium/blue
+    --color-navy-dark: #031b36;
+    --color-ink: #17212b; // Premium/black
+    --color-milk: #f1f1de; // Secondary/milk-light
+    --color-cream: #f9f9f2;
+    --color-bordo: #800020; // Premium/bordo
+    --color-green: #486f36; // Premium/green
+
+    // Алиасы для компонентов шаблона (формы, меню и т.д.)
+    --color-primary: var(--color-gold);
+    --color-primary-dark: var(--color-gold-dark);
+    --color-secondary: var(--color-navy);
 
     // --------------------------------------
-    // -- Others Сolors
+    // -- Others Сolors (используются в компонентах шаблона)
     // --------------------------------------
-    --color-1: #f3f3f3;
-    --color-2: #303038;
+    --color-1: var(--color-cream);
+    --color-2: var(--color-ink);
     --color-3: #686161;
     --color-4: #aeaeae;
     --color-5: #dedede;
-    --color-6: #322f2f;
-    --color-7: #dc5655;
-    --color-8: #f1efef;
+    --color-6: var(--color-navy);
+    --color-8: #8f8f8f;
+    --color-9: var(--color-ink);
+    --color-10: var(--color-ink);
+
+    // --------------------------------------
+    // -- Gradients
+    // --------------------------------------
+    // Secondary/linearGold
+    --gradient-gold: linear-gradient(270deg, #c49d5a 0%, #feca85 48.077%, #c49d5a 100%);
+    --gradient-gold-button: linear-gradient(216deg, #c49d5a 18%, #feca85 52%, #c49d5a 92%);
+    --gradient-gold-button-hover: linear-gradient(217deg, #c49d5a 38%, #feca85 80%);
+    --gradient-navy: linear-gradient(180deg, #0c2348 26.479%, #031b36 100%);
 
     // --------------------------------------
     // -- Fonts
     // --------------------------------------
-    --font-family-primary: "Roboto", sans-serif;
+    --font-family-primary: "Montserrat", sans-serif;
+    --font-family-secondary: "Cormorant SC", serif;
 
     // --------------------------------------
     // -- Sizes
     // --------------------------------------
-    --container-width: 1600px;
-    --container-padding: 60px;
-    --header-top-height: 58px;
-    --header-main-height: 98px;
-    --header-height: calc(var(--header-top-height) + var(--header-main-height));
-    --heading-margin: 1rem 0;
-    --heading-line-height: 1.1;
-    --section-mb: 60px;
+    --container-width: 1674px;
+    --container-padding: 72px;
 
-    @include bp.mq(laptop-l) {
-        --header-main-height: 70px;
+    // Шапка = логотип + два целых отступа: логотип всегда на целом пикселе
+    --header-logo-height: #{mix.fluid(69px, 86px)};
+    --header-pad: #{mix.fluid(3px, 4px)};
+    --header-height: calc(var(--header-logo-height) + var(--header-pad) * 2);
+    --section-padding: #{mix.fluid(60px, 80px)};
+    --section-border: 2px solid var(--color-gold);
+    --radius-card: 30px;
+    --radius-tab: 10px;
+    --transition: 0.3s ease;
+
+    @include bp.mq(desktop-s) {
+        --header-logo-height: 69px;
+        --header-pad: 3px;
     }
 
     @include bp.mq(laptop) {
-        --container-padding: 40px;
-        --header-main-height: 58px;
-        --section-mb: 40px;
+        --header-logo-height: 55px;
+        --header-pad: 10px;
+    }
+
+    @include bp.mq(tablet-xl) {
+        --header-logo-height: 48px;
+        --header-pad: 3px;
+    }
+
+    @include bp.mq(tablet-l) {
+        --container-padding: 36px;
+        --section-padding: 48px;
     }
 
     @include bp.mq(tablet) {
-        --container-padding: 15px;
-        --header-top-height: 34px;
-        --header-main-height: 104px;
+        --container-padding: 12px;
+        --header-logo-height: 52px;
+        --header-pad: 2px;
+    }
+
+    @include bp.mq(mobile-s) {
+        --header-logo-height: 44px;
+        --header-pad: 6px;
     }
 }

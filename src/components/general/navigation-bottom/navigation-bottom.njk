@@ -1,28 +1,30 @@
+{#
+    Колонка ссылок с заголовком (подвал).
+    В 1С-Битрикс: заголовок + шаблон компонента bitrix:menu (ul > li > a).
+    items: [{ title, href, target, ariaCurrent, class }]
+#}
 {% macro render(
         title="",
         items=[],
         class="",
-        ariaLabel="Навигация"
+        ariaLabel=""
     ) %}
     {% set navClasses = "navigation-bottom" %}
     {% if class %}
         {% set navClasses = navClasses + " " + class %}
     {% endif %}
 
-    <nav class="{{ navClasses }}" aria-label="{{ ariaLabel }}">
+    <nav class="{{ navClasses }}" aria-label="{{ ariaLabel if ariaLabel else title }}">
         {% if title %}
-            <div class="title">{{ title }}</div>
+            <p class="title">{{ title }}</p>
         {% endif %}
         <ul>
             {% for item in items %}
-                <li {% if item.class %}class="{{ item.class }}" {% endif %}>
+                <li{% if item.class %} class="{{ item.class }}"{% endif %}>
                     <a
                         href="{{ item.href }}"
-                        {% if item.title %}
-                            title="{{ item.title }}"
-                        {% endif %}
                         {% if item.target %}
-                            target="{{ item.target }}"
+                            target="{{ item.target }}" rel="noopener"
                         {% endif %}
                         {% if item.ariaCurrent %}
                             aria-current="{{ item.ariaCurrent }}"

@@ -1,0 +1,31 @@
+{% from "data/home.njk" import beauty %}
+{% from "blocks/general/section/section-header.njk" import render as sectionHeader %}
+{% from "components/common/benefit-card/benefit-card.njk" import render as benefitCard %}
+{% from "components/general/image/image.njk" import render as image %}
+
+<section class="beauty" id="benefits">
+    <div class="container">
+        <div class="beauty-inner">
+            {{ sectionHeader(label=beauty.label, title=beauty.title, text=beauty.text, class="beauty-header") }}
+
+            <div class="beauty-visual">
+                {{ image(src="./assets/images/content/beauty/leaf.svg", width=327, height=555, class="leaf", decorative=true) }}
+                <span class="shadow shadow-1" aria-hidden="true"></span>
+                <span class="shadow shadow-2" aria-hidden="true"></span>
+                {{ image(
+                    src=beauty.image.src,
+                    width=beauty.image.width,
+                    height=beauty.image.height,
+                    alt=beauty.image.alt,
+                    class="sticks"
+                ) }}
+            </div>
+
+            <div class="beauty-cards">
+                {% for card in beauty.cards %}
+                    {{ benefitCard(card) }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

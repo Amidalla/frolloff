@@ -36,7 +36,7 @@
         background-color: var(--color-white);
         border: 1px solid var(--border-color);
         border-radius: var(--checkbox-border-radius);
-        transition: all 0.2s ease-in-out;
+        transition: all var(--transition);
 
         &::after {
             display: none;

@@ -1,0 +1,56 @@
+{#
+    Стрелка слайдера (Figma: arrow-slider-product / arrow slider)
+    direction: prev | next
+    variant:   light  — светлая с золотой стрелкой, на ховере стрелка тёмно-синяя
+               gold   — залитая золотым градиентом
+               banner — контурная (слайдер-баннер на тёмном фоне)
+    size:      l (80) | m (56) | s (44); для banner размер 65 → 46
+    Круг — CSS-рамка (чёткая на любом экране), стрелка — встроенный SVG из макета,
+    линия выровнена по пиксельной сетке. Градиент стрелки — из components/general/svg-defs.
+    Две одинаковые стрелки: обычная и ховерная — для плавной смены цвета на ховере.
+#}
+{% macro render(
+        direction="prev",
+        variant="light",
+        size="l",
+        class="",
+        label="",
+        data={}
+    ) %}
+    {% set arrowClasses = "slider-arrow " + direction + " " + variant %}
+    {% if variant != "banner" %}
+        {% set arrowClasses = arrowClasses + " " + size %}
+    {% endif %}
+    {% if class %}
+        {% set arrowClasses = arrowClasses + " " + class %}
+    {% endif %}
+    {% set defaultLabel = "Предыдущий слайд" if direction == "prev" else "Следующий слайд" %}
+
+    <button
+        class="{{ arrowClasses }}"
+        type="button"
+        aria-label="{{ label if label else defaultLabel }}"
+        {% if data %}
+            {% for key, val in data %}
+                data-{{ key | replace("_", "-") }}="{{ val }}"
+            {% endfor %}
+        {% endif %}
+    >
+        {% if variant == "banner" %}
+            <svg viewBox="0 0 65 65" aria-hidden="true" focusable="false">
+                <path class="arrow" d="M47.6 32.5H16.9M24.8 21.3C24.8 23.6 21.9 31.2 16.9 32.5C22.9 34.2 24.7 40.2 24.8 42.9" />
+                <path class="arrow arrow-hover" d="M47.6 32.5H16.9M24.8 21.3C24.8 23.6 21.9 31.2 16.9 32.5C22.9 34.2 24.7 40.2 24.8 42.9" />
+            </svg>
+        {% elif size == "s" %}
+            <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+                <path class="arrow" d="M32.2 22.5H11.4M16.8 14.9C16.8 16.4 14.8 21.6 11.4 22.5C15.5 23.7 16.7 27.7 16.8 29.5" />
+                <path class="arrow arrow-hover" d="M32.2 22.5H11.4M16.8 14.9C16.8 16.4 14.8 21.6 11.4 22.5C15.5 23.7 16.7 27.7 16.8 29.5" />
+            </svg>
+        {% else %}
+            <svg viewBox="0 0 80 80" aria-hidden="true" focusable="false">
+                <path class="arrow" d="M61.5 40H18.5M29.7 24.4C29.7 27.5 25.5 38.1 18.5 40C27 42.4 29.5 50.7 29.7 54.5" />
+                <path class="arrow arrow-hover" d="M61.5 40H18.5M29.7 24.4C29.7 27.5 25.5 38.1 18.5 40C27 42.4 29.5 50.7 29.7 54.5" />
+            </svg>
+        {% endif %}
+    </button>
+{% endmacro %}

@@ -1,0 +1,49 @@
+{#
+    Слайд первого экрана.
+    slide: { title, subtitle, list[], button{text, href}, image{src, srcset, width, height, alt} }
+    titleTag: h1 для первого слайда, h2 для остальных
+    Все картинки грузятся лениво (первый экран прикроет прелоадер).
+#}
+{% from "components/general/button/button.njk" import render as button %}
+{% from "components/general/image/image.njk" import render as image %}
+
+{% macro render(slide, titleTag="h2") %}
+    <div class="swiper-slide hero-slide">
+        <div class="container">
+            <div class="hero-content">
+                <{{ titleTag }} class="hero-title">{{ slide.title | safe }}</{{ titleTag }}>
+
+                {% if slide.subtitle %}
+                    <p class="hero-subtitle">{{ slide.subtitle | safe }}</p>
+                {% endif %}
+
+                {% if slide.list and slide.list | length %}
+                    <ul class="list-dots hero-list">
+                        {% for item in slide.list %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% if slide.button %}
+                    {{ button(text=slide.button.text, href=slide.button.href, type="link", variant="gold", size="l", class="hero-button") }}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if slide.image %}
+            <div class="hero-media">
+                <div class="hero-picture">
+                    {{ image(
+                        src=slide.image.src,
+                        srcset=slide.image.srcset,
+                        sizes="(max-width: 767.98px) 110vw, (max-width: 1023.98px) 75vw, 67vw",
+                        width=slide.image.width,
+                        height=slide.image.height,
+                        alt=slide.image.alt
+                    ) }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}

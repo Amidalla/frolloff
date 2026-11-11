@@ -1,0 +1,20 @@
+{#
+    Список контактов (меню, подвал)
+    items: [{ title, href, target }]
+#}
+{% macro render(items=[], class="") %}
+    <ul class="contacts-list{% if class %} {{ class }}{% endif %}">
+        {% for item in items %}
+            <li>
+                <a
+                    href="{{ item.href }}"
+                    {% if item.target %}
+                        target="{{ item.target }}" rel="noopener"
+                    {% endif %}
+                >
+                    {{ item.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}

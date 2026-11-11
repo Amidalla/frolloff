@@ -1,0 +1,114 @@
+{% set meta = { title: "UI kit — Froloff" } %}
+{% extends "layouts/default.njk" %}
+{% from "blocks/general/section/section-header.njk" import render as sectionHeader %}
+{% from "components/general/button/button.njk" import render as button %}
+{% from "components/general/slider-arrow/slider-arrow.njk" import render as sliderArrow %}
+{% from "components/general/tabs/tabs.njk" import render as tabs %}
+
+{% block content %}
+    <section class="section dark">
+        <div class="container ui-kit">
+            <h1 class="h1">Морской коллаген<br />в желе-стиках</h1>
+            <p class="subtitle-gold">Молодость красота и энергия<br />из глубины океана</p>
+            <ul class="list-dots text-lg">
+                <li>3 500 мг и 5 000 мг пептидов</li>
+                <li>Готов к употреблению</li>
+                <li>Быстрая усвояемость</li>
+            </ul>
+            <div class="ui-kit-row">
+                {{ button(text="Все вкусы", variant="gold", size="l") }}
+                {{ button(text="Выберите свой вкус", variant="border", size="m") }}
+            </div>
+            <div class="ui-kit-row">
+                {{ sliderArrow(direction="prev", variant="banner") }}
+                {{ sliderArrow(direction="next", variant="banner") }}
+                <div class="swiper-pagination static">
+                    <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span>
+                    <span class="swiper-pagination-bullet"></span>
+                    <span class="swiper-pagination-bullet"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section cream bordered">
+        <div class="container">
+            {{ sectionHeader(
+                label="Как принимать",
+                title="Просто — 1 стик в день",
+                text="Никаких капсул и порошков. Стик всегда с собой: в сумке, офисе, поездке. Не нужна вода, не нужен холодильник."
+            ) }}
+            <div class="ui-kit-grid">
+                <div>
+                    <h3 class="h3">Откройте стик</h3>
+                    <p class="text-lg">Надрывайте по линии — содержимое аккуратно выдавливается в рот.</p>
+                </div>
+                <div>
+                    <h3 class="h3">Как принимать</h3>
+                    <p class="text-lg">Принимайте, когда вам удобно, и за 30 минут до еды.</p>
+                </div>
+                <div>
+                    <h3 class="h3">Наблюдайте эффект</h3>
+                    <p class="text-lg">Первые изменения кожи — к 2–3 неделе, стойкий результат — к концу курса.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section milk bordered">
+        <div class="container">
+            {{ sectionHeader(
+                label="Подбирайте комплекс под потребности",
+                title="Выбирайте то, что ближе",
+                subtitle="Морской коллаген 3 500 мг",
+                align="center"
+            ) }}
+
+            <h3 class="h3 ui-kit-caption">Кнопки: gold / blue / border × L / M / S</h3>
+            <div class="ui-kit-buttons">
+                {% for variant in ["gold", "blue", "border"] %}
+                    <div class="ui-kit-row">
+                        {% for size in ["l", "m", "s"] %}
+                            {{ button(text="Где купить", variant=variant, size=size) }}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <h3 class="h3 ui-kit-caption">Стрелки товарного слайдера: light / gold × L / M / S</h3>
+            <div class="ui-kit-row">
+                {% for size in ["l", "m", "s"] %}
+                    {{ sliderArrow(direction="prev", variant="light", size=size) }}
+                    {{ sliderArrow(direction="next", variant="light", size=size) }}
+                {% endfor %}
+            </div>
+            <div class="ui-kit-row">
+                {% for size in ["l", "m", "s"] %}
+                    {{ sliderArrow(direction="prev", variant="gold", size=size) }}
+                    {{ sliderArrow(direction="next", variant="gold", size=size) }}
+                {% endfor %}
+            </div>
+
+            <h3 class="h3 ui-kit-caption">Пагинация на светлом фоне</h3>
+            <div class="swiper-pagination static on-light">
+                <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span>
+                <span class="swiper-pagination-bullet"></span>
+                <span class="swiper-pagination-bullet"></span>
+            </div>
+
+            <h3 class="h3 ui-kit-caption">Табы</h3>
+            {{ tabs(
+                items=[
+                    { title: "Морской коллаген 3 500 мг", content: '<div class="card ui-kit-card">Содержимое вкладки 1</div>' },
+                    { title: "Морской коллаген 5 000 мг", content: '<div class="card ui-kit-card">Содержимое вкладки 2</div>' },
+                    { title: "Витаминные комплексы", content: '<div class="card ui-kit-card">Содержимое вкладки 3</div>' }
+                ]
+            ) }}
+
+            <h3 class="h3 ui-kit-caption">Карточка</h3>
+            <div class="card milk shadow ui-kit-card">
+                <p class="text-lg">Карточка с тенью (блок «Преимущества»)</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

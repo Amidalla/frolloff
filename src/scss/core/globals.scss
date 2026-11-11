@@ -10,6 +10,7 @@
 html {
     height: auto;
     min-height: 100vh;
+    overflow-x: clip;
     scroll-behavior: smooth;
 
     // &::-webkit-scrollbar {
@@ -28,9 +29,10 @@ body {
     min-height: 100vh;
     margin: 0;
     font-family: var(--font-family-primary);
+    font-size: 16px;
     line-height: 1.4;
-    color: var(--color-2);
-    background: var(--color-white);
+    color: var(--color-ink);
+    background: var(--color-cream);
     text-rendering: optimizelegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -89,32 +91,19 @@ h3,
 h4,
 h5,
 h6 {
-    margin: var(--heading-margin);
-    line-height: var(--heading-line-height);
+    margin: 0;
+    font-family: var(--font-family-secondary);
+    font-weight: 600;
+    line-height: 1.1;
 }
 
-h1 {
-    font-size: 3em;
+p {
+    margin: 0;
 }
 
-h2 {
-    font-size: 2.25em;
-}
-
-h3 {
-    font-size: 1.75em;
-}
-
-h4 {
-    font-size: 1.5em;
-}
-
-h5 {
-    font-size: 1.25em;
-}
-
-h6 {
-    font-size: 1em;
+// Якоря не прячутся под фиксированной шапкой
+[id] {
+    scroll-margin-top: var(--header-height);
 }
 
 .site {
@@ -128,6 +117,15 @@ h6 {
     max-width: calc(var(--container-width) + var(--container-padding) * 2);
     padding: 0 var(--container-padding);
     margin: 0 auto;
+
+    // Контейнер всегда начинается с целого пикселя.
+    // Иначе при нечётной разнице (окно − контейнер) всё внутри
+    // сдвигается на 0.5px и тонкие линии (лого, стрелки) размываются.
+    @supports (padding: round(down, 1.5px, 1px)) {
+        max-width: none;
+        padding-inline: max(var(--container-padding), round(down, calc((100% - var(--container-width)) / 2), 1px));
+        margin: 0;
+    }
 }
 
 // --------------------------------------
@@ -139,6 +137,30 @@ h6 {
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
+}
+
+// --------------------------------------
+// -- Card
+// Карточки товара / преимуществ: радиус 30px
+// --------------------------------------
+
+.card {
+    position: relative;
+    overflow: clip;
+    background: rgb(255 255 255 / 60%);
+    border-radius: var(--radius-card);
+
+    &.milk {
+        background: var(--color-milk);
+    }
+
+    &.shadow {
+        box-shadow: 0 4px 20px 0 rgb(0 0 0 / 15%);
+    }
+
+    @include bp.mq(tablet) {
+        border-radius: 20px;
+    }
 }
 
 // --------------------------------------
@@ -199,80 +221,48 @@ h6 {
 
 // --------------------------------------
 // -- Swiper
+// Пагинация (paginator-slider): точки 10px, активная — золотой градиент.
+// Стрелки — компонент slider-arrow.
 // --------------------------------------
 
-.swiper-navigation {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    margin: 0 auto;
+.swiper-pagination {
+    --swiper-pagination-bullet-size: 10px;
+    --swiper-pagination-bullet-horizontal-gap: 3px;
+    --pagination-bullet-color: var(--color-milk);
 
-    .swiper-pagination {
-        position: static;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: fit-content;
-        margin: 0;
+    &.on-light {
+        --pagination-bullet-color: var(--color-navy);
+    }
 
-        .swiper-pagination-bullet {
-            width: var(--navigation-bullet-size);
-            height: var(--navigation-bullet-size);
-            background: transparent;
-            border: 1px solid var(--color-9);
-            opacity: 1;
+    .swiper-pagination-bullet {
+        background: var(--pagination-bullet-color);
+        opacity: 0.4;
+        transition: opacity var(--transition);
 
-            &.swiper-pagination-bullet-active {
-                width: var(--navigation-bullet-active-width);
-                background: var(--color-primary);
-                border-color: var(--color-primary);
-                border-radius: var(--navigation-bullet-size);
-            }
+        &:hover {
+            opacity: 0.7;
         }
     }
 
-    .swiper-button-prev,
-    .swiper-button-next {
-        position: static;
-        display: flex;
-        flex: 0 0 auto;
-        align-items: center;
-        justify-content: center;
-        width: var(--navigation-button-size);
-        height: var(--navigation-button-size);
-        padding: 0;
+    .swiper-pagination-bullet-active {
+        background: var(--gradient-gold);
+        opacity: 1;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+.swiper-pagination.static {
+    position: static;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+
+    .swiper-pagination-bullet {
         margin: 0;
-        color: var(--color-9);
-        cursor: pointer;
-        user-select: none;
-        background: none;
-        border: none;
-        transition: color 0.2s ease-in-out;
-
-        &::after {
-            display: none;
-        }
-
-        &:hover svg path {
-            stroke: var(--color-primary);
-        }
-
-        &.swiper-button-disabled {
-            // pointer-events: all;
-            opacity: 0.35;
-        }
-
-        svg {
-            width: var(--navigation-button-icon-size);
-            height: var(--navigation-button-icon-size);
-            fill: none;
-
-            path {
-                transition: all 0.3s;
-            }
-        }
     }
 }
 
@@ -283,26 +273,4 @@ h6 {
 .fancybox__backdrop {
     background: rgb(255 255 255 / 80%);
     backdrop-filter: blur(5px);
-}
-
-// --------------------------------------
-// -- Others
-// --------------------------------------
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 99;
-    visibility: hidden;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background: rgb(24 33 40 / 81%);
-    opacity: 0;
-
-    &.is-active {
-        visibility: visible;
-        opacity: 1;
-    }
 }

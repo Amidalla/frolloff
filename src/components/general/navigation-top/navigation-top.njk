@@ -1,3 +1,7 @@
+{#
+    Горизонтальное меню. В 1С-Битрикс — шаблон компонента bitrix:menu (ul > li > a).
+    items: [{ title, href, target, ariaCurrent, class }]
+#}
 {% macro render(
         items=[],
         class="",
@@ -11,8 +15,7 @@
     <nav class="{{ navClasses }}" aria-label="{{ ariaLabel }}">
         <ul>
             {% for item in items %}
-                {% set hasChildren = item.children and item.children | length > 0 %}
-                <li class="{{ 'has-children ' if hasChildren else '' }}{{ item.class if item.class else '' }}">
+                <li{% if item.class %} class="{{ item.class }}"{% endif %}>
                     <a
                         href="{{ item.href }}"
                         {% if item.target %}
@@ -24,22 +27,6 @@
                     >
                         {{ item.title }}
                     </a>
-                    {% if hasChildren %}
-                        <ul class="submenu">
-                            {% for child in item.children %}
-                                <li>
-                                    <a
-                                        href="{{ child.href }}"
-                                        {% if child.target %}
-                                            target="{{ child.target }}"
-                                        {% endif %}
-                                    >
-                                        {{ child.title }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
                 </li>
             {% endfor %}
         </ul>

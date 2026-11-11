@@ -7,7 +7,7 @@
     font-weight: 400;
     line-height: normal;
     color: var(--color-primary);
-    transition: color 0.3s;
+    transition: color var(--transition);
 
     @include bp.mq(laptop) {
         font-size: 15px;

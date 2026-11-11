@@ -1,3 +1,6 @@
+@use "sass:math";
+@use "core/breakpoints" as bp;
+
 @mixin reset-child-outer-margins {
     > *:first-child {
         margin-top: 0;
@@ -14,4 +17,153 @@
     text-overflow: ellipsis;
     -webkit-line-clamp: $lines;
     -webkit-box-orient: vertical;
+}
+
+// --------------------------------------
+// -- Fluid value
+// Плавно меняет значение между макетами 1440 и 1920:
+// font-size: mix.fluid(46px, 60px);
+// Результат округляется до целого пикселя — иначе элементы встают
+// на дробные координаты и тонкие линии размываются.
+// --------------------------------------
+
+@function fluid($min, $max, $min-vw: 1440px, $max-vw: 1920px) {
+    $slope: math.div($max - $min, $max-vw - $min-vw);
+    $intercept: $min - $slope * $min-vw;
+
+    // Значение может как расти, так и убывать (например, отступ 33 → 55):
+    // границы clamp() всегда идут от меньшей к большей
+    $lower: math.min($min, $max);
+    $upper: math.max($min, $max);
+
+    @return round(clamp(#{$lower}, #{$intercept} + #{$slope * 100}vw, #{$upper}), 1px);
+}
+
+// --------------------------------------
+// -- Gold gradient text (Secondary/linearGold)
+// --------------------------------------
+
+@mixin text-gold {
+    color: var(--color-gold);
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+// --------------------------------------
+// -- Typography
+// Значения: 1920 → 1440 (плавно) → 768 → 375
+// --------------------------------------
+
+// H1 — первый экран: 84/80 → 54/52 → 46/42 → 38/40
+@mixin h1 {
+    margin: 0;
+    font-family: var(--font-family-secondary);
+    font-size: fluid(54px, 84px);
+    font-weight: 600;
+    line-height: 0.96;
+
+    @include bp.mq(desktop-s) {
+        font-size: 54px;
+    }
+    @include bp.mq(tablet-l) {
+        font-size: 46px;
+        line-height: 0.92;
+    }
+    @include bp.mq(tablet) {
+        font-size: 38px;
+        line-height: 1.05;
+    }
+    @include bp.mq(mobile-s) {
+        font-size: 34px;
+    }
+}
+
+// H2 — заголовок секции: 60/65 → 46/46 → 31/32
+@mixin h2 {
+    margin: 0;
+    font-family: var(--font-family-secondary);
+    font-size: fluid(46px, 60px);
+    font-weight: 600;
+    line-height: 1.08;
+
+    @include bp.mq(desktop-s) {
+        font-size: 46px;
+        line-height: 1;
+    }
+    @include bp.mq(tablet-l) {
+        font-size: 31px;
+        line-height: 1.03;
+    }
+    @include bp.mq(mobile-s) {
+        font-size: 28px;
+    }
+}
+
+// H3 — заголовок карточки / шага: 22 → 18
+@mixin h3 {
+    margin: 0;
+    font-family: var(--font-family-primary);
+    font-size: fluid(18px, 22px);
+    font-weight: 500;
+    line-height: 1.25;
+
+    @include bp.mq(desktop-s) {
+        font-size: 18px;
+    }
+}
+
+// Метка над заголовком секции: 22 → 18 → 14
+@mixin label {
+    margin: 0;
+    font-family: var(--font-family-primary);
+    font-size: fluid(18px, 22px);
+    font-weight: 500;
+    line-height: 1.25;
+
+    @include bp.mq(desktop-s) {
+        font-size: 18px;
+    }
+    @include bp.mq(tablet-l) {
+        font-size: 14px;
+    }
+}
+
+// Золотой подзаголовок: 32 → 26 → 18
+@mixin subtitle {
+    margin: 0;
+    font-family: var(--font-family-primary);
+    font-size: fluid(26px, 32px);
+    font-weight: 500;
+    line-height: 1.22;
+
+    @include text-gold;
+
+    @include bp.mq(desktop-s) {
+        font-size: 26px;
+    }
+    @include bp.mq(tablet-l) {
+        font-size: 18px;
+    }
+}
+
+// Основной текст: 16 / 1.4
+@mixin text {
+    font-family: var(--font-family-primary);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+// Крупный текст: 20 → 16
+@mixin text-lg {
+    font-family: var(--font-family-primary);
+    font-size: fluid(16px, 20px);
+    font-weight: 400;
+    line-height: 1.3;
+
+    @include bp.mq(desktop-s) {
+        font-size: 16px;
+    }
 }

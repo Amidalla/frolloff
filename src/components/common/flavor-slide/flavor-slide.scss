@@ -1,0 +1,79 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Flavor slide — название вкуса, бейдж и фото (блок «Выбирайте настроение»)
+// Размеры задаются переменными в блоке .flavors
+// --------------------------------------
+
+.flavor-slide {
+    position: relative;
+    height: var(--flavor-slide-height, 664px);
+    overflow: hidden;
+
+    // Название слева, бейдж справа (на мобильном — друг под другом по центру)
+    .head {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+        width: var(--flavor-head-width, 850px);
+        max-width: 100%;
+        transform: translateX(-50%);
+
+        @include bp.mq(tablet) {
+            position: relative;
+            left: auto;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            transform: none;
+        }
+    }
+
+    .name,
+    .badge {
+        margin: 0;
+        font-family: var(--font-family-secondary);
+        font-size: mix.fluid(28px, 32px);
+        font-weight: 600;
+        line-height: 36px;
+        color: var(--color-gold);
+
+        @include bp.mq(desktop-s) {
+            font-size: 28px;
+        }
+
+        @include bp.mq(tablet-l) {
+            font-size: 24px;
+        }
+
+        @include bp.mq(tablet) {
+            font-size: 18px;
+            line-height: 22px;
+        }
+    }
+
+    // Фото шире слайда: фон фото совпадает с фоном секции, края обрезаются незаметно
+    .media {
+        position: absolute;
+        top: var(--flavor-image-top, -102px);
+        left: 50%;
+        width: var(--flavor-image-width, 1026px);
+        transform: translateX(-50%);
+
+        @include bp.mq(tablet) {
+            position: relative;
+            top: auto;
+            margin-top: var(--flavor-image-top);
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+}

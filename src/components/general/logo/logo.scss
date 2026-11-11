@@ -7,7 +7,7 @@
     align-items: center;
     width: fit-content;
     text-decoration: none;
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity var(--transition);
 
     &:hover {
         text-decoration: none;

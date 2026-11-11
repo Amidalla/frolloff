@@ -12,6 +12,49 @@
 
 Это генератор статических сайтов на основе Gulp, использующий шаблоны Nunjucks, SCSS и JavaScript, собранный с помощью esbuild. Проект использует компонентную архитектуру, где UI элементы организованы в переиспользуемые блоки и компоненты.
 
+## Дизайн-система Froloff
+
+Макеты: 1920 (основной), 1440, 768, 375. Вёрстка должна корректно выглядеть до 360px.
+
+**Брейкпоинты** (`src/scss/core/breakpoints.scss`, `bp.mq(...)` = max-width):
+- `desktop-s` (≤1440) — макет 1440; между 1440 и 1920 размеры меняются плавно через `mix.fluid(значение на 1440, значение на 1920)` (значение может и расти, и убывать; результат округляется до целого px)
+- `tablet-l` (≤1023.98) — макет 768 (заголовки секций по центру)
+- `tablet` (≤767.98) — макет 375
+- `mobile-s` (≤359.98) — подстраховка для узких экранов
+
+**Токены** (`variables.scss`): цвета `--color-gold`, `--color-navy`, `--color-ink`, `--color-milk`, `--color-cream`, `--color-bordo`, `--color-green`; градиенты `--gradient-gold`, `--gradient-navy`; `--container-padding` (72 → 36 → 12), `--section-padding` (80 → 60 → 48).
+
+**Типографика** (`mixins.scss` + классы в `typography.scss`): `mix.h1` / `.h1`, `mix.h2` / `.h2`, `mix.h3` / `.h3`, `mix.label` / `.overline`, `mix.subtitle` / `.subtitle-gold`, `mix.text`, `mix.text-lg` / `.text-lg`, `mix.text-gold` / `.text-gold`, список `.list-dots`.
+
+**Под 1С-Битрикс:** вёрстка переносится в шаблон сайта Битрикса. Повторяющиеся элементы (карточки и т.п.) — отдельные компоненты-макросы, блоки выводят их циклом по массиву данных (в Битриксе — цикл по `$arResult["ITEMS"]` в шаблоне `news.list`). Данные — в `src/data/*.njk`: общие (меню, контакты, CTA) в `site.njk` (`{% from "data/site.njk" import mainNav, contacts, cta %}`), контент главной — в `home.njk`. В Битриксе это инфоблоки и их свойства, меню — `bitrix:menu`, общие тексты и контакты — включаемые области (`bitrix:main.include`). Пути к ассетам относительные (`./assets/...` → `SITE_TEMPLATE_PATH`).
+
+**Шапка и меню:** `blocks/general/header` — фиксированная, прозрачная над первым экраном, после прокрутки фон тёмно-синий (`is-sticky`). С 1279px вместо меню бургер `menu-open`, меню `components/general/menu` (планшет — панель справа 416px, мобильный — сверху на всю ширину) + `.overlay`.
+
+**Подвал:** `blocks/general/footer` — данные из `site.njk` (`footerNav`, `contacts`, `company`), колонки ссылок — компонент `navigation-bottom` (заголовок + список).
+
+**Первый экран:** `blocks/common/hero` — слайдер Swiper (fade), слайд — макрос `hero-slide.njk`, данные `heroSlides` в `src/data/home.njk`. Фото продуктов — ленивый `img` с `data-srcset` (800/1200/2400), края обрезаются CSS-масками `hero-mask-fade.svg` + `hero-mask-shape.svg` из макета.
+
+**Преимущества:** `blocks/common/advantages` — карточка наезжает на первый экран (десктоп), пункт — компонент `components/common/advantage-item` (иконка + надпись на иконке + текст), данные `advantages` в `src/data/home.njk`.
+
+**Красота начинается изнутри:** `blocks/common/beauty` (якорь `#benefits`) — шапка секции + композиция со стиками (лист SVG + CSS-тени + PNG, позиции для каждого макета в `$visual-layouts`) + карточки — компонент `components/common/benefit-card` (круглое фото 300×300, заголовок, золотой lead + текст), данные `beauty` в `src/data/home.njk`.
+
+**Вкусы:** `blocks/common/flavors` (якорь `#flavors`) — шапка секции + табы по граммовке (`components/general/tabs`), в каждой вкладке слайдер Swiper; слайд — компонент `components/common/flavor-slide` (название, бейдж, фото), данные `flavors` в `src/data/home.njk`. Стрелки — `sliderArrow(variant="product")`: золотая = активная, светлая = неактивная (крайний слайд); на планшете/мобильном всегда светлые.
+
+**Картинки:** все изображения (и первый слайд херо) — с ленивой загрузкой через компонент `components/general/image` (lozad: `.lazy` + `data-src`/`data-srcset`, `width`/`height` обязательны для фото). Без `fetchpriority`/`loading="eager"`. Исключение — логотипы в шапке и подвале. Прелоадер сайта делается после завершения вёрстки.
+
+**Ховеры:** все переходы на ховере — только `transition: <свойство> var(--transition)` (0.3s ease, задаётся в `variables.scss`), без своих длительностей. Градиенты и `url()`-обводки не анимируются — для плавного ховера их кладём отдельным слоем (`::before`/`::after`, вторая SVG-линия) и меняем `opacity`.
+
+**Чёткость (пиксельная сетка):** контейнер округляет отступ до целого пикселя (`round()` в `.container`), `mix.fluid()` всегда отдаёт целые px. Круги и рамки иконок — CSS-рамкой (border), тонкие линии внутри — встроенным SVG (не CSS-масками), размеры только целые. Общие градиенты для SVG — `components/general/svg-defs` (`url(#gradient-gold)`).
+
+**Общие элементы:**
+- Секция: `<section class="section cream|milk|dark bordered">` + `.container`
+- Шапка секции: макрос `blocks/general/section/section-header.njk` (label, title, subtitle, text, align)
+- Кнопка: `button(text, variant="gold|blue|border", size="l|m|s")`
+- Стрелка слайдера: `components/general/slider-arrow` — `sliderArrow(direction="prev|next", variant="light|gold|banner", size="l|m|s")`
+- Пагинация Swiper: `.swiper-pagination` (на светлом фоне + класс `on-light`, вне слайдера — `static`)
+- Табы: `components/general/tabs`; карточка: `.card` (+ `milk`, `shadow`)
+- Демо всех элементов: `src/pages/ui-kit.njk` → `ui-kit.html`
+
 ## Команды разработки
 
 ### Запуск сервера разработки

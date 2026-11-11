@@ -1,0 +1,39 @@
+{% from "data/home.njk" import flavors %}
+{% from "blocks/general/section/section-header.njk" import render as sectionHeader %}
+{% from "components/general/tabs/tabs.njk" import render as tabs %}
+{% from "components/general/button/button.njk" import render as button %}
+{% from "components/general/slider-arrow/slider-arrow.njk" import render as sliderArrow %}
+{% from "components/common/flavor-slide/flavor-slide.njk" import render as flavorSlide %}
+
+{# Вкладки: в каждой — свой слайдер вкусов #}
+{% set tabItems = [] %}
+{% for tab in flavors.tabs %}
+    {% set panel %}
+        <div class="flavors-slider" data-flavors-slider>
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    {% for slide in tab.slides %}
+                        {{ flavorSlide(slide) }}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="flavors-arrows">
+                {{ sliderArrow(direction="prev", variant="product", size="l", class="flavors-prev") }}
+                {{ sliderArrow(direction="next", variant="product", size="l", class="flavors-next") }}
+            </div>
+        </div>
+    {% endset %}
+    {% set _ = tabItems.push({ title: tab.title, content: panel }) %}
+{% endfor %}
+
+<section class="flavors" id="flavors">
+    <div class="container">
+        {{ sectionHeader(label=flavors.label, title=flavors.title, text=flavors.text, align="center", class="flavors-header") }}
+
+        {{ tabs(items=tabItems, class="flavors-tabs") }}
+
+        <div class="flavors-action">
+            {{ button(text=flavors.button.text, href=flavors.button.href, type="link", variant="blue", size="s", class="flavors-button") }}
+        </div>
+    </div>
+</section>

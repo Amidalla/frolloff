@@ -1,4 +1,4 @@
-{% macro render(href = "./home.html", image = "./assets/images/system/logo.svg", imageMobile = "", alt = "", class = "", text = "") %}
+{% macro render(href = "./home.html", image = "./assets/images/system/logo.svg", imageMobile = "", alt = "", class = "", text = "", width = "", height = "") %}
     {% set logoClasses = "logo" %}
     {% if class %}
         {% set logoClasses = logoClasses + " " + class %}
@@ -9,7 +9,7 @@
             {% if imageMobile %}
                 <source media="(max-width: 767px)" srcset="{{ imageMobile }}" />
             {% endif %}
-            <img src="{{ image }}" alt="{{ alt }}" />
+            <img src="{{ image }}" alt="{{ alt }}"{% if width %} width="{{ width }}"{% endif %}{% if height %} height="{{ height }}"{% endif %} />
         </picture>
         {% if text %}
             <span class="text">{{ text }}</span>

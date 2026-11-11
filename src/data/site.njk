@@ -1,0 +1,60 @@
+{#
+    Общие данные сайта. В 1С-Битрикс:
+    - mainNav → меню типа «top» (bitrix:menu, файл .top.menu.php)
+    - contacts, cta → включаемые области (bitrix:main.include) / настройки сайта
+    Подключение: {% from "data/site.njk" import mainNav, contacts, cta, footerNav, company %}
+#}
+
+{% set mainNav = [
+    { title: "Польза", href: "#benefits" },
+    { title: "Коллаген", href: "#collagen" },
+    { title: "Витамины", href: "#vitamins" },
+    { title: "О создателе", href: "#about" },
+    { title: "Как принимать", href: "#how-to" },
+    { title: "Отзывы", href: "#reviews" },
+    { title: "FAQ", href: "#faq" }
+] %}
+
+{% set cta = {
+    text: "Выберите свой вкус",
+    href: "#flavors"
+} %}
+
+{% set contacts = [
+    { title: "info@froloff.ru", href: "mailto:info@froloff.ru" },
+    { title: "Max", href: "#", target: "_blank" },
+    { title: "8 900 000-00-00", href: "tel:89000000000" },
+    { title: "WhatsApp", href: "#", target: "_blank" }
+] %}
+
+{# Подвал: колонки ссылок (в Битриксе — меню bitrix:menu типов «bottom_product» / «bottom_info») #}
+{% set footerNav = [
+    {
+        title: "Продукт",
+        items: [
+            { title: "Коллаген", href: "#collagen" },
+            { title: "Витамины", href: "#vitamins" },
+            { title: "Польза", href: "#benefits" },
+            { title: "Как принимать", href: "#how-to" },
+            { title: "Заказать", href: "#order" }
+        ]
+    },
+    {
+        title: "Информация",
+        items: [
+            { title: "Вопросы", href: "#faq" },
+            { title: "О создателе", href: "#about" },
+            { title: "Политика конфиденциальности", href: "#" },
+            { title: "Публичная оферта", href: "#" }
+        ]
+    }
+] %}
+
+{# Реквизиты и юридические тексты (в Битриксе — включаемые области / настройки сайта) #}
+{% set company = {
+    tagline: "Ваше здоровье. Наша репутация",
+    product: "Морской коллаген в желе-стиках",
+    disclaimer: "БАД. Не является лекарственным средством. Не рекомендуется при индивидуальной непереносимости компонентов. Перед применением проконсультируйтесь со специалистом.",
+    copyright: "© 2026 FROLOFF. Все права защищены.",
+    requisites: "ИНН 0000000000 · ОГРН 0000000000000"
+} %}

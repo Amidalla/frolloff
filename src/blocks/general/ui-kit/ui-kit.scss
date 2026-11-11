@@ -1,0 +1,47 @@
+@use "core/breakpoints" as bp;
+
+// Стили только для демо-страницы ui-kit.html (можно удалить перед сдачей)
+
+.ui-kit {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.ui-kit-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+}
+
+.ui-kit-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ui-kit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    @include bp.mq(tablet) {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+.ui-kit-caption {
+    margin: 48px 0 16px;
+}
+
+.ui-kit-card {
+    padding: 30px;
+}

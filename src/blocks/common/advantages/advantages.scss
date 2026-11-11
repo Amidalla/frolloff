@@ -1,0 +1,112 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Advantages — «Преимущества» (Figma: 1920 / 1440 / 768 / 375)
+// Десктоп: карточка наезжает на первый экран, 4 пункта в ряд.
+// Планшет: блок на всю ширину, 4 в ряд. Мобильный: сетка 2×2.
+// --------------------------------------
+
+.advantages {
+    position: relative;
+    z-index: 2;
+    margin-top: calc(#{mix.fluid(100px, 110px)} * -1);
+
+    @include bp.mq(desktop-s) {
+        margin-top: -100px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-top: 0;
+
+        // Блок на всю ширину экрана
+        > .container {
+            padding-inline: 0;
+        }
+    }
+}
+
+.advantages-card {
+    // 1920: во всю ширину контейнера (1674), 1440: 1163 по центру
+    max-width: mix.fluid(1163px, 1674px);
+    padding: 24px mix.fluid(80px, 150px) mix.fluid(24px, 42px);
+    margin: 0 auto;
+    background: var(--color-milk);
+    border-radius: mix.fluid(15px, 30px);
+    box-shadow: 0 4px 20px 0 rgb(0 0 0 / 15%);
+
+    @include bp.mq(desktop-s) {
+        max-width: 1163px;
+        padding: 24px 80px;
+        border-radius: 15px;
+    }
+
+    @include bp.mq(tablet-l) {
+        max-width: none;
+        padding: 25px 36px 24px;
+        border-radius: 0;
+    }
+
+    @include bp.mq(tablet) {
+        padding: 28px 12px;
+    }
+}
+
+.advantages-title {
+    margin: 0 0 mix.fluid(24px, 34px);
+    font-family: var(--font-family-secondary);
+    font-size: mix.fluid(34px, 44px);
+    font-weight: 600;
+    line-height: 1.21;
+    color: var(--color-ink);
+    text-align: center;
+
+    @include bp.mq(desktop-s) {
+        margin-bottom: 24px;
+        font-size: 34px;
+    }
+
+    @include bp.mq(tablet-l) {
+        font-size: 31px;
+        line-height: 32px;
+    }
+
+    @include bp.mq(tablet) {
+        margin-bottom: 30px;
+    }
+}
+
+.advantages-list {
+    display: flex;
+    gap: mix.fluid(90px, 196px);
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    @include bp.mq(desktop-s) {
+        gap: 0;
+        justify-content: space-between;
+
+        > li {
+            width: 183px;
+        }
+    }
+
+    @include bp.mq(tablet-l) {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 164px));
+        gap: 8px;
+        justify-content: center;
+
+        > li {
+            width: auto;
+        }
+    }
+
+    @include bp.mq(tablet) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 23px 24px;
+    }
+}

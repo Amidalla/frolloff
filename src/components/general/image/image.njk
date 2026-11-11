@@ -1,0 +1,30 @@
+{#
+    Картинка с ленивой загрузкой (lozad: класс .lazy, data-src / data-srcset).
+    В src — прозрачный плейсхолдер, реальный файл подставляет lozad при приближении к экрану.
+    width/height обязательны для фото — по ним задаётся aspect-ratio, чтобы до загрузки
+    (пока в src плейсхолдер 1×1) у картинки была правильная высота и вёрстка не прыгала.
+    В 1С-Битрикс — так же: путь из CFile::GetPath() / CFile::ResizeImageGet() в data-src.
+#}
+{% macro render(
+        src="",
+        srcset="",
+        sizes="",
+        width="",
+        height="",
+        alt="",
+        class="",
+        decorative=false
+    ) %}
+    <img
+        class="lazy{% if class %} {{ class }}{% endif %}"
+        src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1'%20height='1'/%3E"
+        data-src="{{ src }}"
+        {% if srcset %}data-srcset="{{ srcset }}"{% endif %}
+        {% if sizes %}sizes="{{ sizes }}"{% endif %}
+        {% if width %}width="{{ width }}"{% endif %}
+        {% if height %}height="{{ height }}"{% endif %}
+        {% if width and height %}style="aspect-ratio: {{ width }} / {{ height }}"{% endif %}
+        alt="{{ alt }}"
+        {% if decorative %}aria-hidden="true"{% endif %}
+    />
+{% endmacro %}

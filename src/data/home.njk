@@ -1,0 +1,141 @@
+{#
+    Контент главной страницы. В 1С-Битрикс — инфоблоки (элементы + свойства), вывод через bitrix:news.list.
+    Подключение: {% from "data/home.njk" import heroSlides, advantages, beauty, flavors %}
+#}
+
+{# Первый экран: слайды (инфоблок «Слайдер»: элемент = слайд) #}
+{% set heroSlides = [
+    {
+        title: "Морской коллаген в желе-стиках",
+        subtitle: "Молодость красота и энергия из глубины океана",
+        list: [
+            "3 500 мг и 5 000 мг пептидов",
+            "Готов к употреблению",
+            "Быстрая усвояемость",
+            "Сбалансированный состав",
+            "Приятный вкус и текстура",
+            "Удобно брать с собой"
+        ],
+        button: { text: "Все вкусы", href: "#flavors" },
+        image: {
+            src: "./assets/images/content/hero/hero-products-2400.jpg",
+            srcset: "./assets/images/content/hero/hero-products-800.jpg 800w, ./assets/images/content/hero/hero-products-1200.jpg 1200w, ./assets/images/content/hero/hero-products-2400.jpg 2400w",
+            width: 2400,
+            height: 1792,
+            alt: "Морской коллаген FROLOFF: желе-стики со вкусами граната, манго и ягод"
+        }
+    },
+    {
+        title: "Морской коллаген в желе-стиках",
+        subtitle: "Молодость красота и энергия из глубины океана",
+        list: [
+            "3 500 мг и 5 000 мг пептидов",
+            "Готов к употреблению",
+            "Быстрая усвояемость",
+            "Сбалансированный состав",
+            "Приятный вкус и текстура",
+            "Удобно брать с собой"
+        ],
+        button: { text: "Все вкусы", href: "#flavors" },
+        image: {
+            src: "./assets/images/content/hero/hero-products-2400.jpg",
+            srcset: "./assets/images/content/hero/hero-products-800.jpg 800w, ./assets/images/content/hero/hero-products-1200.jpg 1200w, ./assets/images/content/hero/hero-products-2400.jpg 2400w",
+            width: 2400,
+            height: 1792,
+            alt: "Морской коллаген FROLOFF: желе-стики со вкусами граната, манго и ягод"
+        }
+    }
+] %}
+
+{# Преимущества (инфоблок: элемент = пункт; свойства: иконка, текст на иконке, текст) #}
+{% set advantages = {
+    title: "Преимущества",
+    items: [
+        {
+            icon: "./assets/images/content/advantages/ring-98.svg",
+            iconText: "98%",
+            text: "Усвоение до 98%<br />(Пептидная форма)"
+        },
+        {
+            icon: "./assets/images/content/advantages/sticks.svg",
+            text: "Удобно брать с&nbsp;собой<br />(Желе в стиках)"
+        },
+        {
+            icon: "./assets/images/content/advantages/no-sugar.svg",
+            text: "Без сахара<br />и химии"
+        },
+        {
+            icon: "./assets/images/content/advantages/natural.svg",
+            text: "Природный<br />вкус"
+        }
+    ]
+} %}
+
+{# Красота начинается изнутри (заголовок/текст/картинка — включаемая область; карточки — инфоблок: фото, заголовок, lead, текст) #}
+{% set beauty = {
+    label: "Зачем это нужно",
+    title: "Красота начинается изнутри",
+    text: "Коллаген — основной «строительный» белок кожи, волос и&nbsp;ногтей. После 25 лет его синтез снижается на 1–2% в&nbsp;год.<br />Стики <b>FROLOFF</b> восполняют дефицит вкусно и&nbsp;удобно.",
+    image: {
+        src: "./assets/images/content/beauty/sticks.png",
+        width: 618,
+        height: 916,
+        alt: "Желе-стики FROLOFF Collagen Peptides"
+    },
+    cards: [
+        {
+            image: "./assets/images/content/beauty/hair-nails.jpg",
+            title: "Крепкие ногти и волосы",
+            lead: "Биотин и цинк",
+            text: "уменьшают ломкость, стимулируют рост и плотность."
+        },
+        {
+            image: "./assets/images/content/beauty/elasticity.jpg",
+            title: "Упругость и тонус",
+            lead: "Морской коллаген",
+            text: "укрепляет соединительную ткань, делает овал лица более чётким."
+        },
+        {
+            image: "./assets/images/content/beauty/hydration.jpg",
+            title: "Увлажнение кожи",
+            lead: "Гиалуроновая кислота",
+            text: "удерживает влагу, разглаживает мелкие морщины и&nbsp;возвращает сияние."
+        },
+        {
+            image: "./assets/images/content/beauty/recovery.jpg",
+            title: "Восстановление и укрепление",
+            lead: "Витамины",
+            text: "укрепляют иммунитет, стенки сосудов. Повышение подвижности суставов и&nbsp;связок. Замедляет процесс старения."
+        }
+    ]
+} %}
+
+
+{# Вкусы (инфоблок «Вкусы»: разделы = вкладки по граммовке, элементы = вкусы; свойства: бейдж, фото)
+   Фото пока одно (ежевика) для всех вкусов — заменить, когда будут фото остальных вкусов. #}
+{% set flavors = {
+    label: "4 вкуса в каждой граммовке",
+    title: "Выбирайте настроение каждый день",
+    text: "Каждый стик — натуральный вкус и аромат без сахара. Идеально для тех, кто не любит «таблеточный» приём добавок",
+    button: { text: "Где купить", href: "#order" },
+    tabs: [
+        {
+            title: "Морской коллаген 3 500 мг",
+            slides: [
+                { name: "Ежевика", badge: "Топ-1", image: "./assets/images/content/flavors/blackberry-3500.jpg", alt: "FROLOFF Ежевика" },
+                { name: "Гранат", image: "./assets/images/content/flavors/blackberry-3500.jpg", alt: "FROLOFF Гранат" },
+                { name: "Манго", image: "./assets/images/content/flavors/blackberry-3500.jpg", alt: "FROLOFF Манго" },
+                { name: "Грейпфрут", image: "./assets/images/content/flavors/blackberry-3500.jpg", alt: "FROLOFF Грейпфрут" }
+            ]
+        },
+        {
+            title: "Морской коллаген 5 000 мг",
+            slides: [
+                { name: "Чёрная смородина", badge: "Топ-1", image: "./assets/images/content/flavors/blackberry-3500.jpg", alt: "FROLOFF Чёрная смородина" },
+                { name: "Лайм-лемон", image: "./assets/images/content/flavors/blackberry-3500.jpg", alt: "FROLOFF Лайм-лемон" },
+                { name: "Сибирские ягоды", image: "./assets/images/content/flavors/blackberry-3500.jpg", alt: "FROLOFF Сибирские ягоды" },
+                { name: "Мандарин", image: "./assets/images/content/flavors/blackberry-3500.jpg", alt: "FROLOFF Мандарин" }
+            ]
+        }
+    ]
+} %}

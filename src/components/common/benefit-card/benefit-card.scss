@@ -1,0 +1,88 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Benefit card — карточка пользы (блок «Красота начинается изнутри»)
+// 1920 → 1440 → 768/375
+// фото 133 → 100 → 80, заголовок 30 → 24 → 20, текст 20 → 16
+// --------------------------------------
+
+.benefit-card {
+    --benefit-photo-size: #{mix.fluid(100px, 133px)};
+
+    display: flex;
+    flex-direction: column;
+    gap: mix.fluid(8px, 16px);
+    align-items: flex-start;
+    min-width: 0;
+    padding: mix.fluid(15px, 20px) mix.fluid(15px, 21px);
+    background: var(--color-milk);
+    border-radius: mix.fluid(15px, 30px);
+
+    @include bp.mq(desktop-s) {
+        --benefit-photo-size: 100px;
+
+        gap: 8px;
+        padding: 15px;
+        border-radius: 15px;
+    }
+
+    @include bp.mq(tablet-l) {
+        --benefit-photo-size: 80px;
+
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .photo {
+        flex: 0 0 auto;
+        width: var(--benefit-photo-size);
+        height: var(--benefit-photo-size);
+        overflow: hidden;
+        background: #f1f0de;
+        border: 1px solid var(--color-gold-dark);
+        border-radius: 50%;
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .title {
+        margin: 0;
+        font-family: var(--font-family-secondary);
+        font-size: mix.fluid(24px, 30px);
+        font-weight: 600;
+        line-height: 1;
+        color: var(--color-ink);
+
+        @include bp.mq(desktop-s) {
+            font-size: 24px;
+            line-height: 26px;
+        }
+
+        @include bp.mq(tablet-l) {
+            font-size: 20px;
+            line-height: 20px;
+        }
+    }
+
+    .text {
+        margin: 0;
+        font-size: mix.fluid(16px, 20px);
+        line-height: 1.4;
+        color: var(--color-ink);
+
+        @include bp.mq(desktop-s) {
+            font-size: 16px;
+        }
+    }
+
+    .lead {
+        font-weight: 500;
+        color: var(--color-gold);
+    }
+}
