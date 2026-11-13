@@ -1,9 +1,0 @@
-@use "core/popup" as *;
-
-.popup-feedback-success {
-    @include popup;
-
-    .image {
-        display: flex;
-    }
-}

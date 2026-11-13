@@ -1,0 +1,100 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Composition item — пункт состава (блок «Что внутри»)
+// Круг — CSS (фон), галочка — встроенный SVG.
+// Название 34 → 28 → 23 (Cormorant SC), дозировка 20 → 16
+// --------------------------------------
+
+.composition-item {
+    --composition-check-size: 31px;
+    --composition-check-bg: var(--gradient-gold);
+    --composition-check-stroke: var(--color-milk);
+
+    display: flex;
+    gap: 19px;
+    align-items: center;
+    min-width: 0;
+    color: var(--color-ink);
+
+    @include bp.mq(tablet-l) {
+        --composition-check-size: 24px;
+
+        gap: 8px;
+    }
+
+    &.navy {
+        --composition-check-bg: var(--color-navy);
+        --composition-check-stroke: var(--color-gold);
+    }
+
+    .check {
+        display: block;
+        flex: 0 0 auto;
+        width: var(--composition-check-size);
+        height: var(--composition-check-size);
+        background: var(--composition-check-bg);
+        border-radius: 50%;
+
+        svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: var(--composition-check-stroke);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+    }
+
+    // Высоту строки задаёт только название: у обёртки нет своей «строки»,
+    // иначе разные шрифты на одной базовой линии раздувают высоту пункта
+    .body {
+        min-width: 0;
+        font-size: 0;
+        line-height: 0;
+    }
+
+    .name {
+        font-family: var(--font-family-secondary);
+        font-size: mix.fluid(28px, 34px);
+        font-weight: 600;
+        line-height: 30px;
+
+        @include bp.mq(desktop-s) {
+            font-size: 28px;
+        }
+
+        @include bp.mq(tablet-l) {
+            font-size: 23px;
+            line-height: 28px;
+        }
+    }
+
+    // Пробел между названием и дозировкой (у обёртки font-size: 0) —
+    // при переносе он исчезает, и дозировка начинается без отступа
+    .name::after {
+        content: " ";
+    }
+
+    .value {
+        font-size: mix.fluid(16px, 20px);
+        font-weight: 500;
+        line-height: 1;
+
+        @include bp.mq(desktop-s) {
+            font-size: 16px;
+        }
+
+        // Планшет/мобильный: дозировка может перенестись на свою строку — даём ей
+        // полную высоту строки, но прижимаем к верху, чтобы не раздувать строку с названием
+        @include bp.mq(tablet-l) {
+            position: relative;
+            top: 2px;
+            line-height: 28px;
+            vertical-align: top;
+        }
+    }
+}

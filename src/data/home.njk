@@ -1,12 +1,12 @@
 {#
     Контент главной страницы. В 1С-Битрикс — инфоблоки (элементы + свойства), вывод через bitrix:news.list.
-    Подключение: {% from "data/home.njk" import heroSlides, advantages, beauty, flavors %}
+    Подключение: {% from "data/home.njk" import heroSlides, advantages, beauty, flavors, howTo, formula, composition, vitamins, about, catalog, reviews, faq, certificates, order %}
 #}
 
 {# Первый экран: слайды (инфоблок «Слайдер»: элемент = слайд) #}
 {% set heroSlides = [
     {
-        title: "Морской коллаген в желе-стиках",
+        title: "Морской коллаген в желе-стиках 1",
         subtitle: "Молодость красота и энергия из глубины океана",
         list: [
             "3 500 мг и 5 000 мг пептидов",
@@ -16,7 +16,7 @@
             "Приятный вкус и текстура",
             "Удобно брать с собой"
         ],
-        button: { text: "Все вкусы", href: "#flavors" },
+        button: { text: "Все вкусы", href: "#catalog" },
         image: {
             src: "./assets/images/content/hero/hero-products-2400.jpg",
             srcset: "./assets/images/content/hero/hero-products-800.jpg 800w, ./assets/images/content/hero/hero-products-1200.jpg 1200w, ./assets/images/content/hero/hero-products-2400.jpg 2400w",
@@ -26,7 +26,7 @@
         }
     },
     {
-        title: "Морской коллаген в желе-стиках",
+        title: "Морской коллаген в желе-стиках 2",
         subtitle: "Молодость красота и энергия из глубины океана",
         list: [
             "3 500 мг и 5 000 мг пептидов",
@@ -36,7 +36,7 @@
             "Приятный вкус и текстура",
             "Удобно брать с собой"
         ],
-        button: { text: "Все вкусы", href: "#flavors" },
+        button: { text: "Все вкусы", href: "#catalog" },
         image: {
             src: "./assets/images/content/hero/hero-products-2400.jpg",
             srcset: "./assets/images/content/hero/hero-products-800.jpg 800w, ./assets/images/content/hero/hero-products-1200.jpg 1200w, ./assets/images/content/hero/hero-products-2400.jpg 2400w",
@@ -117,7 +117,7 @@
     label: "4 вкуса в каждой граммовке",
     title: "Выбирайте настроение каждый день",
     text: "Каждый стик — натуральный вкус и аромат без сахара. Идеально для тех, кто не любит «таблеточный» приём добавок",
-    button: { text: "Где купить", href: "#order" },
+    button: { text: "Где купить" },
     tabs: [
         {
             title: "Морской коллаген 3 500 мг",
@@ -138,4 +138,284 @@
             ]
         }
     ]
+} %}
+
+{# Как принимать (заголовок/текст — включаемая область; шаги — инфоблок: цифра-картинка, заголовок, текст) #}
+{% set howTo = {
+    label: "Как принимать",
+    title: "Просто — 1 стик в день",
+    text: "Никаких капсул и порошков. Стик всегда с собой: в сумке, офисе, поездке. Не нужна вода, не нужен холодильник.",
+    steps: [
+        {
+            number: { src: "./assets/images/content/how-to/step-01.svg", width: 246, height: 150, alt: "01" },
+            title: "Откройте стик",
+            text: "Надрывайте по линии — содержимое аккуратно выдавливается в рот."
+        },
+        {
+            number: { src: "./assets/images/content/how-to/step-02.svg", width: 279, height: 153, alt: "02" },
+            title: "Как принимать",
+            text: "Принимайте, когда вам удобно, за 30 минут до еды."
+        },
+        {
+            number: { src: "./assets/images/content/how-to/step-03.svg", width: 271, height: 196, alt: "03" },
+            title: "Наблюдайте эффект",
+            text: "Первые изменения кожи — к 2–3 неделе, стойкий результат — к концу курса."
+        }
+    ]
+} %}
+
+{# Умная формула для суставов (тексты — включаемая область; карточки — инфоблок: иконка, срок, текст) #}
+{% set formula = {
+    title: "Не просто коллаген —<br> умная формула для суставов!",
+    text: "Витамин С усиливает действие коллагена, а гиалуроновая кислота обеспечивают комплексную поддержку хрящевой ткани.",
+    subtitle: "Рекомендация по приему",
+    note: "1 саше в день | за 30 минут до еды",
+    cards: [
+        {
+            icon: { src: "./assets/images/content/formula/skin.svg", width: 321, height: 160 },
+            term: "4-8 недель",
+            text: "Повышение эластичности кожи"
+        },
+        {
+            icon: { src: "./assets/images/content/formula/joints.svg", width: 320, height: 160 },
+            term: "8-12 недель",
+            text: "Уменьшение скованности суставов"
+        },
+        {
+            icon: { src: "./assets/images/content/formula/ligaments.svg", width: 320, height: 160 },
+            term: "12-16 недель",
+            text: "Укрепление связок"
+        },
+        {
+            icon: { src: "./assets/images/content/formula/bones.svg", width: 320, height: 160 },
+            term: "16-24 недель",
+            text: "Поддержка плотности костной ткани"
+        }
+    ]
+} %}
+
+{# Что внутри (группы — разделы инфоблока «Состав», пункты — элементы: название + дозировка) #}
+{% set composition = {
+    title: "Что внутри",
+    groups: [
+        {
+            title: "Нутрицевтики",
+            variant: "gold",
+            items: [
+                { name: "Коллаген гидролизованный", value: "3 500 мг" },
+                { name: "Гиалуроновая кислота", value: "5 мг" },
+                { name: "Витамин А", value: "0,25 мг" },
+                { name: "Витамин D3", value: "100 мг" },
+                { name: "Витамин E", value: "1.3 мг" },
+                { name: "Витамин C", value: "90 мг" },
+                { name: "Витамин B1", value: "Тиамин 0.3 мг" },
+                { name: "Витамин B2", value: "Рибофлавин 0.3 мг" },
+                { name: "Витамин B3", value: "Ниацин 3.3 мг" },
+                { name: "Витамин B5", value: "Пантотеновая кислота 1.3 мл" },
+                { name: "Витамин B6", value: "Пиридоксин 0.3 мг" },
+                { name: "Витамин B7", value: "Биотин 0.04 мкг" },
+                { name: "Витамин B9", value: "Фолиевая кислота 100 мкг" },
+                { name: "Витамин B12", value: "Цианокобаламин 0.6 мкг" }
+            ]
+        },
+        {
+            title: "Аминокислоты",
+            variant: "navy",
+            items: [
+                { name: "Аланин", value: "316 мг" },
+                { name: "Аргинин", value: "282 мг" },
+                { name: "Аспарагиновая кислота", value: "205 мг" },
+                { name: "Метионин + цистин", value: "29 мг + 4 мг" },
+                { name: "Глутаминовая кислота", value: "350 мг" },
+                { name: "Глицин", value: "800 мг" },
+                { name: "Гистидин", value: "412 мг" },
+                { name: "Гидроксипролин", value: "19 мг" },
+                { name: "Изолейцин", value: "50 мг" },
+                { name: "Лейцин", value: "102 мг" },
+                { name: "Лизин", value: "472 мг" },
+                { name: "Фенилаланин + тирозин", value: "120 мг" },
+                { name: "Пролин", value: "64 мг" },
+                { name: "Серин", value: "1 мг" },
+                { name: "Треонин", value: "81 мг" },
+                { name: "Орнитин", value: "800 мг" },
+                { name: "Валин", value: "800 мг" }
+            ]
+        }
+    ]
+} %}
+
+{# Витамины (шапка — включаемая область; слайды — инфоблок «Витамины»: фото товара PNG без фона) #}
+{% set vitamins = {
+    label: "Подбирайте комплекс под потребности",
+    title: "Витамины <span class=\"nowrap\">в ежедневном рационе</span>",
+    text: "Оптимально для тех, кто предпочитает натуральные формы нутриентов вместо стандартных таблетированных препаратов.",
+    button: { text: "Где купить" },
+    slides: [
+        {
+            image: "./assets/images/content/vitamins/inositol-1200.png",
+            srcset: "./assets/images/content/vitamins/inositol-600.png 600w, ./assets/images/content/vitamins/inositol-1200.png 1200w",
+            alt: "Инозитол 1000 мг FROLOFF, 60 капсул"
+        },
+        {
+            image: "./assets/images/content/vitamins/inositol-1200.png",
+            srcset: "./assets/images/content/vitamins/inositol-600.png 600w, ./assets/images/content/vitamins/inositol-1200.png 1200w",
+            alt: "Инозитол 1000 мг FROLOFF, 60 капсул"
+        },
+        {
+            image: "./assets/images/content/vitamins/inositol-1200.png",
+            srcset: "./assets/images/content/vitamins/inositol-600.png 600w, ./assets/images/content/vitamins/inositol-1200.png 1200w",
+            alt: "Инозитол 1000 мг FROLOFF, 60 капсул"
+        }
+    ]
+} %}
+
+{# О создателе (включаемая область: заголовок, абзацы, фото — своё под каждый макет: xl 1920, l 1440, m 768, s 375). Под «Читать всё» скрыты абзацы после 4-го (на планшете/мобильном — после 3-го) #}
+{% set about = {
+    label: "Создаём формулы с научным подходом",
+    title: "О создателе",
+    paragraphs: [
+        "<strong>Юрий Фролов:</strong> человек, который двадцать восемь лет стоял за чужими брендами Юрий Фролов пришёл в пищевую промышленность в 1998 году — в непростое для страны время, когда рынок только учился жить по новым правилам, а полки магазинов стремительно заполнялись продуктами с незнакомыми названиями.",
+        "Тогда ему было двадцать с небольшим лет, и он не думал, что расстанется с этой отраслью. Но так вышло: одна технологическая лаборатория, другой завод, третье предприятие — и вот уже <strong>28 лет он изучает составы продуктов питания</strong>, изнутри зная, как рождается то, что мы ежедневно кладём в свою корзину.",
+        "В <strong>2010 году</strong> случилась <strong>точка перелома</strong>. Юрий впервые столкнулся с понятием «нутрициология» — и понял, что всё, чем он занимался годами, имеет не просто прикладное, а глубокое научное измерение. Вопрос «из чего состоит продукт» перестал быть вопросом технолога. Он превратился в вопрос: «Как то, что мы едим, меняет нашу жизнь?»",
+        "С этого момента Фролов начал целенаправленно изучать влияние характера питания на здоровье — читал профессиональную литературу, разбирал исследования, консультировался с врачами и биохимиками, сопоставляя теорию с тем, что видел своими глазами на производстве.",
+        "Годы в промышленности дали ему то, чего не вычитать ни в одном учебнике: понимание реальных рецептур, сырьевых цепочек, компромиссов, на которые идёт производитель ради себестоимости и срока хранения. И Юрий стал тем человеком, к которому коллеги приходили за помощью. Большую часть своей карьеры он помогал другим компаниям разрабатывать рецептуры БАДов — подбирал дозировки, выверял сочетания компонентов, отговаривал от «маркетинговых» формул, где эффект подменяется красивой упаковкой. Его знали как эксперта в области правильного питания и здорового образа жизни, но сам он долгое время оставался «за кадром»: его имя не стояло на продуктах, которые он создавал.",
+        "Сам Фролов давно жил так, как говорил. ЗОЖ для него не был пиар-стратегией — это был образ жизни: продуманный рацион, режим, спорт, привычка внимательно читать состав всего, что попадает на стол. Разрыв между тем, что можно сделать качественно, и тем, что часто выходит на массовый рынок, всё сильнее его беспокоил. И в какой-то момент — по его словам, «когда стало ясно, что помогать всем сразу из-за кулисы больше невозможно» — Юрий решился на шаг, который откладывал годами. Он создал собственную торговую марку. Не ради бизнеса ради бизнеса, а чтобы наконец внести свой вклад в массы: сделать продукты и добавки, в которых он был бы уверен на сто процентов — потому что каждая рецептура прошла через его собственные руки, его знания и его личную ответственность. Так человек, который 28 лет стоял за чужими брендами, встал за своим собственным — со всей накопленной экспертизой, опытом и одним простым принципом: не выпускать на рынок ничего, что не готов давать собственной семье. Мы используем передовые технологии бережной подготовки сырья, которые сохраняют максимум активных веществ."
+    ],
+    more: { open: "Читать всё", close: "Свернуть" },
+    imageAlt: "Юрий Фролов, создатель FROLOFF",
+    images: [
+        { size: "xl", src: "./assets/images/content/about/yuri-frolov-1920.png", width: 494, height: 673 },
+        { size: "l", src: "./assets/images/content/about/yuri-frolov-1440.png", width: 377, height: 456 },
+        { size: "m", src: "./assets/images/content/about/yuri-frolov-768.png", width: 315, height: 370 },
+        { size: "s", src: "./assets/images/content/about/yuri-frolov-375.png", width: 271, height: 314 }
+    ]
+} %}
+
+{#
+    Каталог «Выбирайте то, что ближе». Группа — раздел инфоблока (theme — цвет карточки при наведении:
+    bordo | navy | gold; больше 4 товаров — группа листается слайдером), товар — элемент:
+    название, граммовка, фото PNG без фона (kind: box — коробка, jar — банка), описание, ссылки на товар в маркетплейсах (markets).
+#}
+{% set catalogBuyText = "Купить на маркетплейсах" %}
+{% set catalogBoxText = "Ягодный, сочный, с балансом сладости и кислинки" %}
+{% set catalogJarText = "Биологически активная добавка к пище" %}
+{# Ссылки на карточку товара в маркетплейсах (у каждого товара свои; пока заглушки) #}
+{% set catalogMarkets = { ozon: "#", wb: "#", ym: "#" } %}
+{% set catalog = {
+    title: "Выбирайте то, что ближе",
+    buyText: catalogBuyText,
+    groups: [
+        {
+            title: "Морской коллаген 3 500 мг",
+            theme: "bordo",
+            items: [
+                { name: "Гранат", weight: "3 500 мг", kind: "box", image: "./assets/images/content/products/granat.png", alt: "Морской коллаген FROLOFF 3 500 мг, вкус гранат", text: catalogBoxText, markets: catalogMarkets },
+                { name: "Ежевика", weight: "3 500 мг", kind: "box", image: "./assets/images/content/products/blackberry.png", alt: "Морской коллаген FROLOFF 3 500 мг, вкус ежевика", text: catalogBoxText, markets: catalogMarkets },
+                { name: "Манго", weight: "3 500 мг", kind: "box", image: "./assets/images/content/products/mango.png", alt: "Морской коллаген FROLOFF 3 500 мг, вкус манго", text: catalogBoxText, markets: catalogMarkets },
+                { name: "Грейпфрут", weight: "3 500 мг", kind: "box", image: "./assets/images/content/products/grapefruit.png", alt: "Морской коллаген FROLOFF 3 500 мг, вкус грейпфрут", text: catalogBoxText, markets: catalogMarkets }
+            ]
+        },
+        {
+            title: "Морской коллаген 5 000 мг",
+            theme: "navy",
+            items: [
+                { name: "Лайм-лемон", weight: "5 000 мг", kind: "box", image: "./assets/images/content/products/lime.png", alt: "Морской коллаген FROLOFF 5 000 мг, вкус лайм-лемон", text: catalogBoxText, markets: catalogMarkets },
+                { name: "Чёрная смородина", weight: "5 000 мг", kind: "box", image: "./assets/images/content/products/blackcurrant.png", alt: "Морской коллаген FROLOFF 5 000 мг, вкус чёрная смородина", text: catalogBoxText, markets: catalogMarkets },
+                { name: "Сибирские ягоды", weight: "5 000 мг", kind: "box", image: "./assets/images/content/products/berries.png", alt: "Морской коллаген FROLOFF 5 000 мг, вкус сибирские ягоды", text: catalogBoxText, markets: catalogMarkets },
+                { name: "Мандарин", weight: "5 000 мг", kind: "box", image: "./assets/images/content/products/mandarin.png", alt: "Морской коллаген FROLOFF 5 000 мг, вкус мандарин", text: catalogBoxText, markets: catalogMarkets }
+            ]
+        },
+        {
+            title: "Витаминные комплексы",
+            theme: "gold",
+            items: [
+                { name: "Название витамина", weight: "150 мл", kind: "jar", image: "./assets/images/content/products/inositol.png", alt: "Инозитол 1000 мг FROLOFF", text: catalogJarText, markets: catalogMarkets },
+                { name: "Название витамина", weight: "150 мл", kind: "jar", image: "./assets/images/content/products/inositol.png", alt: "Инозитол 1000 мг FROLOFF", text: catalogJarText, markets: catalogMarkets },
+                { name: "Название витамина", weight: "150 мл", kind: "jar", image: "./assets/images/content/products/inositol.png", alt: "Инозитол 1000 мг FROLOFF", text: catalogJarText, markets: catalogMarkets },
+                { name: "Название витамина", weight: "150 мл", kind: "jar", image: "./assets/images/content/products/inositol.png", alt: "Инозитол 1000 мг FROLOFF", text: catalogJarText, markets: catalogMarkets },
+                { name: "Название витамина", weight: "150 мл", kind: "jar", image: "./assets/images/content/products/inositol.png", alt: "Инозитол 1000 мг FROLOFF", text: catalogJarText, markets: catalogMarkets },
+                { name: "Название витамина", weight: "150 мл", kind: "jar", image: "./assets/images/content/products/inositol.png", alt: "Инозитол 1000 мг FROLOFF", text: catalogJarText, markets: catalogMarkets }
+            ]
+        }
+    ]
+} %}
+
+{# Отзывы (включаемая область: заголовок, оценка; ссылки на отзывы в маркетплейсах — отдельное свойство/меню) #}
+{% set reviews = {
+    label: "Отзывы",
+    title: "Более 12 000 довольных клиентов",
+    subtitle: "Средняя оценка 4.9 из 5 на основании 2 340 отзывов.",
+    linkText: "Отзывы на",
+    links: [
+        { name: "Ozon", key: "ozon", logo: "./assets/images/content/reviews/ozon.png", href: "#" },
+        { name: "Wildberries", key: "wb", logo: "./assets/images/content/reviews/wb.png", href: "#" },
+        { name: "Яндекс Маркет", key: "ym", logo: "./assets/images/content/reviews/ym.png", href: "#" }
+    ]
+} %}
+
+{#
+    FAQ (инфоблок «Вопросы и ответы»: название — вопрос, детальный текст — ответ).
+    В макете есть только первый ответ, остальные — по текстам сайта и свидетельству о госрегистрации (хранение, противопоказания), уточнить у заказчика.
+#}
+{% set faq = {
+    label: "Вопросы и ответы",
+    title: "Отвечаем на главное",
+    items: [
+        {
+            name: "С какого возраста можно принимать коллаген?",
+            content: "<p>Рекомендуем с 18 лет для профилактики и с 25+ для активного восстановления. Детям до 14 — по согласованию с педиатром.</p>"
+        },
+        {
+            name: "Есть ли сахар и лишние калории?",
+            content: "<p>Нет. В составе нет сахара и химии — только пептиды коллагена, витамины и натуральные вкусы.</p>"
+        },
+        {
+            name: "Когда будет заметен эффект?",
+            content: "<p>Первые изменения кожи — к 2–3 неделе, стойкий результат — к концу курса.</p>"
+        },
+        {
+            name: "Можно ли при беременности и ГВ?",
+            content: "<p>Нет: беременность и кормление грудью указаны в противопоказаниях. Перед применением рекомендуется проконсультироваться с врачом.</p>"
+        },
+        {
+            name: "Как хранить стики?",
+            content: "<p>В сухом, защищённом от прямых солнечных лучей и недоступном для детей месте при температуре от +5 до +25 °С. Холодильник не нужен — стик всегда можно взять с собой. Вскрытый стик храните в холодильнике не более суток.</p>"
+        }
+    ]
+} %}
+
+{# Сертификаты (инфоблок: элемент = документ, превью и полное изображение открывается в галерее) #}
+{% set certificates = {
+    title: "Сертификаты",
+    items: [
+        { image: "./assets/images/content/certificates/certificate-1.jpg", alt: "Свидетельство о государственной регистрации продукции" },
+        { image: "./assets/images/content/certificates/certificate-2.jpg", alt: "Приложение к свидетельству о государственной регистрации" },
+        { image: "./assets/images/content/certificates/certificate-1.jpg", alt: "Свидетельство о государственной регистрации продукции" },
+        { image: "./assets/images/content/certificates/certificate-2.jpg", alt: "Приложение к свидетельству о государственной регистрации" },
+        { image: "./assets/images/content/certificates/certificate-1.jpg", alt: "Свидетельство о государственной регистрации продукции" },
+        { image: "./assets/images/content/certificates/certificate-2.jpg", alt: "Приложение к свидетельству о государственной регистрации" }
+    ]
+} %}
+
+{#
+    Заказ (включаемая область: тексты; ссылки на маркетплейсы; вкусы для списка — из инфоблока товаров).
+    Форма в Битриксе — bitrix:form.result.new или свой обработчик.
+#}
+{% set order = {
+    label: "Оформить заказ",
+    title: "Попробуйте курс",
+    text: "Оставьте контакты — менеджер подтвердит вкусы и адрес доставки. Оплата при получении.",
+    marketsTitle: "или выбирайте на маркетплейсах",
+    markets: [
+        { name: "OZON", href: "#" },
+        { name: "WB", href: "#" },
+        { name: "Ymarket", href: "#" }
+    ],
+    note: "30 стиков в упаковке (курс на месяц)",
+    flavors: [
+        { group: "Морской коллаген 3 500 мг", items: [{ text: "Гранат" }, { text: "Ежевика" }, { text: "Манго" }, { text: "Грейпфрут" }] },
+        { group: "Морской коллаген 5 000 мг", items: [{ text: "Лайм-лемон" }, { text: "Чёрная смородина" }, { text: "Сибирские ягоды" }, { text: "Мандарин" }] }
+    ],
+    consent: "Нажимая кнопку, вы соглашаетесь с <a href=\"#\">политикой конфиденциальности</a>",
+    submit: "Заказать"
 } %}

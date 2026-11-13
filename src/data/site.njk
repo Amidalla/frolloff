@@ -2,12 +2,12 @@
     Общие данные сайта. В 1С-Битрикс:
     - mainNav → меню типа «top» (bitrix:menu, файл .top.menu.php)
     - contacts, cta → включаемые области (bitrix:main.include) / настройки сайта
-    Подключение: {% from "data/site.njk" import mainNav, contacts, cta, footerNav, company %}
+    Подключение: {% from "data/site.njk" import mainNav, contacts, cta, footerNav, company, marketplaces, modals %}
 #}
 
 {% set mainNav = [
     { title: "Польза", href: "#benefits" },
-    { title: "Коллаген", href: "#collagen" },
+    { title: "Коллаген", href: "#catalog" },
     { title: "Витамины", href: "#vitamins" },
     { title: "О создателе", href: "#about" },
     { title: "Как принимать", href: "#how-to" },
@@ -32,7 +32,7 @@
     {
         title: "Продукт",
         items: [
-            { title: "Коллаген", href: "#collagen" },
+            { title: "Коллаген", href: "#catalog" },
             { title: "Витамины", href: "#vitamins" },
             { title: "Польза", href: "#benefits" },
             { title: "Как принимать", href: "#how-to" },
@@ -57,4 +57,24 @@
     disclaimer: "БАД. Не является лекарственным средством. Не рекомендуется при индивидуальной непереносимости компонентов. Перед применением проконсультируйтесь со специалистом.",
     copyright: "© 2026 FROLOFF. Все права защищены.",
     requisites: "ИНН 0000000000 · ОГРН 0000000000000"
+} %}
+
+{# Маркетплейсы (логотипы для модалки «Где купить»; ссылки на конкретный товар — у товара в каталоге) #}
+{% set marketplaces = [
+    { key: "ozon", name: "Ozon", logo: "./assets/images/content/reviews/ozon.png" },
+    { key: "wb", name: "Wildberries", logo: "./assets/images/content/reviews/wb.png" },
+    { key: "ym", name: "Яндекс Маркет", logo: "./assets/images/content/reviews/ym.png" }
+] %}
+
+{# Тексты модальных окон (включаемые области) #}
+{% set modals = {
+    shop: {
+        title: "Выберите, где хотите купить товар",
+        text: "<p>Мы рады, что вам понравился этот продукт!</p><p>Выберите удобный маркетплейс — и мы сразу перенаправим вас к карточке товара.</p>",
+        linkText: "Купить на"
+    },
+    orderSuccess: {
+        title: "Ваша заявка принята!",
+        text: "<p>Спасибо, что выбрали этот продукт. Менеджер скоро свяжется, чтобы подтвердить заказ и ответить на вопросы.</p>"
+    }
 } %}

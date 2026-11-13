@@ -1,0 +1,190 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Vitamins — «Витамины в ежедневном рационе» (Figma: 1920 / 1440 / 768 / 375)
+// Шапка по центру, слайдер товаров (фото PNG без фона), стрелки по бокам банки
+// (планшет/мобильный — под ней), кнопка «Где купить» поверх отражения.
+// Слева снизу лист-контур (кроме мобильного).
+// --------------------------------------
+
+.vitamins {
+    // Значения сняты с макетов
+    --vitamin-image-width: #{mix.fluid(485px, 670px)};
+    --vitamin-image-height: calc(var(--vitamin-image-width) * 1654 / 1200);
+
+    position: relative;
+    padding: var(--section-padding) 0 mix.fluid(42px, 80px);
+    overflow: hidden;
+    background: #efedd8;
+    border-bottom: var(--section-border);
+
+    @include bp.mq(desktop-s) {
+        --vitamin-image-width: 485px;
+
+        padding-bottom: 42px;
+    }
+
+    @include bp.mq(tablet-l) {
+        --vitamin-image-width: 358px;
+
+        padding-bottom: 42px;
+    }
+
+    @include bp.mq(tablet) {
+        --vitamin-image-width: 260px;
+
+        padding-bottom: 44px;
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+.vitamins-leaf {
+    position: absolute;
+    bottom: 0;
+    left: mix.fluid(75px, 56px);
+    width: mix.fluid(253px, 354px);
+    height: auto;
+    pointer-events: none;
+
+    @include bp.mq(desktop-s) {
+        left: 75px;
+        width: 253px;
+    }
+
+    @include bp.mq(tablet-l) {
+        left: 28px;
+        width: 199px;
+    }
+
+    @include bp.mq(tablet) {
+        display: none;
+    }
+}
+
+.vitamins-header {
+    margin-bottom: mix.fluid(52px, 57px);
+
+    @include bp.mq(desktop-s) {
+        margin-bottom: 52px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-bottom: 45px;
+    }
+
+    @include bp.mq(tablet) {
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        max-width: none;
+    }
+
+    .section-text {
+        @include mix.text-lg;
+
+        max-width: 684px;
+
+        @include bp.mq(tablet) {
+            max-width: 334px;
+            margin-top: 8px;
+        }
+    }
+}
+
+// --------------------------------------
+// Слайдер и стрелки
+// --------------------------------------
+
+.vitamins-slider {
+    position: relative;
+
+    .swiper {
+        height: var(--vitamin-image-height);
+        overflow: hidden;
+    }
+}
+
+.vitamins-arrows {
+    position: absolute;
+    top: mix.fluid(271px, 359px);
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    width: mix.fluid(570px, 844px);
+    max-width: 100%;
+    pointer-events: none;
+    transform: translateX(-50%);
+
+    @include bp.mq(desktop-s) {
+        top: 271px;
+        width: 570px;
+    }
+
+    @include bp.mq(tablet-l) {
+        top: 420px;
+        gap: 18px;
+        justify-content: center;
+        width: auto;
+    }
+
+    @include bp.mq(tablet) {
+        top: 299px;
+    }
+
+    .slider-arrow {
+        pointer-events: auto;
+
+        @include bp.mq(tablet-l) {
+            --arrow-size: 44px;
+            --arrow-stroke-width: 1px;
+        }
+    }
+}
+
+// --------------------------------------
+// Кнопка «Где купить» — поверх отражения банки
+// --------------------------------------
+
+.vitamins-action {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    margin-top: calc(#{mix.fluid(97px, 138px)} * -1);
+
+    @include bp.mq(desktop-s) {
+        margin-top: -97px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-top: -10px;
+    }
+
+    @include bp.mq(tablet) {
+        margin-top: 10px;
+    }
+}
+
+// --------------------------------------
+// Анимация появления (vitamins.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .vitamins:not(.is-ready) {
+        .vitamins-header > *,
+        .vitamins-leaf,
+        .vitamins-slider .swiper,
+        .vitamins-arrows .slider-arrow,
+        .vitamins-action {
+            visibility: hidden;
+        }
+    }
+}

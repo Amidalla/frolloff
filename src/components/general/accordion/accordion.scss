@@ -1,116 +1,160 @@
 @use "core/breakpoints" as bp;
 @use "core/mixins" as mix;
 
-.accordion:not(section) {
-    --accordion-gap: 20px;
+// --------------------------------------
+// Accordion — вопрос/ответ (дизайн FAQ «Отвечаем на главное»)
+// Пункт: рамка золотая, фон белый 40%. Кнопка-иконка: закрыт — золотой круг с плюсом,
+// открыт — контурный круг с крестиком (плюс поворачивается на 45°).
+// Размеры по макетам 1920 / 1440 / 768 / 375.
+// --------------------------------------
+
+.accordion {
+    --accordion-gap: #{mix.fluid(16px, 25px)};
+    --accordion-radius: 15px;
+    --accordion-pad-y: 10px;
+    --accordion-pad-x: 15px;
+    --accordion-name-size: #{mix.fluid(20px, 22px)};
+    --accordion-text-size: #{mix.fluid(16px, 20px)};
+    --accordion-text-gap: 16px;
+    --accordion-icon-w: #{mix.fluid(43px, 46px)};
+    --accordion-icon-h: #{mix.fluid(42px, 45px)};
+    --accordion-text-indent: 62px; // ответ не заходит под иконку (как в макете)
 
     display: flex;
     flex-direction: column;
     gap: var(--accordion-gap);
 
+    @include bp.mq(desktop-s) {
+        --accordion-gap: 16px;
+        --accordion-name-size: 20px;
+        --accordion-text-size: 16px;
+        --accordion-icon-w: 43px;
+        --accordion-icon-h: 42px;
+    }
+
+    @include bp.mq(tablet-l) {
+        --accordion-gap: 8px;
+        --accordion-radius: 5px;
+        --accordion-pad-y: 4px;
+        --accordion-pad-x: 9px;
+        --accordion-name-size: 18px;
+        --accordion-text-gap: 8px;
+        --accordion-icon-w: 34px;
+        --accordion-icon-h: 33px;
+        --accordion-text-indent: 0px;
+    }
+
     .item {
-        background: var(--color-white);
-        border-radius: 5px;
-        box-shadow: 0 2px 28.7px 0 rgb(0 0 0 / 10%);
+        background: rgb(255 255 255 / 40%);
+        border: 1px solid var(--color-gold);
+        border-radius: var(--accordion-radius);
+    }
 
-        .panel {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 30px;
-            text-align: left;
-            cursor: pointer;
-            background: transparent;
-            border: none;
-            transition: all var(--transition);
+    .panel {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: var(--accordion-pad-y) var(--accordion-pad-x);
+        font: inherit;
+        color: var(--color-ink);
+        text-align: left;
+        cursor: pointer;
+        background: transparent;
+        border: 0;
+        border-radius: var(--accordion-radius);
 
-            @include bp.mq(laptop) {
-                padding: 20px;
-            }
-
-            &:hover {
-                .name {
-                    color: var(--color-primary);
-                }
-            }
-
-            .name {
-                margin: 0;
-                font-family: var(--font-family-secondary);
-                font-size: 24px;
-                font-weight: 400;
-                line-height: 130%;
-                color: var(--color-9);
-                letter-spacing: 0.48px;
-                transition: all var(--transition);
-
-                @include bp.mq(laptop) {
-                    font-size: 22px;
-                }
-            }
-
-            .icon {
-                display: flex;
-                flex: 0 0 auto;
-                align-items: center;
-                justify-content: center;
-                width: 41px;
-                height: 41px;
-                background-image: url("data:image/svg+xml,%3Csvg width='41' height='41' viewBox='0 0 41 41' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M34.8889 2H6.11111C3.84061 2 2 3.84061 2 6.11111V34.8889C2 37.1594 3.84061 39 6.11111 39H34.8889C37.1594 39 39 37.1594 39 34.8889V6.11111C39 3.84061 37.1594 2 34.8889 2Z' stroke='%2318181C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M20.3969 28.2L27.9969 20.6M27.9969 20.6L20.3969 13M27.9969 20.6L12.7969 20.6' stroke='%2318181C' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E%0A");
-                background-repeat: no-repeat;
-                background-size: contain;
-                transition: all var(--transition);
-            }
+        &:focus-visible {
+            outline: 1px solid var(--color-gold);
+            outline-offset: 2px;
         }
 
-        .collapse {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        &:hover .icon::before {
+            opacity: 0.85;
+        }
+    }
 
-            .wrap {
-                padding: 0 30px 30px;
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 150%;
-                color: var(--color-10);
-                letter-spacing: 0.32px;
+    .name {
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: var(--accordion-name-size);
+        font-weight: 500;
+        line-height: 1.22;
+    }
 
-                @include mix.reset-child-outer-margins;
+    // Иконка: круг — CSS, плюс/крестик — встроенный SVG
+    .icon {
+        position: relative;
+        display: flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        width: var(--accordion-icon-w);
+        height: var(--accordion-icon-h);
+        border: 1px solid transparent;
+        border-radius: 999px;
+        transition: border-color var(--transition);
 
-                a:not(.button) {
-                    color: var(--color-primary);
-                    text-decoration: underline;
-
-                    &:hover {
-                        color: var(--color-primary-dark);
-                    }
-                }
-
-                ul,
-                ol {
-                    padding-left: 1.75rem;
-                }
-
-                li + li {
-                    margin-top: 0.5rem;
-                }
-            }
+        // Золотая заливка — отдельным слоем, чтобы плавно исчезала
+        &::before {
+            position: absolute;
+            inset: -1px;
+            content: "";
+            background: linear-gradient(254deg, #c49d5a 0%, #feca85 48.077%, #c49d5a 100%);
+            border-radius: inherit;
+            transition: opacity var(--transition);
         }
 
-        // --------------------------------------
-        // Open state
-        // --------------------------------------
+        svg {
+            position: relative;
+            width: 56%;
+            height: 56%;
+            fill: none;
+            stroke: var(--color-milk);
+            stroke-width: 2;
+            stroke-linecap: round;
+            transition:
+                transform var(--transition),
+                stroke var(--transition);
+        }
+    }
 
-        &.is-open {
-            .panel .name {
-                color: var(--color-primary);
+    .collapse {
+        overflow: hidden;
+        transition: height var(--transition);
+    }
+
+    .wrap {
+        max-width: calc(100% - var(--accordion-text-indent));
+        padding: 0 var(--accordion-pad-x) var(--accordion-pad-y);
+        margin-top: calc(var(--accordion-text-gap) - var(--accordion-pad-y));
+        font-size: var(--accordion-text-size);
+        line-height: 1.22;
+        color: var(--color-ink);
+
+        @include mix.reset-child-outer-margins;
+
+        p {
+            margin: 0 0 0.5em;
+        }
+    }
+
+    // --------------------------------------
+    // Открытый пункт
+    // --------------------------------------
+
+    .item.is-open {
+        .icon {
+            border-color: var(--color-ink);
+
+            &::before {
+                opacity: 0;
             }
 
-            .panel .icon {
-                background-image: url("data:image/svg+xml,%3Csvg width='41' height='41' viewBox='0 0 41 41' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M34.8889 2H6.11111C3.84061 2 2 3.84061 2 6.11111V34.8889C2 37.1594 3.84061 39 6.11111 39H34.8889C37.1594 39 39 37.1594 39 34.8889V6.11111C39 3.84061 37.1594 2 34.8889 2Z' fill='%2339A1D9' stroke='%2339A1D9' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12.8 20.6L20.4 28.2M20.4 28.2L28 20.6M20.4 28.2L20.4 13' stroke='white' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E%0A");
+            svg {
+                stroke: var(--color-ink);
+                transform: rotate(45deg);
             }
         }
     }

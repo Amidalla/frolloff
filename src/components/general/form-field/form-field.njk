@@ -1,0 +1,75 @@
+{% macro render(
+        label="",
+        name="",
+        id="",
+        type="text",
+        placeholder="",
+        value="",
+        required=false,
+        mask="",
+        autocomplete="",
+        inputmode="",
+        options=[],
+        error="",
+        class="",
+        data={},
+        aria={}
+    ) %}
+    {% set fieldId = id or ("field-" + name) %}
+    {% set fieldClasses = "field form-field" %}
+    {% if options | length %}
+        {% set fieldClasses = fieldClasses + " is-select" %}
+    {% endif %}
+    {% if class %}
+        {% set fieldClasses = fieldClasses + " " + class %}
+    {% endif %}
+
+    <div class="{{ fieldClasses }}">
+        {% if options | length %}
+            <select
+                class="control"
+                id="{{ fieldId }}"
+                name="{{ name }}"
+                {% if required %}required{% endif %}
+                {% if error %}data-error="{{ error }}"{% endif %}
+                {% for key, val in data %} data-{{ key | replace("_", "-") }}="{{ val }}"{% endfor %}
+                {% for key, val in aria %} aria-{{ key | replace("_", "-") }}="{{ val }}"{% endfor %}
+            >
+                {% if placeholder %}
+                    <option value="" disabled selected>{{ placeholder }}</option>
+                {% endif %}
+                {% for option in options %}
+                    {% if option.group %}
+                        <optgroup label="{{ option.group }}">
+                            {% for item in option.items %}
+                                <option value="{{ item.value or item.text }}">{{ item.text }}</option>
+                            {% endfor %}
+                        </optgroup>
+                    {% else %}
+                        <option value="{{ option.value or option.text }}">{{ option.text }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <svg class="chevron" viewBox="0 0 14 8" aria-hidden="true" focusable="false">
+                <path d="M1 1L7 7L13 1" />
+            </svg>
+        {% else %}
+            <input
+                class="control"
+                type="{{ type }}"
+                id="{{ fieldId }}"
+                name="{{ name }}"
+                {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+                {% if value %}value="{{ value }}"{% endif %}
+                {% if required %}required{% endif %}
+                {% if mask %}data-mask="{{ mask }}"{% endif %}
+                {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+                {% if inputmode %}inputmode="{{ inputmode }}"{% endif %}
+                {% if error %}data-error="{{ error }}"{% endif %}
+                {% for key, val in data %} data-{{ key | replace("_", "-") }}="{{ val }}"{% endfor %}
+                {% for key, val in aria %} aria-{{ key | replace("_", "-") }}="{{ val }}"{% endfor %}
+            />
+        {% endif %}
+        <label class="field-label" for="{{ fieldId }}">{{ label }}</label>
+    </div>
+{% endmacro %}

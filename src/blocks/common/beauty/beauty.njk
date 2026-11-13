@@ -3,21 +3,23 @@
 {% from "components/common/benefit-card/benefit-card.njk" import render as benefitCard %}
 {% from "components/general/image/image.njk" import render as image %}
 
-<section class="beauty" id="benefits">
+<section class="beauty" id="benefits" data-beauty>
     <div class="container">
         <div class="beauty-inner">
             {{ sectionHeader(label=beauty.label, title=beauty.title, text=beauty.text, class="beauty-header") }}
 
+            {# Лист и стики (с тенями) двигаются за мышью с разной силой — параллакс как на thecosine (data-attract) #}
             <div class="beauty-visual">
-                {{ image(src="./assets/images/content/beauty/leaf.svg", width=327, height=555, class="leaf", decorative=true) }}
-                <span class="shadow shadow-1" aria-hidden="true"></span>
-                <span class="shadow shadow-2" aria-hidden="true"></span>
+                {{ image(src="./assets/images/content/beauty/leaf.svg", width=327, height=555, class="leaf", decorative=true, data={ attract: "0.03" }) }}
+                <span class="shadow shadow-1" aria-hidden="true" data-attract="0.06"></span>
+                <span class="shadow shadow-2" aria-hidden="true" data-attract="0.06"></span>
                 {{ image(
                     src=beauty.image.src,
                     width=beauty.image.width,
                     height=beauty.image.height,
                     alt=beauty.image.alt,
-                    class="sticks"
+                    class="sticks",
+                    data={ attract: "0.06" }
                 ) }}
             </div>
 

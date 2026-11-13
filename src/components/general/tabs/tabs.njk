@@ -2,6 +2,7 @@
         items=[],
         activeIndex=0,
         id="",
+        animate=false,
         class="",
         data={},
         aria={}
@@ -16,6 +17,7 @@
         class="{{ tabsClasses }}"
         data-component="tabs"
         id="{{ uid }}"
+        {% if animate %}data-tabs-animate{% endif %}
         {% if data %}
             {% for key, val in data %}
                 data-{{ key | replace("_", "-") }}="{{ val }}"

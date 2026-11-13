@@ -102,12 +102,82 @@
                     { title: "Морской коллаген 3 500 мг", content: '<div class="card ui-kit-card">Содержимое вкладки 1</div>' },
                     { title: "Морской коллаген 5 000 мг", content: '<div class="card ui-kit-card">Содержимое вкладки 2</div>' },
                     { title: "Витаминные комплексы", content: '<div class="card ui-kit-card">Содержимое вкладки 3</div>' }
-                ]
+                ],
+                animate=true
             ) }}
 
             <h3 class="h3 ui-kit-caption">Карточка</h3>
             <div class="card milk shadow ui-kit-card">
                 <p class="text-lg">Карточка с тенью (блок «Преимущества»)</p>
+            </div>
+        </div>
+    </section>
+
+    {% set editorDemo %}
+        <p>Абзац текста — отступы между абзацами задаются автоматически. Коллаген — основной «строительный» белок кожи, волос и&nbsp;ногтей. После 25 лет его синтез снижается на 1–2% в&nbsp;год.</p>
+        <h2>Заголовок h2</h2>
+        <p>Текст под заголовком второго уровня.</p>
+        <h3>Заголовок h3 — золотой подзаголовок</h3>
+        <ul>
+            <li>Маркированный список — золотые точки</li>
+            <li>Пептиды коллагена 3&nbsp;500 и 5&nbsp;000 мг</li>
+            <li>Пункт с вложенным списком:
+                <ul>
+                    <li>вложенный пункт</li>
+                    <li>ещё один вложенный пункт</li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Заголовок h4 — как заголовок карточки</h4>
+        <ol>
+            <li>Нумерованный список — золотые цифры</li>
+            <li>Растворите или съешьте 1 стик в день</li>
+            <li>Курс — 30 дней</li>
+        </ol>
+        <h5>Заголовок h5</h5>
+        <p>Текст под заголовком пятого уровня.</p>
+        <h6>Заголовок h6</h6>
+        <blockquote>
+            <p>Как то, что мы едим, меняет нашу жизнь?</p>
+            <cite>Юрий Фролов</cite>
+        </blockquote>
+        <hr />
+        <figure>
+            <img src="./assets/images/content/flavors/blackberry-3500.jpg" alt="Морской коллаген FROLOFF со вкусом ежевики" width="1024" height="765" loading="lazy" />
+            <figcaption>Подпись к картинке (figcaption): морской коллаген FROLOFF, вкус ежевика</figcaption>
+        </figure>
+        <table>
+            <caption>Таблица: состав одного стика</caption>
+            <thead>
+                <tr><th scope="col">Компонент</th><th scope="col">3 500 мг</th><th scope="col">5 000 мг</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Коллаген гидролизованный</td><td>3 500 мг</td><td>5 000 мг</td></tr>
+                <tr><td>Гиалуроновая кислота</td><td>5 мг</td><td>5 мг</td></tr>
+                <tr><td>Витамин C</td><td>90 мг</td><td>90 мг</td></tr>
+            </tbody>
+        </table>
+        <p>Последний абзац — у первого и последнего элемента нет внешних отступов.</p>
+    {% endset %}
+
+    <section class="section milk bordered" id="editor">
+        <div class="container">
+            {{ sectionHeader(
+                label="data-editor",
+                title="Текст из админки",
+                text="Блоку, текст которого меняет контент-менеджер, достаточно добавить атрибут <code>data-editor</code> — теги внутри (заголовки, абзацы, списки, ссылки, цитаты, картинки, таблицы) оформятся в стиле сайта. Стили — <code>src/scss/core/editor.scss</code>."
+            ) }}
+            <div class="ui-kit-editor" data-editor>
+                {{ editorDemo | safe }}
+            </div>
+        </div>
+    </section>
+
+    <section class="section dark bordered">
+        <div class="container">
+            <h2 class="h2 ui-kit-caption">Текст из админки на тёмном фоне</h2>
+            <div class="ui-kit-editor" data-editor>
+                {{ editorDemo | safe }}
             </div>
         </div>
     </section>

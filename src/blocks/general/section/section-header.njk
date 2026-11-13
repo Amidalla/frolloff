@@ -34,7 +34,7 @@
             <p class="section-subtitle">{{ subtitle | safe }}</p>
         {% endif %}
         {% if text %}
-            <div class="section-text">{{ text | safe }}</div>
+            <div class="section-text" data-editor>{{ text | safe }}</div>
         {% endif %}
     </div>
 {% endmacro %}

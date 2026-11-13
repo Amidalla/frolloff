@@ -1,0 +1,20 @@
+{#
+    Модалка «Выберите, где хотите купить товар». Ссылки на маркетплейсы подставляет modal-shop.js
+    из карточки товара (data-ozon / data-wb / data-ym), по умолчанию — "#".
+#}
+{% from "data/site.njk" import marketplaces, modals %}
+{% from "components/general/modal/modal.njk" import render as modal %}
+{% from "components/general/image/image.njk" import render as image %}
+
+{% call modal(id="modal-shop", title=modals.shop.title, text=modals.shop.text, class="modal-shop") %}
+    <ul class="modal-shop-links">
+        {% for market in marketplaces %}
+            <li>
+                <a class="modal-shop-link {{ market.key }}" href="#" target="_blank" rel="noopener" data-market="{{ market.key }}" aria-label="{{ modals.shop.linkText }} {{ market.name }}">
+                    <span class="text">{{ modals.shop.linkText }}</span>
+                    <span class="logo">{{ image(src=market.logo, width=106, height=106, alt=market.name) }}</span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endcall %}

@@ -1,9 +1,0 @@
-{#
-    Простая текстовая секция.
-    Переменные: text, sectionClass ("cream bordered", "milk", "dark"...)
-#}
-<section class="section{% if sectionClass %} {{ sectionClass }}{% endif %}">
-    <div class="container">
-        {% include "components/general/text/text.njk" %}
-    </div>
-</section>

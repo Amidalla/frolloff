@@ -1,0 +1,165 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Certificates — «Сертификаты» (Figma: 1920 / 1440 / 768 / 375)
+// Слайдер: 4 карточки (≤767 — 2), по клику документ открывается в галерее Fancybox.
+// Стрелки: по краям контейнера по центру карточек (≤767 — под слайдером).
+// Отступ между карточками (--certificates-gap) читает certificates.js через column-gap.
+// --------------------------------------
+
+.certificates {
+    --certificates-gap: #{mix.fluid(24px, 38px)};
+    --certificates-radius: #{mix.fluid(18px, 30px)};
+
+    @include bp.mq(desktop-s) {
+        --certificates-gap: 24px;
+        --certificates-radius: 18px;
+    }
+
+    @include bp.mq(tablet-l) {
+        --certificates-gap: 12px;
+        --certificates-radius: 10px;
+    }
+}
+
+.certificates-header {
+    margin-bottom: mix.fluid(32px, 42px);
+
+    @include bp.mq(desktop-s) {
+        margin-bottom: 32px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-bottom: 23px;
+    }
+}
+
+.certificates-slider {
+    position: relative;
+    column-gap: var(--certificates-gap); // не влияет на вёрстку, отсюда JS берёт отступ слайдера
+
+    .swiper {
+        overflow: hidden;
+    }
+}
+
+// Карточка документа: молочная, золотая рамка, документ по центру
+.certificate-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 390 / 523;
+    overflow: hidden;
+    cursor: zoom-in; // лупа «+» — документ можно открыть крупно
+    background: var(--color-milk);
+    border: 1px solid #c49d5a;
+    border-radius: var(--certificates-radius);
+
+    @include bp.mq(tablet) {
+        aspect-ratio: 169 / 219;
+    }
+
+    img {
+        display: block;
+        width: 89%;
+        height: auto;
+        box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+        transition: transform var(--transition);
+    }
+
+    &:hover img {
+        transform: scale(1.02);
+    }
+
+    &:focus-visible {
+        outline: 1px solid var(--color-gold);
+        outline-offset: 3px;
+    }
+}
+
+// --------------------------------------
+// Стрелки
+// --------------------------------------
+
+.certificates-arrows {
+    @include bp.mq(tablet) {
+        display: flex;
+        gap: 18px;
+        justify-content: center;
+        margin-top: 24px;
+    }
+
+    .slider-arrow {
+        --arrow-size: #{mix.fluid(46px, 80px)};
+
+        position: absolute;
+        top: 50%;
+        z-index: 3;
+        transform: translateY(-50%);
+
+        @include bp.mq(desktop-s) {
+            --arrow-size: 46px;
+        }
+
+        @include bp.mq(tablet-l) {
+            --arrow-size: 44px;
+            --arrow-stroke-width: 1px;
+        }
+
+        // relative, а не static: иконка стрелки позиционируется внутри кнопки
+        @include bp.mq(tablet) {
+            position: relative;
+            top: auto;
+            transform: none;
+        }
+    }
+
+    // Центр стрелки — на краю контейнера (1920 — чуть левее/правее края)
+    .certificates-prev {
+        left: calc(var(--arrow-size) / -2 - #{mix.fluid(0px, 12px)});
+
+        @include bp.mq(desktop-s) {
+            left: calc(var(--arrow-size) / -2);
+        }
+
+        @include bp.mq(tablet-l) {
+            left: -28px;
+        }
+
+        @include bp.mq(tablet) {
+            left: auto;
+        }
+    }
+
+    .certificates-next {
+        right: calc(var(--arrow-size) / -2 - #{mix.fluid(0px, 12px)});
+
+        @include bp.mq(desktop-s) {
+            right: calc(var(--arrow-size) / -2);
+        }
+
+        @include bp.mq(tablet-l) {
+            right: -28px;
+        }
+
+        @include bp.mq(tablet) {
+            right: auto;
+        }
+    }
+}
+
+// --------------------------------------
+// Анимация появления (certificates.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .certificates:not(.is-ready) {
+        .certificates-header > *,
+        .certificates-slider .swiper,
+        .certificates-arrows .slider-arrow {
+            visibility: hidden;
+        }
+    }
+}

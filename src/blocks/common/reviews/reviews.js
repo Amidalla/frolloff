@@ -25,10 +25,20 @@ export function reviews(context = document) {
     const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out" } });
     addRiseReveal(tl, root.querySelectorAll(".reviews-head > *"), 0, { blur: 8 });
     if (links) {
-        tl.fromTo(links, { y: 100, autoAlpha: 0, filter: "blur(8px)" }, { y: 0, autoAlpha: 1, filter: "blur(0px)", duration: 1, clearProps: "transform,filter" }, 0.35);
+        tl.fromTo(
+            links,
+            { y: 100, autoAlpha: 0, filter: "blur(8px)" },
+            { y: 0, autoAlpha: 1, filter: "blur(0px)", duration: 1, clearProps: "transform,filter" },
+            0.35
+        );
     }
     if (visual) {
-        tl.fromTo(visual, { y: 80, autoAlpha: 0, filter: "blur(8px)" }, { y: 0, autoAlpha: 1, filter: "blur(0px)", duration: 1.1, clearProps: "transform,filter" }, 0.45);
+        tl.fromTo(
+            visual,
+            { y: 80, autoAlpha: 0, filter: "blur(8px)" },
+            { y: 0, autoAlpha: 1, filter: "blur(0px)", duration: 1.1, clearProps: "transform,filter" },
+            0.45
+        );
     }
     if (leaf) tl.fromTo(leaf, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.2 }, 0.3);
 

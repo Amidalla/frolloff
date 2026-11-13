@@ -1,0 +1,28 @@
+{% from "data/home.njk" import certificates %}
+{% from "blocks/general/section/section-header.njk" import render as sectionHeader %}
+{% from "components/general/image/image.njk" import render as image %}
+{% from "components/general/slider-arrow/slider-arrow.njk" import render as sliderArrow %}
+
+<section class="section cream bordered certificates" id="certificates" data-certificates>
+    <div class="container">
+        {{ sectionHeader(title=certificates.title, align="center", class="certificates-header") }}
+
+        <div class="certificates-slider" data-certificates-slider>
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    {% for item in certificates.items %}
+                        <div class="swiper-slide">
+                            <a class="certificate-card" href="{{ item.image }}" data-fancybox="certificates" data-caption="{{ item.alt }}" aria-label="Открыть: {{ item.alt }}">
+                                {{ image(src=item.image, width=602, height=792, alt=item.alt) }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="certificates-arrows">
+                {{ sliderArrow(direction="prev", variant="light", size="l", class="certificates-prev") }}
+                {{ sliderArrow(direction="next", variant="light", size="l", class="certificates-next") }}
+            </div>
+        </div>
+    </div>
+</section>

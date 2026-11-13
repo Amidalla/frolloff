@@ -1,0 +1,36 @@
+{% from "data/home.njk" import reviews %}
+{% from "components/general/image/image.njk" import render as image %}
+
+<section class="reviews" id="reviews" data-reviews>
+    {# Лист и стики двигаются за мышью — параллакс как на thecosine (data-attract) #}
+    {{ image(src="./assets/images/content/reviews/leaf.svg", width=340, height=578, class="reviews-leaf", decorative=true, data={ attract: "0.03" }) }}
+
+    <div class="container">
+        <div class="reviews-content">
+            <div class="reviews-head">
+                <p class="reviews-label">{{ reviews.label }}</p>
+                <h2 class="reviews-title">{{ reviews.title }}</h2>
+                <p class="reviews-subtitle">{{ reviews.subtitle }}</p>
+            </div>
+
+            <div class="reviews-body">
+                <ul class="reviews-links">
+                    {% for link in reviews.links %}
+                        <li>
+                            <a class="reviews-link {{ link.key }}" href="{{ link.href }}" target="_blank" rel="noopener" aria-label="{{ reviews.linkText }} {{ link.name }}">
+                                <span class="text">{{ reviews.linkText }}</span>
+                                <span class="logo">
+                                    {{ image(src=link.logo, width=106, height=106, alt=link.name) }}
+                                </span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="reviews-visual">
+                    {{ image(src="./assets/images/content/reviews/reviews-sticks.png", width=1044, height=1114, alt="Желе-стики FROLOFF Collagen Peptides", data={ attract: "0.05" }) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

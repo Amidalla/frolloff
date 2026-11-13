@@ -56,6 +56,26 @@
         }
     }
 
+    // Название и бейдж не заезжают на упаковку в центре фото: ширина ограничена местом
+    // между краем .head и упаковкой (её половина ≈ 16% ширины фото) — длинное название
+    // переносится на вторую строку
+    .name,
+    .badge {
+        max-width: calc(50% - var(--flavor-image-width, 1026px) * 0.16 - 16px);
+
+        @include bp.mq(tablet) {
+            max-width: none;
+        }
+    }
+
+    .badge {
+        text-align: right;
+
+        @include bp.mq(tablet) {
+            text-align: center;
+        }
+    }
+
     // Фото шире слайда: фон фото совпадает с фоном секции, края обрезаются незаметно
     .media {
         position: absolute;

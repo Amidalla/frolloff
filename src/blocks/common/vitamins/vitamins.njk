@@ -1,0 +1,33 @@
+{% from "data/home.njk" import vitamins %}
+{% from "blocks/general/section/section-header.njk" import render as sectionHeader %}
+{% from "components/general/image/image.njk" import render as image %}
+{% from "components/general/button/button.njk" import render as button %}
+{% from "components/general/slider-arrow/slider-arrow.njk" import render as sliderArrow %}
+{% from "components/common/vitamin-slide/vitamin-slide.njk" import render as vitaminSlide %}
+
+<section class="vitamins" id="vitamins" data-vitamins>
+    {# Лист двигается за мышью — параллакс как на thecosine (data-attract) #}
+    {{ image(src="./assets/images/system/leaf-outline.svg", width=354, height=601, class="vitamins-leaf", decorative=true, data={ attract: "0.03" }) }}
+
+    <div class="container">
+        {{ sectionHeader(label=vitamins.label, title=vitamins.title, text=vitamins.text, align="center", class="vitamins-header") }}
+
+        <div class="vitamins-slider" data-vitamins-slider>
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    {% for slide in vitamins.slides %}
+                        {{ vitaminSlide(slide) }}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="vitamins-arrows">
+                {{ sliderArrow(direction="prev", variant="product", size="l", class="vitamins-prev") }}
+                {{ sliderArrow(direction="next", variant="product", size="l", class="vitamins-next") }}
+            </div>
+        </div>
+
+        <div class="vitamins-action">
+            {{ button(text=vitamins.button.text, href="#modal-shop", type="link", variant="blue", size="s", class="flavors-button", data={ shop_open: "" }, aria={ haspopup: "dialog" }) }}
+        </div>
+    </div>
+</section>

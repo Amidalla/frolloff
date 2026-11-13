@@ -1,0 +1,25 @@
+{% from "data/home.njk" import composition %}
+{% from "components/general/image/image.njk" import render as image %}
+{% from "components/common/composition-item/composition-item.njk" import render as compositionItem %}
+
+<section class="composition" id="composition" data-composition>
+    {# Надпись двигается за мышью — параллакс как на thecosine (data-attract); узкая и высокая, поэтому по вертикали сила меньше #}
+    {{ image(src="./assets/images/content/composition/wordmark.svg", width=163, height=942, class="composition-wordmark", decorative=true, data={ attract: "0.1", attract_y: "0.02" }) }}
+
+    <div class="container">
+        <h2 class="composition-title">{{ composition.title }}</h2>
+
+        <div class="composition-groups">
+            {% for group in composition.groups %}
+                <div class="composition-group">
+                    <h3 class="composition-group-title">{{ group.title }}</h3>
+                    <ul class="composition-list">
+                        {% for item in group.items %}
+                            {{ compositionItem(item, variant=group.variant) }}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

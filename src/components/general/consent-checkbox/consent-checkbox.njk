@@ -5,6 +5,7 @@
         text='Даю согласие на обработку <a href="#">персональных данных</a>',
         class="",
         variant="",
+        error="",
         data={},
         aria={}
     ) %}
@@ -26,6 +27,7 @@
             {% if id %}id="{{ id }}"{% endif %}
             {% if name %}name="{{ name }}"{% endif %}
             {% if required %}required{% endif %}
+            {% if error %}data-error="{{ error }}"{% endif %}
             {% if aria %}
                 {% for key, val in aria %}
                     aria-{{ key | replace("_", "-") }}="{{ val }}"

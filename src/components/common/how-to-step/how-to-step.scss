@@ -1,0 +1,81 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// How-to step — шаг приёма (блок «Как принимать»)
+// Цифра 100% на 1920 → 73% на 1440 → 49% на 768 → 36,5% на 375
+// Заголовок 22 → 18, текст 20 → 16 (15 на планшете)
+// --------------------------------------
+
+.how-to-step {
+    // Базовый размер цифр: высота цифры = --number-ratio × этот размер
+    --how-to-number-size: #{mix.fluid(73px, 100px)};
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    min-width: 0;
+
+    @include bp.mq(desktop-s) {
+        --how-to-number-size: 73px;
+
+        justify-content: space-between;
+    }
+
+    @include bp.mq(tablet-l) {
+        --how-to-number-size: 49px;
+    }
+
+    @include bp.mq(tablet) {
+        --how-to-number-size: 36px;
+
+        justify-content: flex-start;
+    }
+
+    .number {
+        display: block;
+        flex: 0 0 auto;
+        height: calc(var(--number-ratio) * var(--how-to-number-size));
+
+        img {
+            display: block;
+            width: auto;
+            height: 100%;
+        }
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        color: var(--color-ink);
+    }
+
+    .title {
+        font-size: mix.fluid(18px, 22px);
+        font-weight: 500;
+        line-height: 1.22;
+
+        @include bp.mq(desktop-s) {
+            font-size: 18px;
+        }
+    }
+
+    .text {
+        font-size: mix.fluid(16px, 20px);
+        line-height: 1.22;
+
+        @include bp.mq(desktop-s) {
+            font-size: 16px;
+        }
+
+        @include bp.mq(tablet-l) {
+            font-size: 15px;
+        }
+
+        @include bp.mq(tablet) {
+            font-size: 16px;
+        }
+    }
+}

@@ -1,0 +1,77 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Effect card — карточка эффекта (блок «Умная формула для суставов»)
+// Иконка 320×160 → 238×119 (1440) → 194×97 (768 / 375)
+// Срок 38 → 30 → 23 (Cormorant SC), текст 20 → 16
+// --------------------------------------
+
+.effect-card {
+    --effect-icon-height: #{mix.fluid(119px, 160px)};
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    min-width: 0;
+    min-height: mix.fluid(253px, 349px);
+    padding: mix.fluid(15px, 20px);
+    color: var(--color-ink);
+    text-align: center;
+    background: var(--color-milk);
+    border-radius: mix.fluid(15px, 30px);
+
+    @include bp.mq(desktop-s) {
+        --effect-icon-height: 119px;
+
+        min-height: 253px;
+        padding: 15px;
+        border-radius: 15px;
+    }
+
+    @include bp.mq(tablet-l) {
+        --effect-icon-height: 97px;
+
+        min-height: 0;
+        border-radius: 10px;
+    }
+
+    .icon {
+        display: block;
+        flex: 0 0 auto;
+        height: var(--effect-icon-height);
+
+        img {
+            display: block;
+            width: auto;
+            height: 100%;
+        }
+    }
+
+    .term {
+        font-family: var(--font-family-secondary);
+        font-size: mix.fluid(30px, 38px);
+        font-weight: 600;
+        line-height: 0.79;
+
+        @include bp.mq(desktop-s) {
+            font-size: 30px;
+        }
+
+        @include bp.mq(tablet-l) {
+            font-size: 23px;
+            line-height: 30px;
+        }
+    }
+
+    .text {
+        max-width: 248px;
+        font-size: mix.fluid(16px, 20px);
+        line-height: 1.22;
+
+        @include bp.mq(desktop-s) {
+            font-size: 16px;
+        }
+    }
+}

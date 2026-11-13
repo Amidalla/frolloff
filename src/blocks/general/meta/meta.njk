@@ -1,4 +1,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
 <link rel="icon" href="./assets/favicons/favicon.svg" type="image/svg+xml" />
+{# Шрифты первого экрана и прелоадера — грузятся сразу, не дожидаясь CSS #}
+<link rel="preload" href="./assets/fonts/cormorant-sc-cyrillic-400.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="./assets/fonts/cormorant-sc-cyrillic-600.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="./assets/fonts/montserrat-cyrillic-400.woff2" as="font" type="font/woff2" crossorigin />
 <title>{{ meta.title }}</title>

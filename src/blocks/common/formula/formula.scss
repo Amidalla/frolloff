@@ -1,0 +1,161 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Formula — «Не просто коллаген — умная формула для суставов!»
+// (Figma: 1920 / 1440 / 768 / 375)
+// Тёмный фон, шапка по центру, 4 карточки эффектов: 4 в ряд → 2×2 → 1 колонка.
+// Лист-контур справа снизу только на десктопе (за карточками).
+// --------------------------------------
+
+.formula {
+    position: relative;
+    padding: var(--section-padding) 0;
+    overflow: clip;
+    color: var(--color-milk);
+    background: var(--gradient-navy);
+
+    .container {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+.formula-leaf {
+    position: absolute;
+    right: mix.fluid(72px, 68px);
+    bottom: mix.fluid(0px, 226px); // stylelint-disable-line length-zero-no-unit -- внутри clamp() ноль нужен с единицей
+    width: mix.fluid(258px, 354px);
+    height: auto;
+    pointer-events: none;
+
+    @include bp.mq(desktop-s) {
+        right: 72px;
+        bottom: 0;
+        width: 258px;
+    }
+
+    @include bp.mq(tablet-l) {
+        display: none;
+    }
+}
+
+// --------------------------------------
+// Шапка
+// --------------------------------------
+
+.formula-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: mix.fluid(31px, 78px);
+    text-align: center;
+
+    @include bp.mq(desktop-s) {
+        margin-bottom: 31px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-bottom: 33px;
+    }
+
+    @include bp.mq(tablet) {
+        margin-bottom: 48px;
+    }
+}
+
+.formula-title {
+    @include mix.h2;
+}
+
+.formula-text {
+    max-width: 818px;
+    margin: mix.fluid(15px, 16px) 0 0;
+    font-size: mix.fluid(16px, 20px);
+    line-height: 1.22;
+
+    @include bp.mq(desktop-s) {
+        margin-top: 15px;
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    @include bp.mq(tablet-l) {
+        max-width: none;
+        margin-top: 8px;
+        line-height: 1.22;
+    }
+}
+
+.formula-subtitle {
+    margin: mix.fluid(24px, 39px) 0 0;
+    font-size: mix.fluid(28px, 38px);
+    font-weight: 500;
+    line-height: 1.22;
+
+    @include mix.text-gold;
+
+    @include bp.mq(desktop-s) {
+        margin-top: 24px;
+        font-size: 28px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-top: 16px;
+        font-size: 23px;
+    }
+}
+
+.formula-note {
+    margin: mix.fluid(15px, 11px) 0 0;
+    font-size: mix.fluid(16px, 20px);
+    font-weight: 600;
+    line-height: 1.22;
+
+    @include bp.mq(desktop-s) {
+        margin-top: 15px;
+        font-size: 16px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-top: 7px;
+    }
+}
+
+// --------------------------------------
+// Карточки
+// --------------------------------------
+
+.formula-cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    @include bp.mq(tablet-l) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+    }
+
+    @include bp.mq(tablet) {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+}
+
+// --------------------------------------
+// Анимация появления (formula.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .formula:not(.is-ready) {
+        .formula-head > *,
+        .formula-leaf,
+        .effect-card {
+            visibility: hidden;
+        }
+    }
+}

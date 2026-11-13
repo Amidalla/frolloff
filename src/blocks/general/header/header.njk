@@ -3,14 +3,21 @@
 {% from "components/general/logo/logo.njk" import render as logo %}
 {% from "components/general/button/button.njk" import render as button %}
 
+{# linkBase задаёт страница (на 404 — "./home.html"): якорные ссылки ведут на главную #}
+{% set navItems = [] %}
+{% for item in mainNav %}
+    {% set _ = navItems.push({ title: item.title, href: (linkBase or "") + item.href }) %}
+{% endfor %}
+{% set ctaHref = (linkBase or "") + cta.href %}
+
 <header class="header">
     <div class="container">
         <div class="header-inner">
             {{ logo(href="./home.html", image="./assets/images/system/logo.svg", alt="Froloff", class="header-logo", width="289", height="86") }}
 
-            {{ navigationTop(items=mainNav, class="header-nav", ariaLabel="Главное меню") }}
+            {{ navigationTop(items=navItems, class="header-nav", ariaLabel="Главное меню") }}
 
-            {{ button(text=cta.text, href=cta.href, type="link", variant="border", size="s", class="medium header-cta") }}
+            {{ button(text=cta.text, href=ctaHref, type="link", variant="border", size="s", class="medium header-cta") }}
 
             {% include "components/general/menu/menu-open.njk" %}
         </div>

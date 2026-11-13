@@ -31,7 +31,9 @@
 
     @include bp.mq(tablet-l) {
         --flavor-slide-height: 486px;
-        --flavor-head-width: 558px;
+
+        // В макете 768 — 558px; шире, чтобы название чаще помещалось в строку рядом с упаковкой
+        --flavor-head-width: 720px;
         --flavor-image-width: 742px;
         --flavor-image-top: -68px;
 
@@ -235,5 +237,22 @@
 
     @include bp.mq(tablet) {
         min-width: 215px;
+    }
+}
+
+// --------------------------------------
+// Анимация появления (flavors.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .flavors:not(.is-ready) {
+        .flavors-header > *,
+        .flavors-tabs .nav-wrap,
+        .flavors-slider .swiper,
+        .flavors-arrows,
+        .flavors-action {
+            visibility: hidden;
+        }
     }
 }

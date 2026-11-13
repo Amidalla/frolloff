@@ -1,0 +1,264 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// About — «О создателе» (Figma: 1920 / 1440 / 768 / 375)
+// Текст слева (с «Читать всё»), фото справа стоит на нижней границе секции,
+// за фото — лист-контур. Мобильный: фото под текстом.
+// В свёрнутом виде видно 4 абзаца (планшет/мобильный — 3).
+// --------------------------------------
+
+.about {
+    position: relative;
+    min-height: mix.fluid(692px, 776px);
+    padding: mix.fluid(88px, 80px) 0 mix.fluid(60px, 32px);
+    overflow: hidden;
+    background: var(--color-cream);
+    border-bottom: var(--section-border);
+
+    @include bp.mq(desktop-s) {
+        min-height: 692px;
+        padding-top: 88px;
+        padding-bottom: 60px;
+    }
+
+    @include bp.mq(tablet-l) {
+        min-height: 675px;
+        padding-top: 48px;
+        padding-bottom: 68px;
+    }
+
+    @include bp.mq(tablet) {
+        min-height: 0;
+        padding-bottom: 0;
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+.about-leaf {
+    position: absolute;
+    right: mix.fluid(99px, 122px);
+    bottom: mix.fluid(41px, 57px);
+    width: mix.fluid(243px, 354px);
+    height: auto;
+    pointer-events: none;
+
+    @include bp.mq(desktop-s) {
+        right: 99px;
+        bottom: 41px;
+        width: 243px;
+    }
+
+    @include bp.mq(tablet-l) {
+        right: 20px;
+        bottom: 77px;
+        width: 181px;
+    }
+
+    @include bp.mq(tablet) {
+        right: auto;
+        bottom: 20px;
+        left: 199px;
+        width: 151px;
+    }
+}
+
+// --------------------------------------
+// Шапка: на 1920 слева, с 1440 по центру
+// --------------------------------------
+
+.about-header {
+    margin-bottom: mix.fluid(36px, 32px);
+
+    @include bp.mq(desktop-s) {
+        align-items: center;
+        margin-bottom: 36px;
+        text-align: center;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-bottom: 24px;
+    }
+
+    .section-label {
+        margin-bottom: 20px;
+
+        @include bp.mq(tablet-l) {
+            margin-bottom: 8px;
+        }
+    }
+}
+
+// --------------------------------------
+// Текст
+// --------------------------------------
+
+.about-text {
+    position: relative;
+    z-index: 2;
+    max-width: mix.fluid(792px, 968px);
+    font-size: mix.fluid(16px, 20px);
+    line-height: 1.22;
+
+    // 1024–1440: текст сужается вместе с экраном и не заходит на фото
+    // (792px на 1440 → 542px на 1024; см. .about-photo)
+    @include bp.mq(desktop-s) {
+        max-width: min(792px, calc(59.62vw - 68px));
+        font-size: 16px;
+    }
+
+    // Планшет: текст не заходит на фигуру на фото (фото прижато к правому краю)
+    @include bp.mq(tablet-l) {
+        max-width: min(457px, calc(100% - 245px));
+    }
+
+    @include bp.mq(tablet) {
+        max-width: none;
+    }
+
+    .about-paragraphs {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        // «Читать всё» раскрывает текст медленнее общего --transition: секция растёт плавно,
+        // и фото с листом (прижаты к её низу) плавно уезжают вниз, а не прыгают
+        transition: height 0.8s ease-in-out;
+
+        @include bp.mq(tablet-l) {
+            gap: 16px;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+    }
+
+    // Свёрнуто: на десктопе 4 абзаца, на планшете/мобильном — 3
+    &:not(.is-open) .about-paragraphs > p:nth-child(n + 5) {
+        display: none;
+    }
+
+    &:not(.is-open) .about-paragraphs > p:nth-child(4) {
+        @include bp.mq(tablet-l) {
+            display: none;
+        }
+    }
+
+    .read-more-toggle {
+        margin-top: 20px;
+
+        @include bp.mq(tablet-l) {
+            margin-top: 16px;
+        }
+    }
+}
+
+// --------------------------------------
+// Фото: стоит на нижней границе секции
+// --------------------------------------
+
+.about-photo {
+    position: absolute;
+    right: mix.fluid(181px, 306px);
+    bottom: 0;
+    width: mix.fluid(377px, 494px);
+
+    // 1024–1440: фото плавно прижимается к краю (181px на 1440 → 13px на 1024)
+    @include bp.mq(desktop-s) {
+        right: round(clamp(13px, 40.38vw - 400px, 181px), 1px);
+        width: auto;
+    }
+
+    @include bp.mq(tablet-l) {
+        right: 13px;
+    }
+
+    // Мобильный: фото под текстом
+    @include bp.mq(tablet) {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        margin: 10px 0 0 25px;
+    }
+
+    // Под каждый макет своё фото (xl — 1920, l — 1440, m — 768, s — 375).
+    // Скрытые фото lozad не загружает — грузится только нужное.
+    // Ширина задана явно: до загрузки lozad у img заглушка, и width: auto схлопнул бы его
+    img {
+        display: none;
+        width: 100%;
+        height: auto;
+
+        &.xl {
+            display: block;
+        }
+
+        &.l {
+            width: 377px;
+        }
+
+        &.m {
+            width: 315px;
+        }
+
+        &.s {
+            width: 271px;
+        }
+
+        @include bp.mq(desktop-s) {
+            &.xl {
+                display: none;
+            }
+
+            &.l {
+                display: block;
+            }
+        }
+
+        @include bp.mq(tablet-l) {
+            &.l {
+                display: none;
+            }
+
+            &.m {
+                display: block;
+            }
+        }
+
+        @include bp.mq(tablet) {
+            &.m {
+                display: none;
+            }
+
+            &.s {
+                display: block;
+            }
+        }
+    }
+}
+
+// --------------------------------------
+// Анимация появления (about.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .about:not(.is-ready) {
+        .about-header > *,
+        .about-paragraphs,
+        .about-text .read-more-toggle,
+        .about-photo,
+        .about-leaf {
+            visibility: hidden;
+        }
+    }
+}

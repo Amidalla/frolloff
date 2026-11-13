@@ -1,0 +1,5 @@
+{# Модалка после отправки формы заказа (открывает order.js) #}
+{% from "data/site.njk" import modals %}
+{% from "components/general/modal/modal.njk" import render as modal %}
+
+{{ modal(id="modal-order-success", title=modals.orderSuccess.title, text=modals.orderSuccess.text, class="modal-order-success") }}

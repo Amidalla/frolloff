@@ -240,7 +240,8 @@
     }
 }
 
-// Вертикальный логотип справа — только на широком десктопе
+// Вертикальный логотип справа — только на широком десктопе.
+// Обёртка двигается за курсором (data-attract, js/utils/attract.js), картинку анимирует появление.
 .hero-wordmark {
     position: absolute;
     top: 19.64%;
@@ -248,10 +249,33 @@
     z-index: 1;
     display: none;
     width: 86px;
-    height: auto;
     pointer-events: none;
 
     @media (width >= 1700px) {
         display: block;
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}
+
+// --------------------------------------
+// Анимация появления (hero.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнул готовый экран;
+// hero.js выставляет стартовые значения и добавляет .is-ready.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .hero:not(.is-ready) {
+        .hero-content > *,
+        .hero-list li,
+        .hero-arrows .slider-arrow,
+        .hero-pagination,
+        .hero-wordmark {
+            visibility: hidden;
+        }
     }
 }

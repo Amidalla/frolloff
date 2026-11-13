@@ -1,0 +1,181 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Composition — «Что внутри» (Figma: 1920 / 1440 / 768 / 375)
+// Две колонки (нутрицевтики | аминокислоты) с золотой линией между ними,
+// справа вертикальный логотип-водяной знак (только десктоп).
+// 768: две колонки без линии, заголовки колонок по центру. Мобильный: друг под другом.
+// --------------------------------------
+
+.composition {
+    position: relative;
+    padding: var(--section-padding) 0 mix.fluid(60px, 118px);
+    overflow: clip;
+    background: var(--color-cream);
+    border-bottom: var(--section-border);
+
+    @include bp.mq(desktop-s) {
+        padding-bottom: 60px;
+    }
+
+    @include bp.mq(tablet-l) {
+        padding-bottom: 48px;
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+.composition-wordmark {
+    position: absolute;
+    top: mix.fluid(258px, 208px);
+    right: mix.fluid(73px, 119px);
+    width: mix.fluid(127px, 163px);
+    height: auto;
+    pointer-events: none;
+
+    @include bp.mq(desktop-s) {
+        top: 258px;
+        right: 73px;
+        width: 127px;
+    }
+
+    @include bp.mq(tablet-xl) {
+        display: none;
+    }
+}
+
+.composition-title {
+    @include mix.h2;
+
+    text-align: center;
+}
+
+// --------------------------------------
+// Колонки
+// --------------------------------------
+
+.composition-groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: mix.fluid(32px, 42px);
+
+    @include bp.mq(desktop-s) {
+        margin-top: 32px;
+    }
+
+    @include bp.mq(tablet-l) {
+        gap: 24px;
+        margin-top: 16px;
+    }
+
+    @include bp.mq(tablet) {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 32px;
+    }
+}
+
+.composition-group {
+    position: relative;
+    min-width: 0;
+
+    // Левая колонка: на 1920 отступ от края контейнера
+    &:first-child {
+        // Внутри clamp() ноль нужен с единицей
+        // stylelint-disable-next-line length-zero-no-unit
+        padding-left: mix.fluid(0px, 37px);
+
+        @include bp.mq(desktop-s) {
+            padding-left: 0;
+        }
+    }
+
+    // Правая колонка: золотая линия по центру
+    &:nth-child(2) {
+        padding-left: mix.fluid(51px, 53px);
+
+        @include bp.mq(desktop-s) {
+            padding-left: 51px;
+        }
+
+        &::before {
+            position: absolute;
+            top: mix.fluid(43px, -6px);
+            bottom: calc(#{mix.fluid(60px, 38px)} * -1);
+            left: 0;
+            width: 1px;
+            content: "";
+            background: var(--color-gold);
+
+            @include bp.mq(desktop-s) {
+                top: 43px;
+                bottom: -60px;
+            }
+        }
+
+        @include bp.mq(tablet-l) {
+            padding-left: 0;
+
+            &::before {
+                display: none;
+            }
+        }
+    }
+}
+
+.composition-group-title {
+    margin: 0 0 mix.fluid(39px, 43px);
+    font-family: var(--font-family-primary);
+    font-size: mix.fluid(28px, 38px);
+    font-weight: 500;
+    line-height: 1.22;
+
+    @include mix.text-gold;
+
+    @include bp.mq(desktop-s) {
+        margin-bottom: 39px;
+        font-size: 28px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-bottom: 8px;
+        font-size: 22px;
+        text-align: center;
+    }
+}
+
+.composition-list {
+    display: flex;
+    flex-direction: column;
+    gap: mix.fluid(20px, 27px);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    @include bp.mq(desktop-s) {
+        gap: 20px;
+    }
+
+    @include bp.mq(tablet-l) {
+        gap: 8px;
+    }
+}
+
+// --------------------------------------
+// Анимация появления (composition.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .composition:not(.is-ready) {
+        .composition-title,
+        .composition-wordmark,
+        .composition-group-title,
+        .composition-item {
+            visibility: hidden;
+        }
+    }
+}

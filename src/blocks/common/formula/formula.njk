@@ -1,0 +1,23 @@
+{% from "data/home.njk" import formula %}
+{% from "components/general/image/image.njk" import render as image %}
+{% from "components/common/effect-card/effect-card.njk" import render as effectCard %}
+
+<section class="formula" id="formula" data-formula>
+    {# Лист двигается за мышью — параллакс как на thecosine (data-attract) #}
+    {{ image(src="./assets/images/system/leaf-outline.svg", width=354, height=601, class="formula-leaf", decorative=true, data={ attract: "0.03" }) }}
+
+    <div class="container">
+        <div class="formula-head">
+            <h2 class="formula-title">{{ formula.title | safe }}</h2>
+            <p class="formula-text">{{ formula.text | safe }}</p>
+            <p class="formula-subtitle">{{ formula.subtitle }}</p>
+            <p class="formula-note">{{ formula.note }}</p>
+        </div>
+
+        <ul class="formula-cards">
+            {% for card in formula.cards %}
+                {{ effectCard(card) }}
+            {% endfor %}
+        </ul>
+    </div>
+</section>

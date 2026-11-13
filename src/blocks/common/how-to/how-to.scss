@@ -1,0 +1,82 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// How-to — «Как принимать» (Figma: 1920 / 1440 / 768 / 375)
+// Три шага в ряд; на 1920 шаги выровнены по центру,
+// на 1440 и 768 цифры сверху, тексты прижаты к низу.
+// Мобильный: шаги друг под другом.
+// --------------------------------------
+
+.how-to {
+    padding: var(--section-padding) 0 mix.fluid(49px, 80px);
+    background: var(--color-cream);
+    border-bottom: var(--section-border);
+
+    @include bp.mq(desktop-s) {
+        padding-bottom: 49px;
+    }
+
+    @include bp.mq(tablet-l) {
+        padding-bottom: 76px;
+    }
+
+    @include bp.mq(tablet) {
+        padding-bottom: 68px;
+    }
+}
+
+.how-to-header {
+    @include bp.mq(tablet-l) {
+        margin-bottom: 40px;
+
+        // В макете текст в 2 строки при ширине ровно 480px — даём небольшой запас
+        .section-text {
+            max-width: 500px;
+        }
+    }
+
+    @include bp.mq(tablet) {
+        margin-bottom: 16px;
+
+        .section-text {
+            max-width: none;
+        }
+    }
+}
+
+.how-to-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: mix.fluid(24px, 30px);
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    @include bp.mq(desktop-s) {
+        gap: 24px;
+        align-items: stretch;
+    }
+
+    @include bp.mq(tablet) {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+        max-width: 330px;
+        margin: 0 auto;
+    }
+}
+
+// --------------------------------------
+// Анимация появления (how-to.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .how-to:not(.is-ready) {
+        .how-to-header > *,
+        .how-to-step {
+            visibility: hidden;
+        }
+    }
+}

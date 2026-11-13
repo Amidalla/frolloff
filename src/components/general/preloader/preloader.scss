@@ -1,0 +1,102 @@
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Preloader — экран загрузки (Figma: 1920 «2preloader», 375 «modal preloader»)
+// Тёмный градиент + плитка-узор из листиков (как на 404), по центру золотой логотип,
+// слоган и проценты загрузки (Cormorant SC 400, золотой градиент).
+// Между логотипом и слоганом — невидимая «линия»: логотип выезжает вверх из-под неё,
+// слоган съезжает вниз сверху (маски overflow: hidden, анимация — preloader.js).
+// Уход: содержимое приближается и тает в размытии, фон растворяется, страница выходит из расфокуса.
+// Размеры: 1920 — логотип 504, слоган 52, проценты 110; 375 — 235 / 20; между ними плавно (vw).
+// --------------------------------------
+
+.preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 12px;
+    color: var(--color-gold);
+    text-align: center;
+
+    // Скрыт скриптом после загрузки
+    &.is-hidden {
+        display: none;
+    }
+}
+
+// Фон — отдельным слоем: при уходе он растворяется, а корень размывает страницу
+// под собой (backdrop-filter, анимирует preloader.js) — страница выходит из расфокуса
+.preloader-bg {
+    position: absolute;
+    inset: 0;
+    background:
+        url("../assets/images/system/leaf-pattern.svg") calc(50% - 47px) 27px / 101.76px 141.72px repeat,
+        var(--gradient-navy);
+}
+
+.preloader-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+// Маски: нижний край маски логотипа и верхний край маски слогана — та самая «линия»
+.preloader-logo-mask,
+.preloader-text-mask {
+    overflow: hidden;
+}
+
+.preloader-logo {
+    display: block;
+    width: clamp(235px, 26.25vw, 504px);
+    height: auto;
+
+    // Стартовое положение до запуска скрипта — под линией
+    transform: translateY(100%);
+}
+
+.preloader-text-mask {
+    margin-top: clamp(10px, 1.25vw, 24px);
+}
+
+.preloader-text {
+    @include mix.text-gold;
+
+    // Запас снизу, чтобы маска не срезала выносные элементы букв
+    padding-bottom: 0.12em;
+    margin: 0;
+    font-family: var(--font-family-secondary);
+    font-size: clamp(20px, 2.71vw, 52px);
+    font-weight: 400;
+    line-height: 1.21;
+
+    // Стартовое положение до запуска скрипта — над линией
+    transform: translateY(-100%);
+}
+
+.preloader-percent {
+    @include mix.text-gold;
+
+    margin: clamp(8px, 1vw, 19px) 0 0;
+    font-family: var(--font-family-secondary);
+    font-size: clamp(48px, 5.73vw, 110px);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.21;
+    opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .preloader-logo,
+    .preloader-text {
+        transform: none;
+    }
+
+    .preloader-percent {
+        opacity: 1;
+    }
+}

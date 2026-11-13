@@ -1,0 +1,18 @@
+{#
+    Пункт состава: круглая галочка + название + дозировка (блок «Что внутри»).
+    item: { name, value }
+    variant: gold (золотой круг, светлая галочка) | navy (синий круг, золотая галочка)
+#}
+{% macro render(item, variant="gold", class="") %}
+    <li class="composition-item {{ variant }}{% if class %} {{ class }}{% endif %}">
+        <span class="check" aria-hidden="true">
+            <svg viewBox="0 0 32 32" focusable="false">
+                <path d="M8.1 17.5C10.7 19.1 13.5 23.5 13.5 23.5C13.5 23.5 18.7 14.2 23.9 9.2" />
+            </svg>
+        </span>
+        <span class="body">
+            <span class="name">{{ item.name }}</span>
+            {% if item.value %}<span class="value">{{ item.value }}</span>{% endif %}
+        </span>
+    </li>
+{% endmacro %}

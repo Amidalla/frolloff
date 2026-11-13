@@ -1,0 +1,307 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Reviews — «Отзывы» (Figma: 1920 / 1440 / 768 / 375)
+// Тёмный фон. Слева заголовок, оценка и плашка со ссылками на отзывы
+// в маркетплейсах; справа композиция из стиков (одна PNG). Справа лист-контур.
+// 768: заголовок по центру, плашка столбиком + стики рядом. 375: без стиков, только логотипы.
+// --------------------------------------
+
+.reviews {
+    position: relative;
+    min-height: mix.fluid(536px, 618px);
+    padding: 80px 0 var(--section-padding);
+    overflow: hidden;
+    color: var(--color-milk);
+    background: var(--gradient-navy);
+
+    // В макете 1440 отступ сверху тоже 80px
+    @include bp.mq(desktop-s) {
+        min-height: 536px;
+    }
+
+    @include bp.mq(tablet-l) {
+        min-height: 0;
+        padding-top: var(--section-padding);
+    }
+
+    .container {
+        position: static;
+    }
+}
+
+.reviews-leaf {
+    position: absolute;
+    right: mix.fluid(74px, 103px);
+    bottom: mix.fluid(34px, 23px);
+    width: mix.fluid(268px, 340px);
+    height: auto;
+    pointer-events: none;
+
+    @include bp.mq(desktop-s) {
+        right: 74px;
+        bottom: 34px;
+        width: 268px;
+    }
+
+    @include bp.mq(tablet-l) {
+        right: 61px;
+        bottom: 101px;
+        width: 165px;
+    }
+
+    // На 375 лист в макете ниже и шире (306px по высоте) — держим высоту
+    @include bp.mq(tablet) {
+        right: 12px;
+        bottom: 58px;
+        width: 180px;
+    }
+}
+
+// Колонка без position — стики (.reviews-visual) позиционируются от секции;
+// текст и плашка подняты над листом-контуром
+.reviews-head,
+.reviews-links {
+    position: relative;
+    z-index: 1;
+}
+
+// --------------------------------------
+// Заголовок
+// --------------------------------------
+
+.reviews-head {
+    max-width: mix.fluid(659px, 820px);
+
+    @include bp.mq(desktop-s) {
+        max-width: 659px;
+    }
+
+    @include bp.mq(tablet-l) {
+        max-width: none;
+        text-align: center;
+    }
+}
+
+.reviews-label {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.22;
+
+    @include bp.mq(tablet-l) {
+        display: none;
+    }
+}
+
+.reviews-title {
+    @include mix.h2;
+}
+
+.reviews-subtitle {
+    margin: mix.fluid(15px, 24px) 0 0;
+    font-size: mix.fluid(28px, 38px);
+    font-weight: 500;
+    line-height: 1.22;
+
+    @include mix.text-gold;
+
+    @include bp.mq(desktop-s) {
+        margin-top: 15px;
+        font-size: 28px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-top: 16px;
+        font-size: 23px;
+    }
+
+    @include bp.mq(tablet) {
+        max-width: 318px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+// --------------------------------------
+// Плашка со ссылками и стики
+// --------------------------------------
+
+.reviews-body {
+    margin-top: mix.fluid(32px, 40px);
+
+    @include bp.mq(desktop-s) {
+        margin-top: 32px;
+    }
+
+    // 768: плашка и стики рядом (пара чуть смещена влево, как в макете)
+    @include bp.mq(tablet-l) {
+        display: flex;
+        gap: 26px;
+        align-items: flex-start;
+        justify-content: center;
+        padding-right: 36px;
+        margin-top: 40px;
+    }
+
+    @include bp.mq(tablet) {
+        display: block;
+        padding-right: 0;
+        margin-top: 31px;
+    }
+}
+
+.reviews-links {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: mix.fluid(659px, 835px);
+    max-width: 100%;
+    padding: 20px 50px;
+    margin: 0;
+    color: var(--color-ink);
+    list-style: none;
+    background: var(--color-milk);
+    border: 1px solid var(--color-gold);
+    border-radius: mix.fluid(15px, 30px);
+
+    @include bp.mq(desktop-s) {
+        width: 659px;
+        border-radius: 15px;
+    }
+
+    @include bp.mq(tablet-l) {
+        flex: 0 0 auto;
+        flex-direction: column;
+        gap: 50px;
+        align-items: flex-start;
+        width: 238px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    @include bp.mq(tablet) {
+        flex-direction: row;
+        gap: 40px;
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+.reviews-link {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+
+    .text {
+        font-size: mix.fluid(16px, 20px);
+        font-weight: 600;
+        line-height: 1.22;
+        white-space: nowrap;
+        transition: color var(--transition);
+
+        @include bp.mq(desktop-s) {
+            font-size: 16px;
+        }
+
+        @include bp.mq(tablet-l) {
+            font-size: 18px;
+        }
+
+        @include bp.mq(tablet) {
+            display: none;
+        }
+    }
+
+    .logo {
+        display: block;
+        flex: 0 0 auto;
+        width: 53px;
+        height: 53px;
+        overflow: hidden;
+
+        @include bp.mq(tablet) {
+            width: 50px;
+            height: 50px;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &.ozon .logo {
+        border-radius: 11px;
+    }
+
+    &.ym .logo {
+        background: #ff5226;
+        border-radius: 10px;
+    }
+
+    // Глобальный a:hover подчёркивает ссылки — здесь без подчёркивания
+    &:hover {
+        text-decoration: none;
+
+        .text {
+            color: var(--color-gold);
+        }
+    }
+
+    &:focus-visible {
+        outline: 1px solid var(--color-gold);
+        outline-offset: 4px;
+    }
+}
+
+// Стики: на десктопе — справа (позиция от правого края секции), 768 — рядом с плашкой, 375 — нет
+.reviews-visual {
+    position: absolute;
+    top: mix.fluid(69px, 31px);
+    right: mix.fluid(122px, 274px);
+    z-index: 1;
+    width: mix.fluid(438px, 571px);
+
+    @include bp.mq(desktop-s) {
+        top: 69px;
+        right: 122px;
+        width: 438px;
+    }
+
+    @include bp.mq(tablet-l) {
+        position: static;
+        flex: 0 0 auto;
+        width: 318px;
+    }
+
+    @include bp.mq(tablet) {
+        display: none;
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}
+
+// --------------------------------------
+// Анимация появления (reviews.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .reviews:not(.is-ready) {
+        .reviews-head > *,
+        .reviews-links,
+        .reviews-visual,
+        .reviews-leaf {
+            visibility: hidden;
+        }
+    }
+}

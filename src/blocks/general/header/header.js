@@ -1,21 +1,28 @@
+import { onScrollDirection } from "../../../js/utils/scroll-direction.js";
+
+// --------------------------------------
+// Шапка: над первым экраном прозрачная (.is-sticky нет).
+// После прокрутки: при прокрутке вниз — прилипшая с тёмным фоном (.is-sticky),
+// при прокрутке вверх — уезжает вверх (.is-hidden). У самого верха страницы видна всегда.
+// --------------------------------------
+
 export function header(context = document) {
     const root = context.querySelector("header.header");
     if (!root || root.dataset.init === "true") return;
 
     root.dataset.init = "true";
 
-    const toggleSticky = () => {
-        root.classList.toggle("is-sticky", window.scrollY > 0);
-    };
+    const controller = new AbortController();
+    const { signal } = controller;
 
-    window.addEventListener("scroll", toggleSticky, { passive: true });
-    toggleSticky();
-
-    root.addEventListener(
-        "destroy",
-        () => {
-            window.removeEventListener("scroll", toggleSticky);
+    onScrollDirection(
+        ({ y, direction }) => {
+            const nearTop = y <= root.offsetHeight;
+            root.classList.toggle("is-sticky", y > 0);
+            root.classList.toggle("is-hidden", !nearTop && direction === "up");
         },
-        { once: true }
+        { signal }
     );
+
+    root.addEventListener("destroy", () => controller.abort(), { once: true });
 }

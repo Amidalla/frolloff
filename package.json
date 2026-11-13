@@ -54,9 +54,9 @@
   },
   "dependencies": {
     "@fancyapps/ui": "^6.1.13",
+    "gsap": "^3.13.0",
     "imask": "^7.6.1",
     "lozad": "^1.16.0",
-    "nice-select2": "^2.4.1",
     "swiper": "^12.1.2"
   },
   "browserslist": [

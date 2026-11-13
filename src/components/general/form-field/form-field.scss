@@ -1,0 +1,237 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Form field — поле формы Froloff: рамка-«пилюля», подпись лежит на верхней рамке
+// (фон подписи — цвет секции, --form-field-bg). Поле ввода или нативный select
+// со стрелкой. Высота 58 → 48 (1440) → 42 (≤1023). Ошибку выводит form.js (.field-error).
+// --------------------------------------
+
+.form-field {
+    --form-field-height: #{mix.fluid(48px, 58px)};
+    --form-field-font: #{mix.fluid(16px, 20px)};
+    --form-field-label: #{mix.fluid(12px, 14px)};
+    --form-field-pad: 36px;
+    --form-field-bg: var(--color-milk);
+    --form-field-border: var(--color-ink);
+
+    position: relative;
+    width: 100%;
+    min-width: 0;
+
+    @include bp.mq(desktop-s) {
+        --form-field-height: 48px;
+        --form-field-font: 16px;
+        --form-field-label: 12px;
+    }
+
+    @include bp.mq(tablet-l) {
+        --form-field-height: 42px;
+    }
+
+    .control {
+        display: block;
+        width: 100%;
+        height: var(--form-field-height);
+        padding: 0 var(--form-field-pad);
+        font: inherit;
+        font-size: var(--form-field-font);
+        line-height: 1.22;
+        color: var(--color-ink);
+        appearance: none;
+        outline: none;
+        background: transparent;
+        border: 1px solid var(--form-field-border);
+        border-radius: 100px;
+        transition: border-color var(--transition);
+
+        &::placeholder {
+            color: var(--color-ink);
+            opacity: 1;
+        }
+
+        &:hover,
+        &:focus {
+            border-color: var(--color-gold);
+        }
+    }
+
+    // Подпись на верхней рамке
+    .field-label {
+        position: absolute;
+        top: 0;
+        left: 31px;
+        padding: 0 9px;
+        font-size: var(--form-field-label);
+        line-height: 1.22;
+        color: var(--color-ink);
+        text-transform: uppercase;
+        pointer-events: none;
+        background: var(--form-field-bg);
+        border-radius: 5px;
+        transform: translateY(-50%);
+    }
+
+    // Select: место под стрелку, первая (пустая) опция — как плейсхолдер
+    &.is-select {
+        .control {
+            padding-right: calc(var(--form-field-pad) + 24px);
+            cursor: pointer;
+        }
+
+        .chevron {
+            position: absolute;
+            top: calc(var(--form-field-height) / 2);
+            right: 24px;
+            width: 14px;
+            height: 8px;
+            pointer-events: none;
+            fill: none;
+            stroke: var(--color-gold);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transform: translateY(-50%);
+            transition: transform var(--transition);
+        }
+
+        &.is-open {
+            .control {
+                border-color: var(--color-gold);
+            }
+
+            .chevron {
+                transform: translateY(-50%) rotate(180deg);
+            }
+        }
+    }
+
+    // --------------------------------------
+    // Свой выпадающий список (form-field.js, только устройства с мышью):
+    // молочная карточка с золотой рамкой, группы — золотые подписи, выбранный вкус — золотой
+    // --------------------------------------
+
+    .field-dropdown {
+        position: absolute;
+        top: calc(var(--form-field-height) + 8px);
+        right: 0;
+        left: 0;
+        z-index: 20;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: left;
+        background: var(--color-milk);
+        border: 1px solid var(--color-gold);
+        border-radius: 20px;
+        box-shadow: 0 12px 32px rgb(12 35 72 / 18%);
+        opacity: 0;
+        transform: translateY(-6px);
+        transition:
+            opacity var(--transition),
+            transform var(--transition),
+            visibility var(--transition);
+    }
+
+    // Прокрутка внутри карточки: тонкая золотая полоса без стрелок, с отступом от углов
+    .field-dropdown-scroll {
+        max-height: 320px;
+        padding: 12px 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        &::-webkit-scrollbar-button {
+            display: none;
+            height: 0;
+        }
+
+        &::-webkit-scrollbar-track {
+            margin: 16px 0;
+            background: transparent;
+        }
+
+        // Бегунок 4px: прозрачная рамка задаёт отступ от края карточки
+        &::-webkit-scrollbar-thumb {
+            background: rgb(215 155 87 / 60%);
+            background-clip: padding-box;
+            border: 3px solid transparent;
+            border-radius: 10px;
+        }
+
+        // Браузеры без ::-webkit-scrollbar (Firefox) — стандартные свойства
+        @supports not selector(::-webkit-scrollbar) {
+            scrollbar-color: rgb(215 155 87 / 60%) transparent;
+            scrollbar-width: thin;
+        }
+    }
+
+    &.is-open .field-dropdown {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    // Не хватает места внизу — список над полем (класс ставит form-field.js)
+    &.is-up .field-dropdown {
+        top: auto;
+        bottom: calc(100% + 8px);
+        transform: translateY(6px);
+    }
+
+    &.is-up.is-open .field-dropdown {
+        transform: translateY(0);
+    }
+
+    .field-group + .field-group {
+        padding-top: 6px;
+        margin-top: 6px;
+        border-top: 1px solid rgb(215 155 87 / 35%);
+    }
+
+    .field-group-title {
+        padding: 8px var(--form-field-pad) 4px;
+        font-size: var(--form-field-label);
+        font-weight: 500;
+        line-height: 1.22;
+        color: var(--color-gold);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .field-option {
+        position: relative;
+        padding: 8px var(--form-field-pad);
+        font-size: var(--form-field-font);
+        line-height: 1.22;
+        color: var(--color-ink);
+        cursor: pointer;
+        transition:
+            color var(--transition),
+            background-color var(--transition);
+
+        &.is-active {
+            background-color: rgb(215 155 87 / 14%);
+        }
+
+        &.is-selected {
+            font-weight: 500;
+            color: var(--color-gold);
+        }
+    }
+
+    // Ошибка (класс ставит form.js)
+    &.invalid .control {
+        border-color: var(--color-bordo);
+    }
+
+    .field-error {
+        display: block;
+        margin: 4px 0 0 var(--form-field-pad);
+        font-size: 12px;
+        line-height: 1.3;
+        color: var(--color-bordo);
+    }
+}

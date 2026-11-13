@@ -1,7 +1,7 @@
 // --------------------------------------
 // Fonts (woff2, latin + cyrillic subsets)
 // Montserrat 400/500/600 — основной текст
-// Cormorant SC 600 — заголовки
+// Cormorant SC 600 — заголовки, 400 — «404 ошибка»
 // --------------------------------------
 
 @use "sass:map";
@@ -51,6 +51,11 @@ $fonts: (
         family: "Montserrat",
         file: "montserrat",
         weight: 600
+    ),
+    (
+        family: "Cormorant SC",
+        file: "cormorant-sc",
+        weight: 400
     ),
     (
         family: "Cormorant SC",

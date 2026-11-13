@@ -1,0 +1,20 @@
+{% macro render(
+        text="",
+        logo="./assets/images/system/logo-gold.svg",
+        class=""
+    ) %}
+    <div class="preloader{% if class %} {{ class }}{% endif %}" data-preloader role="status" aria-live="polite" aria-label="Загрузка страницы">
+        <div class="preloader-bg" aria-hidden="true"></div>
+        <div class="preloader-inner">
+            <div class="preloader-logo-mask">
+                <img class="preloader-logo" src="{{ logo }}" width="504" height="150" alt="Froloff" />
+            </div>
+            {% if text %}
+                <div class="preloader-text-mask">
+                    <p class="preloader-text">{{ text }}</p>
+                </div>
+            {% endif %}
+            <p class="preloader-percent" data-preloader-percent>0%</p>
+        </div>
+    </div>
+{% endmacro %}

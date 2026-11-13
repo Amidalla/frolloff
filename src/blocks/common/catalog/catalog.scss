@@ -1,0 +1,195 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Catalog — «Выбирайте то, что ближе» (Figma: 1920 / 1440 / 768 / 375)
+// Каждая группа — слайдер (4 / 2 карточки); при 4 товарах и меньше — сетка без стрелок.
+// Карточка — components/common/product-card.
+// Отступ между карточками (--catalog-gap) читает и слайдер (catalog.js).
+// --------------------------------------
+
+.catalog {
+    --catalog-gap: #{mix.fluid(24px, 30px)};
+    --catalog-row-gap: var(--catalog-gap);
+
+    padding: var(--section-padding) 0 mix.fluid(60px, 107px);
+    overflow: hidden;
+    background: var(--color-milk);
+    border-bottom: var(--section-border);
+
+    @include bp.mq(desktop-s) {
+        --catalog-gap: 24px;
+
+        padding-bottom: 60px;
+    }
+
+    @include bp.mq(tablet-l) {
+        padding-bottom: 48px;
+        background: #efedd8;
+    }
+
+    @include bp.mq(tablet) {
+        --catalog-gap: 22px;
+        --catalog-row-gap: 12px;
+    }
+}
+
+.catalog-title {
+    @include mix.h2;
+
+    margin-bottom: mix.fluid(15px, 42px);
+    text-align: center;
+
+    @include bp.mq(desktop-s) {
+        margin-bottom: 15px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-bottom: 16px;
+    }
+}
+
+.catalog-group {
+    & + & {
+        margin-top: mix.fluid(60px, 100px);
+
+        @include bp.mq(desktop-s) {
+            margin-top: 60px;
+        }
+
+        @include bp.mq(tablet-l) {
+            margin-top: 48px;
+        }
+
+        @include bp.mq(tablet) {
+            margin-top: 42px;
+        }
+    }
+}
+
+.catalog-group-title {
+    margin: 0 0 mix.fluid(41px, 62px);
+    font-family: var(--font-family-primary);
+    font-size: mix.fluid(28px, 38px);
+    font-weight: 500;
+    line-height: 1.22;
+    text-align: center;
+
+    @include mix.text-gold;
+
+    @include bp.mq(desktop-s) {
+        margin-bottom: 41px;
+        font-size: 28px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-bottom: 24px;
+        font-size: 16px;
+    }
+}
+
+// --------------------------------------
+// Слайдер группы. 4 товара и меньше (.is-static) — сетка без стрелок,
+// Swiper не запускается: 4 в ряд, ≤1023 — 2 в ряд
+// --------------------------------------
+
+.catalog-slider {
+    position: relative;
+    column-gap: var(--catalog-gap); // не влияет на вёрстку, отсюда JS берёт отступ слайдера
+
+    // Поля сверху/снизу, чтобы выросшая при наведении карточка и её тень не обрезались
+    .swiper {
+        padding: 40px 0;
+        margin: -40px 0;
+        overflow: hidden;
+    }
+
+    .swiper-slide {
+        height: auto;
+    }
+
+    &.is-static {
+        .swiper-wrapper {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: var(--catalog-row-gap) var(--catalog-gap);
+
+            @include bp.mq(tablet-l) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .swiper-slide {
+            width: auto;
+        }
+    }
+}
+
+.catalog-arrows {
+    @include bp.mq(tablet-l) {
+        display: flex;
+        gap: 18px;
+        justify-content: center;
+        margin-top: 24px;
+    }
+
+    @include bp.mq(tablet) {
+        margin-top: 10px;
+    }
+
+    // Десктоп: стрелки по центру высоты карточек, центр стрелки — на краю контейнера
+    .slider-arrow {
+        --arrow-size: #{mix.fluid(46px, 80px)};
+
+        position: absolute;
+        top: 50%;
+        z-index: 3;
+        transform: translateY(-50%);
+
+        @include bp.mq(desktop-s) {
+            --arrow-size: 46px;
+        }
+
+        @include bp.mq(tablet-l) {
+            --arrow-size: 44px;
+            --arrow-stroke-width: 1px;
+
+            // relative, а не static: иконка стрелки позиционируется внутри кнопки
+            position: relative;
+            top: auto;
+            transform: none;
+        }
+    }
+
+    .catalog-prev {
+        left: calc(var(--arrow-size) / -2);
+
+        @include bp.mq(tablet-l) {
+            left: auto;
+        }
+    }
+
+    .catalog-next {
+        right: calc(var(--arrow-size) / -2);
+
+        @include bp.mq(tablet-l) {
+            right: auto;
+        }
+    }
+}
+
+// --------------------------------------
+// Анимация появления (catalog.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .catalog:not(.is-ready) {
+        .catalog-title,
+        .catalog-group-title,
+        .product-card,
+        .catalog-arrows .slider-arrow {
+            visibility: hidden;
+        }
+    }
+}

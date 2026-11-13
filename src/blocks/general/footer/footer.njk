@@ -14,7 +14,7 @@
             </div>
 
             {% for column in footerNav %}
-                {{ navigationBottom(title=column.title, items=column.items, class="footer-nav") }}
+                {{ navigationBottom(title=column.title, items=column.items, class="footer-nav", linkBase=(linkBase or "")) }}
             {% endfor %}
             {{ navigationBottom(title="Контакты", items=contacts, class="footer-nav footer-contacts") }}
 

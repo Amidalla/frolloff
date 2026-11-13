@@ -1,0 +1,35 @@
+{% from "data/home.njk" import about %}
+{% from "blocks/general/section/section-header.njk" import render as sectionHeader %}
+{% from "components/general/image/image.njk" import render as image %}
+
+<section class="about" id="about" data-about>
+    {# Лист двигается за мышью — параллакс как на thecosine (data-attract) #}
+    {{ image(src="./assets/images/system/leaf-outline.svg", width=354, height=601, class="about-leaf", decorative=true, data={ attract: "0.03" }) }}
+
+    <div class="container">
+        {{ sectionHeader(label=about.label, title=about.title, class="about-header") }}
+
+        <div class="about-text" data-read-more>
+            <div class="about-paragraphs" id="about-more" data-read-more-content data-editor>
+                {% for paragraph in about.paragraphs %}
+                    <p>{{ paragraph | safe }}</p>
+                {% endfor %}
+            </div>
+            <button
+                class="read-more-toggle"
+                type="button"
+                data-read-more-toggle
+                data-text-open="{{ about.more.open }}"
+                data-text-close="{{ about.more.close }}"
+                aria-controls="about-more"
+                aria-expanded="false"
+            >{{ about.more.open }}</button>
+        </div>
+    </div>
+
+    <div class="about-photo">
+        {% for photo in about.images %}
+            {{ image(src=photo.src, width=photo.width, height=photo.height, alt=about.imageAlt, class=photo.size) }}
+        {% endfor %}
+    </div>
+</section>

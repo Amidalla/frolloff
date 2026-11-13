@@ -1,0 +1,130 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Not found — страница 404 (Figma: только 1920, остальные размеры — по пропорциям)
+// Тёмный фон с узором из листиков (плитка leaf-pattern.svg, прозрачность 10%),
+// золотой «404 ошибка» (Cormorant SC 400), подзаголовок, текст, кнопка «На главную».
+// Занимает экран целиком (под фиксированной шапкой).
+// --------------------------------------
+
+.not-found {
+    display: flex;
+    align-items: flex-start;
+    min-height: max(100vh, 600px);
+    min-height: max(100svh, 600px);
+    padding: calc(var(--header-height) + #{mix.fluid(60px, 78px)}) 0 var(--section-padding);
+    color: var(--color-milk);
+    text-align: center;
+    background:
+        url("../assets/images/system/leaf-pattern.svg") calc(50% - 47px) 27px / 101.76px 141.72px repeat,
+        var(--gradient-navy);
+
+    @include bp.mq(desktop-s) {
+        padding-top: calc(var(--header-height) + 60px);
+    }
+
+    @include bp.mq(tablet-l) {
+        padding-top: calc(var(--header-height) + 48px);
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.not-found-title {
+    margin: 0;
+    font-family: var(--font-family-secondary);
+    font-size: mix.fluid(110px, 148px);
+    font-weight: 400;
+    line-height: 1.21;
+
+    @include mix.text-gold;
+
+    @include bp.mq(desktop-s) {
+        font-size: 110px;
+    }
+
+    @include bp.mq(tablet-l) {
+        font-size: 80px;
+    }
+
+    @include bp.mq(tablet) {
+        font-size: 56px;
+    }
+}
+
+.not-found-subtitle {
+    margin: mix.fluid(4px, 21px) 0 0;
+    font-size: mix.fluid(32px, 42px);
+    line-height: 1.3;
+    text-transform: uppercase;
+
+    @include bp.mq(desktop-s) {
+        margin-top: 4px;
+        font-size: 32px;
+    }
+
+    @include bp.mq(tablet-l) {
+        font-size: 26px;
+    }
+
+    @include bp.mq(tablet) {
+        font-size: 20px;
+    }
+}
+
+.not-found-text {
+    max-width: mix.fluid(620px, 807px);
+    margin: mix.fluid(16px, 24px) 0 0;
+    font-size: mix.fluid(18px, 24px);
+    line-height: 1.4;
+
+    @include bp.mq(desktop-s) {
+        max-width: 620px;
+        margin-top: 16px;
+        font-size: 18px;
+    }
+
+    @include bp.mq(tablet) {
+        font-size: 16px;
+    }
+}
+
+.button.not-found-button {
+    min-width: mix.fluid(240px, 290px);
+    margin-top: mix.fluid(32px, 37px);
+
+    @include bp.mq(desktop-s) {
+        --button-height: 50px;
+        --button-font-size: 16px;
+
+        min-width: 240px;
+        margin-top: 32px;
+    }
+
+    @include bp.mq(tablet) {
+        width: 100%;
+        max-width: 290px;
+        margin-top: 28px;
+    }
+}
+
+// --------------------------------------
+// Анимация появления (not-found.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .not-found:not(.is-ready) {
+        .not-found-title,
+        .not-found-subtitle,
+        .not-found-text,
+        .not-found-button {
+            visibility: hidden;
+        }
+    }
+}

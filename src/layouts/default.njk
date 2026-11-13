@@ -1,27 +1,34 @@
 {% from "components/general/consent-notice/consent-notice.njk" import render as consentNotice %}
+{% from "components/general/preloader/preloader.njk" import render as preloader %}
+{% from "components/general/scroll-top/scroll-top.njk" import render as scrollTop %}
 
 <!DOCTYPE html>
 <html lang="ru">
     <head>
         {% include "blocks/general/meta/meta.njk" %}
         <link rel="stylesheet" href="./css/bundle.css" />
+        {# Без JS прелоадер сам не уйдёт — прячем его #}
+        <noscript><style>.preloader { display: none; } body.is-loading { overflow: auto; }</style></noscript>
     </head>
-    <body>
+    <body class="is-loading">
+        {{ preloader(text="Ваше здоровье — наша репутация.") }}
         {% include "components/general/svg-defs/svg-defs.njk" %}
         <div class="site">
             {% include "blocks/general/header/header.njk" %}
             <main class="page">
                 {% block content %}{% endblock %}
             </main>
-            {% include "blocks/general/footer/footer.njk" %}
+            {% if not hideFooter %}
+                {% include "blocks/general/footer/footer.njk" %}
+            {% endif %}
 
             <div class="overlay"></div>
             {% include "components/general/menu/menu.njk" %}
 
-            {% include "components/common/popup-callback/popup-callback.njk" %}
-            {% include "components/common/popup-callback-success/popup-callback-success.njk" %}
-            {% include "components/common/popup-feedback/popup-feedback.njk" %}
-            {% include "components/common/popup-feedback-success/popup-feedback-success.njk" %}
+            {{ scrollTop() }}
+
+            {% include "components/common/modal-shop/modal-shop.njk" %}
+            {% include "components/common/modal-order-success/modal-order-success.njk" %}
 
             {% set consentContent %}
                 Мы используем файлы cookie и сервис веб-аналитики Яндекс Метрика для улучшения работы сайта. Оставаясь на

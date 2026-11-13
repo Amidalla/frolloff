@@ -1,0 +1,7 @@
+{% set meta = { title: "Страница не найдена — Froloff" } %}
+{% set hideFooter = true %}
+{% set linkBase = "./home.html" %}
+{% extends "layouts/default.njk" %}
+{% block content %}
+    {% include "blocks/common/not-found/not-found.njk" %}
+{% endblock %}

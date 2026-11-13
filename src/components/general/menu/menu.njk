@@ -4,6 +4,13 @@
 {% from "components/common/contacts-list/contacts-list.njk" import render as contactsList %}
 {% from "components/general/image/image.njk" import render as image %}
 
+{# linkBase задаёт страница (на 404 — "./home.html"): якорные ссылки ведут на главную #}
+{% set navItems = [] %}
+{% for item in mainNav %}
+    {% set _ = navItems.push({ title: item.title, href: (linkBase or "") + item.href }) %}
+{% endfor %}
+{% set ctaHref = (linkBase or "") + cta.href %}
+
 <div class="menu" id="menu" data-dropdown="menu">
     <div class="menu-header">
         <span class="menu-title">Меню</span>
@@ -11,9 +18,9 @@
     </div>
 
     <div class="menu-body">
-        {{ navigationMobile(items=mainNav, ariaLabel="Меню") }}
+        {{ navigationMobile(items=navItems, ariaLabel="Меню") }}
 
-        {{ button(text=cta.text, href=cta.href, type="link", variant="border", size="s", class="medium menu-cta") }}
+        {{ button(text=cta.text, href=ctaHref, type="link", variant="border", size="s", class="medium menu-cta") }}
 
         {{ contactsList(items=contacts, class="menu-contacts") }}
     </div>

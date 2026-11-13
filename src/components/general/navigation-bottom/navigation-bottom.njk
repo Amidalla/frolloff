@@ -2,12 +2,14 @@
     Колонка ссылок с заголовком (подвал).
     В 1С-Битрикс: заголовок + шаблон компонента bitrix:menu (ul > li > a).
     items: [{ title, href, target, ariaCurrent, class }]
+    linkBase — префикс для якорных ссылок на других страницах («./home.html» → «./home.html#faq»)
 #}
 {% macro render(
         title="",
         items=[],
         class="",
-        ariaLabel=""
+        ariaLabel="",
+        linkBase=""
     ) %}
     {% set navClasses = "navigation-bottom" %}
     {% if class %}
@@ -22,7 +24,7 @@
             {% for item in items %}
                 <li{% if item.class %} class="{{ item.class }}"{% endif %}>
                     <a
-                        href="{{ item.href }}"
+                        href="{{ (linkBase + item.href) if (linkBase and item.href.indexOf("#") == 0 and item.href != "#") else item.href }}"
                         {% if item.target %}
                             target="{{ item.target }}" rel="noopener"
                         {% endif %}

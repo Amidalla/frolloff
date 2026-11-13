@@ -1,0 +1,19 @@
+{#
+    Шаг приёма: крупная цифра (картинка) + заголовок + текст.
+    step: { number: { src, width, height, alt }, title, text }
+    Высота цифры задаётся относительно размера цифр блока (--how-to-number-size),
+    поэтому пропорции цифр между собой сохраняются на всех разрешениях.
+#}
+{% from "components/general/image/image.njk" import render as image %}
+
+{% macro render(step, class="") %}
+    <li class="how-to-step{% if class %} {{ class }}{% endif %}">
+        <span class="number" style="--number-ratio: {{ step.number.height / 100 }}">
+            {{ image(src=step.number.src, width=step.number.width, height=step.number.height, alt=step.number.alt) }}
+        </span>
+        <span class="body">
+            <span class="title">{{ step.title }}</span>
+            <span class="text">{{ step.text | safe }}</span>
+        </span>
+    </li>
+{% endmacro %}

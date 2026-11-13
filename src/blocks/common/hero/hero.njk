@@ -24,5 +24,8 @@
         </div>
     {% endif %}
 
-    {{ image(src="./assets/images/system/hero-wordmark.svg", width=86, height=533, class="hero-wordmark", decorative=true) }}
+    {# Обёртка двигается за курсором (data-attract), картинку внутри анимирует появление в hero.js #}
+    <div class="hero-wordmark" data-attract="0.3" data-attract-y="0.05" aria-hidden="true">
+        {{ image(src="./assets/images/system/hero-wordmark.svg", width=86, height=533, decorative=true) }}
+    </div>
 </section>

@@ -1,0 +1,51 @@
+{% from "data/home.njk" import order %}
+{% from "components/general/image/image.njk" import render as image %}
+{% from "components/general/button/button.njk" import render as button %}
+{% from "components/general/form-field/form-field.njk" import render as formField %}
+{% from "components/general/consent-checkbox/consent-checkbox.njk" import render as consentCheckbox %}
+
+<section class="order" id="order" data-order>
+    {# Лист двигается за мышью — параллакс как на thecosine (data-attract) #}
+    {# Обёртка обрезает только лист — секция без overflow: hidden, чтобы выпадающий список формы мог выходить за неё #}
+    <div class="order-decor" aria-hidden="true">
+        {{ image(src="./assets/images/system/leaf-outline.svg", width=354, height=601, class="order-leaf", decorative=true, data={ attract: "0.03" }) }}
+    </div>
+
+    <div class="container">
+        <div class="order-inner">
+            <div class="order-info">
+                <p class="order-label">{{ order.label }}</p>
+                <h2 class="order-title">{{ order.title }}</h2>
+                <p class="order-text">{{ order.text }}</p>
+
+                <p class="order-markets-title">{{ order.marketsTitle }}</p>
+                <ul class="order-markets">
+                    {% for market in order.markets %}
+                        <li>
+                            <a class="order-market" href="{{ market.href }}" target="_blank" rel="noopener">{{ market.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <p class="order-note">
+                    <svg class="check" viewBox="0 0 46 45" aria-hidden="true" focusable="false">
+                        <path d="M11.66 24.7C15.35 26.97 19.37 33.28 19.37 33.28C19.37 33.28 26.85 19.98 34.34 12.72" />
+                    </svg>
+                    <span>{{ order.note }}</span>
+                </p>
+            </div>
+
+            <form class="form order-form" action="#" method="post" data-validate="submit" novalidate>
+                {{ formField(label="Ваше имя", name="name", autocomplete="name", required=true, error="Укажите имя") }}
+                {{ formField(label="Телефон", name="phone", type="tel", placeholder="+7", mask="phone", autocomplete="tel", inputmode="tel", required=true, error="Укажите телефон полностью") }}
+                {{ formField(label="Вкус", name="flavor", placeholder="Выберите вкус", options=order.flavors, required=true, error="Выберите вкус") }}
+
+                <div class="field-consent">
+                    {{ consentCheckbox(id="order-consent", name="consent", required=true, text=order.consent, error="Подтвердите согласие") }}
+                </div>
+
+                {{ button(text=order.submit, type="submit", variant="blue", size="l", class="order-submit") }}
+            </form>
+        </div>
+    </div>
+</section>

@@ -34,8 +34,12 @@ export function form(context = document) {
             return true;
         };
 
+        // data-validate="submit": кнопка всегда активна, ошибки показываются при отправке.
+        // Иначе (data-validate без значения) кнопка заблокирована, пока поля не заполнены.
+        const validateOnSubmit = root.dataset.validate === "submit";
+
         const updateSubmitState = () => {
-            if (!submitBtn) return;
+            if (!submitBtn || validateOnSubmit) return;
             submitBtn.disabled = ![...requiredFields].every(isFieldValid);
         };
 
@@ -100,6 +104,21 @@ export function form(context = document) {
                 { signal }
             );
         });
+
+        if (validateOnSubmit) {
+            root.addEventListener(
+                "submit",
+                (event) => {
+                    const invalid = [...requiredFields].filter((field) => !isFieldValid(field));
+                    if (!invalid.length) return;
+
+                    event.preventDefault();
+                    invalid.forEach(validateField);
+                    invalid[0].focus();
+                },
+                { signal }
+            );
+        }
 
         updateSubmitState();
 

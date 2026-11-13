@@ -1,0 +1,13 @@
+{% from "data/home.njk" import faq %}
+{% from "blocks/general/section/section-header.njk" import render as sectionHeader %}
+{% from "components/general/accordion/accordion.njk" import render as accordion %}
+
+<section class="section milk bordered faq" id="faq" data-faq>
+    <div class="container">
+        {{ sectionHeader(label=faq.label, title=faq.title, align="center", class="faq-header") }}
+
+        <div class="faq-list">
+            {{ accordion(items=faq.items, openFirst=false, id="faq-accordion") }}
+        </div>
+    </div>
+</section>

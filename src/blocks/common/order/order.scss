@@ -1,0 +1,346 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Order — «Попробуйте курс» (Figma: 1920 / 1440 / 768 / 375)
+// Слева: метка, заголовок, текст, кнопки маркетплейсов, «30 стиков в упаковке».
+// Справа: форма заказа (components/general/form-field + consent-checkbox, валидация — form.js).
+// ≤1023: всё по центру, форма под текстом шириной 351px. Лист-контур справа — только десктоп.
+// --------------------------------------
+
+.order {
+    position: relative;
+    padding: var(--section-padding) 0;
+    background: var(--color-milk);
+    border-bottom: var(--section-border);
+
+    .container {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+// Декор секции обрезается здесь (сама секция не обрезает содержимое — см. выпадающий список формы)
+.order-decor {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.order-leaf {
+    position: absolute;
+    right: mix.fluid(72px, 53px);
+    bottom: mix.fluid(34px, 13px);
+    width: mix.fluid(255px, 327px);
+    height: auto;
+    pointer-events: none;
+
+    @include bp.mq(desktop-s) {
+        right: 72px;
+        bottom: 34px;
+        width: 255px;
+    }
+
+    @include bp.mq(tablet-l) {
+        display: none;
+    }
+}
+
+.order-inner {
+    display: grid;
+    grid-template-columns: mix.fluid(660px, 815px) 468px;
+    align-items: start;
+
+    @include bp.mq(desktop-s) {
+        grid-template-columns: 660px 468px;
+    }
+
+    @include bp.mq(laptop) {
+        grid-template-columns: minmax(0, 1fr) 468px;
+        column-gap: 40px;
+    }
+
+    @include bp.mq(tablet-l) {
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+        text-align: center;
+    }
+}
+
+// --------------------------------------
+// Текст и маркетплейсы
+// --------------------------------------
+
+.order-info {
+    min-width: 0;
+
+    p {
+        margin: 0;
+    }
+}
+
+.order-label {
+    @include mix.label;
+
+    margin-bottom: mix.fluid(15px, 20px) !important;
+
+    @include bp.mq(desktop-s) {
+        margin-bottom: 15px !important;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-bottom: 8px !important;
+    }
+}
+
+.order-title {
+    @include mix.h2;
+}
+
+.order-text {
+    max-width: mix.fluid(574px, 686px);
+    margin-top: mix.fluid(15px, 16px) !important;
+    font-size: mix.fluid(16px, 20px);
+    line-height: 1.22;
+
+    @include bp.mq(desktop-s) {
+        max-width: 574px;
+        margin-top: 15px !important;
+        font-size: 16px;
+    }
+
+    @include bp.mq(tablet-l) {
+        max-width: none;
+        margin-top: 8px !important;
+    }
+}
+
+.order-markets-title {
+    margin-top: mix.fluid(22px, 29px) !important;
+    font-size: mix.fluid(20px, 23px);
+    font-weight: 500;
+    line-height: 1.22;
+
+    @include mix.text-gold;
+
+    @include bp.mq(desktop-s) {
+        margin-top: 22px !important;
+        font-size: 20px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-top: 8px !important;
+        font-size: 23px;
+    }
+
+    @include bp.mq(tablet) {
+        font-size: 18px;
+    }
+}
+
+.order-markets {
+    display: flex;
+    gap: 26px;
+    padding: 0;
+    margin: mix.fluid(19px, 15px) 0 0;
+    list-style: none;
+
+    @include bp.mq(desktop-s) {
+        margin-top: 19px;
+    }
+
+    @include bp.mq(tablet-l) {
+        gap: 12px;
+        justify-content: center;
+        margin-top: 24px;
+    }
+
+    @include bp.mq(tablet) {
+        margin-top: 33px;
+
+        li {
+            flex: 1 1 0;
+        }
+    }
+}
+
+.order-market {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 152px;
+    height: mix.fluid(42px, 60px);
+    font-size: mix.fluid(20px, 20px);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--color-ink);
+    text-transform: uppercase;
+    text-decoration: none;
+    background: var(--color-milk);
+    border: 1px solid #c49d5a;
+    border-radius: 999px;
+    transition:
+        background-color var(--transition),
+        border-color var(--transition);
+
+    @include bp.mq(desktop-s) {
+        height: 42px;
+    }
+
+    @include bp.mq(tablet-l) {
+        width: 104px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+    @include bp.mq(tablet) {
+        width: 100%;
+    }
+
+    &:hover {
+        text-decoration: none;
+        background-color: rgb(255 255 255 / 60%);
+        border-color: var(--color-gold);
+    }
+
+    &:focus-visible {
+        outline: 1px solid var(--color-gold);
+        outline-offset: 3px;
+    }
+}
+
+.order-note {
+    display: flex;
+    gap: mix.fluid(16px, 8px);
+    align-items: center;
+    margin-top: mix.fluid(27px, 25px) !important;
+    font-size: mix.fluid(16px, 20px);
+    line-height: 1.22;
+
+    @include bp.mq(desktop-s) {
+        gap: 16px;
+        margin-top: 27px !important;
+        font-size: 16px;
+    }
+
+    @include bp.mq(tablet-l) {
+        gap: 8px;
+        justify-content: center;
+        margin-top: 20px !important;
+    }
+
+    @include bp.mq(tablet) {
+        margin-top: 23px !important;
+    }
+
+    // Галочка — встроенный SVG с общим золотым градиентом
+    .check {
+        flex: 0 0 auto;
+        width: mix.fluid(32px, 46px);
+        height: auto;
+        fill: none;
+        stroke: url("#gradient-gold");
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+
+        @include bp.mq(desktop-s) {
+            width: 32px;
+        }
+
+        @include bp.mq(tablet-l) {
+            width: 30px;
+        }
+    }
+}
+
+// --------------------------------------
+// Форма
+// --------------------------------------
+
+.order-form.form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+    max-width: 468px;
+    margin-top: mix.fluid(51px, 47px);
+
+    @include bp.mq(desktop-s) {
+        margin-top: 51px;
+    }
+
+    @include bp.mq(tablet-l) {
+        gap: 24px;
+        max-width: 351px;
+        margin-top: 26px;
+        text-align: left;
+    }
+
+    .field {
+        margin: 0;
+    }
+
+    .field-consent {
+        margin: mix.fluid(-16px, -6px) 0 0;
+
+        @include bp.mq(desktop-s) {
+            margin-top: -16px;
+        }
+
+        @include bp.mq(tablet-l) {
+            margin-top: -4px;
+        }
+
+        label {
+            align-items: center;
+        }
+
+        .field-error {
+            margin: 4px 0 0 38px;
+            color: var(--color-bordo);
+        }
+    }
+
+    .order-submit {
+        --button-height: #{mix.fluid(50px, 58px)};
+
+        width: mix.fluid(468px, 290px);
+        margin-top: mix.fluid(-6px, -10px);
+
+        @include bp.mq(desktop-s) {
+            --button-height: 50px;
+
+            width: 100%;
+            margin-top: -6px;
+        }
+
+        @include bp.mq(tablet-l) {
+            --button-height: 37px;
+            --button-font-size: 14px;
+
+            margin-top: -8px;
+        }
+    }
+}
+
+// --------------------------------------
+// Анимация появления (order.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .order:not(.is-ready) {
+        .order-label,
+        .order-title,
+        .order-text,
+        .order-markets-title,
+        .order-markets li,
+        .order-note,
+        .order-form,
+        .order-leaf {
+            visibility: hidden;
+        }
+    }
+}

@@ -1,0 +1,375 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// Product card — карточка товара каталога «Выбирайте то, что ближе»
+// Размеры сняты с макетов 1920 / 1440 / 768 / 375 (на 1440–1920 — плавно).
+// При наведении (только десктоп с мышью) слой .inner вырастает
+// вверх и вниз, заливается цветом темы (bordo | navy | gold), фото уменьшается,
+// появляются описание и кнопка «Купить на маркетплейсах».
+// --------------------------------------
+
+// Раскрытая карточка (наведение / фокус с клавиатуры)
+@mixin open-state {
+    z-index: 2;
+
+    .inner {
+        inset: calc(var(--pc-grow) * -1) 0;
+        box-shadow: 0 12px 22px 2px rgb(0 0 0 / 25%);
+
+        &::before {
+            opacity: 1;
+        }
+
+        &::after {
+            opacity: 0;
+        }
+    }
+
+    .leaf {
+        opacity: 0;
+    }
+
+    .leaf-hover {
+        opacity: 1;
+    }
+
+    .name {
+        color: var(--pc-theme-color);
+    }
+
+    .weight {
+        color: var(--pc-theme-weight);
+    }
+
+    .media {
+        transform: var(--pc-img-hover);
+    }
+
+    .details {
+        pointer-events: auto;
+        opacity: 1;
+    }
+}
+
+.product-card {
+    // Карточка
+    --pc-height: #{mix.fluid(466px, 542px)};
+    --pc-radius: #{mix.fluid(15px, 30px)};
+
+    // Название и граммовка
+    --pc-head-top: 27px;
+    --pc-name-size: #{mix.fluid(28px, 38px)};
+    --pc-name-lh: 30px;
+    --pc-weight-size: #{mix.fluid(16px, 20px)};
+    --pc-weight-lh: 30px;
+
+    // Фото
+    --pc-img-width: #{mix.fluid(217px, 265px)};
+    --pc-img-top: #{mix.fluid(103px, 92px)};
+
+    // Лист-контур в углу
+    --pc-leaf-width: #{mix.fluid(93px, 121px)};
+    --pc-leaf-left: #{mix.fluid(-9px, -12px)};
+    --pc-leaf-top: #{mix.fluid(48px, 62px)};
+
+    // Состояние при наведении
+    --pc-grow: #{mix.fluid(15px, 26px)};
+    --pc-img-hover: translateY(#{mix.fluid(0px, 8px)}) scale(0.83);
+    --pc-hover-leaf-width: #{mix.fluid(193px, 251px)};
+    --pc-hover-leaf-left: #{mix.fluid(-85px, -111px)};
+    --pc-hover-leaf-top: #{mix.fluid(62px, 80px)};
+    --pc-text-top: #{mix.fluid(356px, 440px)};
+    --pc-text-width: #{mix.fluid(258px, 318px)};
+    --pc-buy-top: #{mix.fluid(417px, 501px)};
+    --pc-buy-width: #{mix.fluid(279px, 342px)};
+    --pc-buy-height: #{mix.fluid(38px, 62px)};
+    --pc-buy-size: #{mix.fluid(16px, 20px)};
+
+    // Тема (цвета при наведении)
+    --pc-theme-bg: radial-gradient(50% 51% at 55% 49%, #ac0a32 0%, #800020 100%);
+    --pc-theme-color: var(--color-milk);
+    --pc-theme-weight: var(--color-milk);
+    --pc-buy-color: var(--color-gold);
+
+    position: relative;
+    height: var(--pc-height);
+
+    @include bp.mq(desktop-s) {
+        --pc-height: 466px;
+        --pc-radius: 15px;
+        --pc-name-size: 28px;
+        --pc-weight-size: 16px;
+        --pc-img-width: 217px;
+        --pc-img-top: 103px;
+        --pc-leaf-width: 93px;
+        --pc-leaf-left: -9px;
+        --pc-leaf-top: 48px;
+        --pc-grow: 15px;
+        --pc-img-hover: scale(0.76);
+        --pc-hover-leaf-width: 193px;
+        --pc-hover-leaf-left: -85px;
+        --pc-hover-leaf-top: 62px;
+        --pc-text-top: 356px;
+        --pc-text-width: 258px;
+        --pc-buy-top: 417px;
+        --pc-buy-width: 279px;
+        --pc-buy-height: 38px;
+        --pc-buy-size: 16px;
+    }
+
+    @include bp.mq(tablet-l) {
+        --pc-height: 380px;
+        --pc-radius: 10px;
+        --pc-name-size: 24px;
+        --pc-weight-lh: 18px;
+        --pc-img-width: 167px;
+        --pc-img-top: 91px;
+        --pc-leaf-width: 104px;
+        --pc-leaf-left: -10px;
+        --pc-leaf-top: 53px;
+    }
+
+    @include bp.mq(tablet) {
+        --pc-height: 220px;
+        --pc-head-top: 6px;
+        --pc-name-size: 17px;
+        --pc-name-lh: 20px;
+        --pc-weight-size: 14px;
+        --pc-weight-lh: 16px;
+        --pc-img-width: 98px;
+        --pc-img-top: 57px;
+        --pc-leaf-width: 50px;
+        --pc-leaf-left: -5px;
+        --pc-leaf-top: 26px;
+    }
+
+    @include bp.mq(mobile-s) {
+        --pc-name-size: 15px;
+    }
+
+    // Банка витаминов: фото крупнее, карточка чуть выше на планшете/мобильном
+    &.jar {
+        --pc-img-width: #{mix.fluid(249px, 319px)};
+        --pc-img-top: #{mix.fluid(97px, 89px)};
+        --pc-img-hover: translateY(-10px) scale(0.82);
+
+        @include bp.mq(desktop-s) {
+            --pc-img-width: 249px;
+            --pc-img-top: 97px;
+            --pc-img-hover: translateY(-10px) scale(0.76);
+        }
+
+        @include bp.mq(tablet-l) {
+            --pc-height: 385px;
+            --pc-img-width: 205px;
+            --pc-img-top: 86px;
+        }
+
+        @include bp.mq(tablet) {
+            --pc-height: 235px;
+            --pc-img-width: 124px;
+            --pc-img-top: 57px;
+        }
+    }
+
+    // --------------------------------------
+    // Темы
+    // --------------------------------------
+
+    &.navy {
+        --pc-theme-bg: radial-gradient(59% 36% at 55% 40%, #415a98 0%, #171e52 100%);
+    }
+
+    &.gold {
+        --pc-theme-bg:
+            radial-gradient(59% 36% at 55% 40%, #f4d5aa 0%, rgb(198 159 92 / 0%) 100%),
+            linear-gradient(270deg, #c49d5a 0%, #feca85 48.077%, #c49d5a 100%);
+        --pc-theme-color: var(--color-ink);
+        --pc-theme-weight: var(--color-ink);
+        --pc-buy-color: var(--color-milk);
+    }
+
+    // --------------------------------------
+    // Слои
+    // --------------------------------------
+
+    .inner {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background: rgb(255 255 255 / 60%);
+        border-radius: var(--pc-radius);
+        transition:
+            inset var(--transition),
+            box-shadow var(--transition);
+
+        // Заливка темы — отдельным слоем, чтобы плавно проявлялась
+        &::before {
+            position: absolute;
+            inset: 0;
+            content: "";
+            background: var(--pc-theme-bg);
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        // Мягкая тень-эллипс под фото
+        &::after {
+            position: absolute;
+            top: 81.4%;
+            left: 59%;
+            width: 140%;
+            height: 13.8%;
+            content: "";
+            background: radial-gradient(closest-side, #b5b5a1 0%, rgb(241 241 222 / 0%) 100%);
+            transform: translateX(-50%);
+            transition: opacity var(--transition);
+        }
+    }
+
+    .leaf,
+    .leaf-hover {
+        position: absolute;
+        height: auto;
+        pointer-events: none;
+        transition: opacity var(--transition);
+    }
+
+    .leaf {
+        top: var(--pc-leaf-top);
+        left: var(--pc-leaf-left);
+        width: var(--pc-leaf-width);
+    }
+
+    .leaf-hover {
+        top: var(--pc-hover-leaf-top);
+        left: var(--pc-hover-leaf-left);
+        width: var(--pc-hover-leaf-width);
+        opacity: 0;
+    }
+
+    .head {
+        position: absolute;
+        top: var(--pc-head-top);
+        right: 8px;
+        left: 8px;
+        z-index: 1;
+        text-align: center;
+
+        // Мобильный: узкая карточка — «Чёрная смородина» должна влезть в строку и на 360
+        @include bp.mq(tablet) {
+            right: 2px;
+            left: 2px;
+        }
+    }
+
+    .name {
+        margin: 0;
+        font-family: var(--font-family-secondary);
+        font-size: var(--pc-name-size);
+        font-weight: 600;
+        line-height: var(--pc-name-lh);
+        color: var(--color-ink);
+        transition: color var(--transition);
+    }
+
+    .weight {
+        margin: 0;
+        font-family: var(--font-family-secondary);
+        font-size: var(--pc-weight-size);
+        font-weight: 600;
+        line-height: var(--pc-weight-lh);
+        color: var(--color-gold);
+        transition: color var(--transition);
+    }
+
+    .media {
+        position: absolute;
+        top: var(--pc-img-top);
+        left: 50%;
+        z-index: 1;
+        width: var(--pc-img-width);
+        margin-left: calc(var(--pc-img-width) / -2);
+        transform-origin: 50% 0;
+        transition: transform var(--transition);
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    // Описание и кнопка — видны только при наведении (координаты — в выросшей карточке)
+    .details {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity var(--transition);
+    }
+
+    .text {
+        position: absolute;
+        top: var(--pc-text-top);
+        left: 50%;
+        width: var(--pc-text-width);
+        margin: 0 0 0 calc(var(--pc-text-width) / -2);
+        font-size: var(--pc-text-size, 16px);
+        line-height: 1.22;
+        color: var(--pc-theme-color);
+        text-align: center;
+    }
+
+    .buy {
+        position: absolute;
+        top: var(--pc-buy-top);
+        left: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--pc-buy-width);
+        height: var(--pc-buy-height);
+        padding: 0 6px;
+        margin-left: calc(var(--pc-buy-width) / -2);
+        font-size: var(--pc-buy-size);
+        font-weight: 600;
+        line-height: 1.15;
+        color: var(--pc-buy-color);
+        text-align: center;
+        text-decoration: none;
+        border: 2px solid currentcolor;
+        border-radius: 999px;
+        transition: background-color var(--transition);
+
+        &:hover {
+            background-color: rgb(255 255 255 / 10%);
+        }
+
+        &:focus-visible {
+            outline: 1px solid currentcolor;
+            outline-offset: 3px;
+        }
+    }
+
+    // --------------------------------------
+    // Раскрытое состояние — только десктоп с мышью: наведение и фокус с клавиатуры.
+    // Именно :focus-visible, не :focus-within: после закрытия модалки Fancybox возвращает
+    // фокус на кнопку «Купить», и карточка оставалась бы раскрытой рядом с наведённой.
+    // На устройствах без ховера карточка не раскрывается: клик открывает модалку «Где купить»
+    // (product-card.js шлёт событие product-card:open).
+    // --------------------------------------
+
+    @media (hover: hover) and (width >= 1024px) {
+        &:hover,
+        &:has(:focus-visible) {
+            @include open-state;
+        }
+    }
+
+    @media (hover: none), (width < 1024px) {
+        cursor: pointer;
+    }
+}

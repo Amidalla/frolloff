@@ -85,6 +85,12 @@ a {
     }
 }
 
+// Телефон не переносится по пробелам и дефисам (в Montserrat нет неразрывного дефиса U+2011,
+// поэтому вместо спецсимволов — nowrap)
+a[href^="tel:"] {
+    white-space: nowrap;
+}
+
 h1,
 h2,
 h3,
@@ -164,66 +170,19 @@ p {
 }
 
 // --------------------------------------
-// -- Lozad
-// --------------------------------------
-
-.lazy-loader {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-
-    &::before {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        z-index: 0;
-        box-sizing: border-box;
-        display: inline-block;
-        visibility: visible;
-        width: 1rem;
-        height: 1rem;
-        pointer-events: none;
-        content: "";
-        border: 0.175rem solid var(--color-black);
-        border-bottom-color: transparent;
-        border-radius: 50%;
-        opacity: 1;
-        transform: translate(-50%, -50%);
-        animation: rotation 1s linear infinite;
-    }
-
-    &:has(img[data-loaded="true"])::before,
-    &:has(video[data-loaded="true"])::before,
-    &:has(iframe[data-loaded="true"])::before {
-        visibility: hidden;
-        opacity: 0;
-        transition: all 0.3s 0.3s;
-    }
-
-    img,
-    video,
-    iframe {
-        opacity: 0;
-        transition: all 0.3s 0.3s;
-    }
-
-    img[data-loaded="true"],
-    video[data-loaded="true"],
-    iframe[data-loaded="true"] {
-        opacity: 1;
-        transition: all 0.3s 0.3s;
-    }
-}
-
-// --------------------------------------
 // -- Swiper
 // Пагинация (paginator-slider): точки 10px, активная — золотой градиент.
 // Стрелки — компонент slider-arrow.
+// Один слайд (.slider-single, ставит js/utils/slider.js) — стрелок и пагинации нет.
 // --------------------------------------
+
+// !important — служебное скрытие должно перебивать display из стилей блоков (например, .hero .hero-pagination)
+.slider-single {
+    .slider-arrow,
+    .swiper-pagination {
+        display: none !important;
+    }
+}
 
 .swiper-pagination {
     --swiper-pagination-bullet-size: 10px;
@@ -271,6 +230,6 @@ p {
 // --------------------------------------
 
 .fancybox__backdrop {
-    background: rgb(255 255 255 / 80%);
-    backdrop-filter: blur(5px);
+    background: rgb(12 35 72 / 80%);
+    backdrop-filter: blur(3.55px);
 }

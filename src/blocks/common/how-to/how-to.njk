@@ -1,0 +1,15 @@
+{% from "data/home.njk" import howTo %}
+{% from "blocks/general/section/section-header.njk" import render as sectionHeader %}
+{% from "components/common/how-to-step/how-to-step.njk" import render as howToStep %}
+
+<section class="how-to" id="how-to" data-how-to>
+    <div class="container">
+        {{ sectionHeader(label=howTo.label, title=howTo.title, text=howTo.text, class="how-to-header") }}
+
+        <ol class="how-to-steps">
+            {% for step in howTo.steps %}
+                {{ howToStep(step) }}
+            {% endfor %}
+        </ol>
+    </div>
+</section>

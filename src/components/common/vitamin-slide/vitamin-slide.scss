@@ -1,0 +1,26 @@
+@use "core/breakpoints" as bp;
+
+// --------------------------------------
+// Vitamin slide — фото товара в слайдере «Витамины в ежедневном рационе»
+// Ширину фото и сдвиг задаёт блок (--vitamin-image-width).
+// Фото содержит капсулы слева, поэтому сдвинуто влево, чтобы банка была по центру.
+// --------------------------------------
+
+.vitamin-slide {
+    display: flex;
+    justify-content: center;
+
+    // Обёртка фото — двигается за мышью (data-attract)
+    .photo {
+        display: block;
+        flex: 0 0 auto;
+    }
+
+    img {
+        display: block;
+        flex: 0 0 auto;
+        width: var(--vitamin-image-width, 670px);
+        height: auto;
+        transform: translateX(-10.3%);
+    }
+}

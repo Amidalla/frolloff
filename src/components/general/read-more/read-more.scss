@@ -1,0 +1,26 @@
+// --------------------------------------
+// Read more — «Читать всё»: высота текста анимируется (JS задаёт height)
+// --------------------------------------
+
+[data-read-more-content] {
+    transition: height var(--transition);
+}
+
+.read-more-toggle {
+    padding: 0;
+    font: inherit;
+    color: var(--color-gold);
+    cursor: pointer;
+    background: none;
+    border: 0;
+    transition: color var(--transition);
+
+    &:hover {
+        color: var(--color-gold-dark);
+    }
+
+    &:focus-visible {
+        outline: 1px solid var(--color-gold);
+        outline-offset: 2px;
+    }
+}

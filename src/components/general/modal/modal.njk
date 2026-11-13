@@ -1,0 +1,38 @@
+{% macro render(
+        id="",
+        title="",
+        text="",
+        class="",
+        data={},
+        aria={}
+    ) %}
+    {% set modalClasses = "modal" %}
+    {% if class %}
+        {% set modalClasses = modalClasses + " " + class %}
+    {% endif %}
+
+    <div
+        class="{{ modalClasses }}"
+        id="{{ id }}"
+        role="dialog"
+        aria-modal="true"
+        {% if title %}aria-labelledby="{{ id }}-title"{% endif %}
+        {% for key, val in data %} data-{{ key | replace("_", "-") }}="{{ val }}"{% endfor %}
+        {% for key, val in aria %} aria-{{ key | replace("_", "-") }}="{{ val }}"{% endfor %}
+    >
+        <button class="modal-close" type="button" aria-label="Закрыть" data-fancybox-close>
+            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                <path d="M31 1L1 31M31 31L1 1" />
+            </svg>
+        </button>
+        {% if title %}
+            <p class="modal-title" id="{{ id }}-title">{{ title }}</p>
+        {% endif %}
+        {% if text %}
+            <div class="modal-text" data-editor>{{ text | safe }}</div>
+        {% endif %}
+        {% if caller %}
+            <div class="modal-body">{{ caller() }}</div>
+        {% endif %}
+    </div>
+{% endmacro %}

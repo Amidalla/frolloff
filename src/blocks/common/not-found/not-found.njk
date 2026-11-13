@@ -1,0 +1,11 @@
+{% from "components/general/button/button.njk" import render as button %}
+
+{# Страница 404 (в Битриксе — шаблон 404.php с подключённой шапкой) #}
+<section class="not-found" aria-labelledby="not-found-title" data-not-found>
+    <div class="container">
+        <h1 class="not-found-title" id="not-found-title" data-attract="0.03">404 ошибка</h1>
+        <p class="not-found-subtitle">Страница не найдена</p>
+        <p class="not-found-text">К сожалению, неправильно набран адрес, или такой страницы на сайте больше не существует.</p>
+        {{ button(text="На главную", href="./home.html", type="link", variant="gold", size="l", class="not-found-button") }}
+    </div>
+</section>

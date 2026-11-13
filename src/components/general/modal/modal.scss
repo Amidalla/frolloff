@@ -1,0 +1,135 @@
+@use "core/breakpoints" as bp;
+
+// --------------------------------------
+// Modal — модальное окно Froloff (открывается Fancybox, см. modal.js)
+// Молочная карточка 690px (≤767 — 345px), золотая рамка, крестик в круге.
+// Окно стоит сверху (86px от края, мобильный — 40px), фон — тёмно-синий с размытием.
+// --------------------------------------
+
+// В разметке страницы окно скрыто, Fancybox показывает его в своём слое
+.modal:not(.f-html) {
+    display: none;
+}
+
+.modal {
+    --modal-width: 690px;
+    --modal-gap: 24px;
+    --modal-close: 52px;
+    --modal-close-offset: 15px;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--modal-gap);
+    width: var(--modal-width);
+    max-width: 100%;
+    padding: 42px 20px 20px;
+    color: var(--color-ink);
+    background: var(--color-milk);
+    border: 1px solid var(--color-gold);
+    border-radius: 15px;
+
+    @include bp.mq(tablet) {
+        --modal-width: 345px;
+        --modal-gap: 16px;
+        --modal-close: 42px;
+        --modal-close-offset: 20px;
+    }
+
+    .modal-title {
+        padding-right: 40px;
+        margin: 0;
+        font-family: var(--font-family-secondary);
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 34px;
+
+        @include bp.mq(tablet) {
+            font-size: 24px;
+            line-height: 28px;
+        }
+    }
+
+    .modal-text {
+        font-size: 20px;
+        line-height: 1.22;
+
+        @include bp.mq(tablet) {
+            font-size: 16px;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+}
+
+// Крестик в круге — круг CSS, линии встроенным SVG
+.modal-close {
+    position: absolute;
+    top: var(--modal-close-offset);
+    right: var(--modal-close-offset);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--modal-close);
+    height: var(--modal-close);
+    padding: 0;
+    cursor: pointer;
+    background: var(--color-milk);
+    border: 1px solid var(--color-gold);
+    border-radius: 50%;
+    transition: background-color var(--transition);
+
+    svg {
+        width: 58%;
+        height: 58%;
+        fill: none;
+        stroke: var(--color-gold);
+        stroke-width: 2;
+        stroke-linecap: round;
+        transition: stroke var(--transition);
+    }
+
+    &:hover {
+        background-color: var(--color-gold);
+
+        svg {
+            stroke: var(--color-milk);
+        }
+    }
+
+    &:focus-visible {
+        outline: 1px solid var(--color-gold);
+        outline-offset: 3px;
+    }
+}
+
+// --------------------------------------
+// Слой Fancybox для модалок (mainClass "modal-fancybox")
+// --------------------------------------
+
+.modal-fancybox {
+    .fancybox__slide {
+        justify-content: flex-start; // слайд — колонка: окно прижато кверху
+        padding: 86px 16px 40px;
+
+        @include bp.mq(tablet) {
+            padding: 40px 15px;
+        }
+
+        // Fancybox центрирует контент по вертикали этими псевдоэлементами (margin: auto)
+        &::before,
+        &::after {
+            display: none;
+        }
+    }
+
+    .f-html.modal {
+        padding: 42px 20px 20px;
+        margin: 0 auto;
+        color: var(--color-ink);
+        background: var(--color-milk);
+    }
+}

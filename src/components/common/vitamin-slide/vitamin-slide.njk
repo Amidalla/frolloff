@@ -1,0 +1,20 @@
+{#
+    Слайд витаминов: фото товара (PNG с прозрачным фоном).
+    slide: { image, srcset, alt, markets: { ozon, wb, ym } } — ссылки для модалки «Где купить»
+#}
+{% from "components/general/image/image.njk" import render as image %}
+
+{% macro render(slide, class="") %}
+    {% set markets = slide.markets or {} %}
+    <div
+        class="swiper-slide vitamin-slide{% if class %} {{ class }}{% endif %}"
+        data-ozon="{{ markets.ozon or "#" }}"
+        data-wb="{{ markets.wb or "#" }}"
+        data-ym="{{ markets.ym or "#" }}"
+    >
+        {# Обёртка двигается за мышью (data-attract): у img свой сдвиг translateX, его GSAP трогать не должен #}
+        <span class="photo" data-attract="0.02">
+            {{ image(src=slide.image, srcset=slide.srcset, sizes="(max-width: 767.98px) 260px, (max-width: 1023.98px) 358px, (max-width: 1440px) 485px, 670px", width=1200, height=1654, alt=slide.alt) }}
+        </span>
+    </div>
+{% endmacro %}

@@ -110,3 +110,14 @@
         gap: 23px 24px;
     }
 }
+
+// --------------------------------------
+// Анимация появления (advantages.js, GSAP)
+// До запуска скрипта карточка скрыта, чтобы не мелькнула до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .advantages:not(.is-ready) .advantages-card {
+        visibility: hidden;
+    }
+}

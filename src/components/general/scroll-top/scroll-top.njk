@@ -1,0 +1,21 @@
+{% macro render(label="Наверх", class="", data={}, aria={}) %}
+    <button
+        class="scroll-top{% if class %} {{ class }}{% endif %}"
+        type="button"
+        aria-label="{{ label }}"
+        data-scroll-top
+        {% for key, val in data %}data-{{ key | replace("_", "-") }}="{{ val }}" {% endfor %}
+        {% for key, val in aria %}aria-{{ key | replace("_", "-") }}="{{ val }}" {% endfor %}
+    >
+        <svg class="icon" viewBox="0 0 75 75" fill="none" aria-hidden="true" focusable="false">
+            <path
+                d="M59.5137 48.5059L37.5 26.4922L15.4863 48.5059"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                vector-effect="non-scaling-stroke"
+            />
+        </svg>
+    </button>
+{% endmacro %}

@@ -1,0 +1,96 @@
+@use "core/breakpoints" as bp;
+
+// --------------------------------------
+// Scroll top — кнопка «Наверх» (Figma: круг 75px, молочный 80% + blur, золотая галочка)
+// Видна при прокрутке вверх, при прокрутке вниз и у верха страницы спрятана (scroll-top.js) —
+// логика обратная прилипшей шапке.
+// --------------------------------------
+
+.scroll-top {
+    --scroll-top-size: 75px;
+    --scroll-top-offset: 30px;
+
+    // По правому краю контейнера (как .container в globals.scss) — как в макете
+    --scroll-top-right: max(var(--container-padding), round(down, calc((100% - var(--container-width)) / 2), 1px));
+
+    position: fixed;
+    right: var(--scroll-top-right);
+    bottom: var(--scroll-top-offset);
+    z-index: 90;
+    display: flex;
+    visibility: hidden;
+    align-items: center;
+    justify-content: center;
+    width: var(--scroll-top-size);
+    height: var(--scroll-top-size);
+    padding: 0;
+    color: var(--color-gold);
+    cursor: pointer;
+    background: rgb(239 237 216 / 80%);
+    border: 0;
+    border-radius: 50%;
+
+    // Тень — чтобы кнопка не сливалась со светлыми секциями
+    box-shadow: 0 6px 24px rgb(12 35 72 / 22%);
+    opacity: 0;
+    backdrop-filter: blur(2px);
+    transform: translateY(20px);
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease,
+        visibility 0.4s ease;
+
+    @include bp.mq(tablet-l) {
+        --scroll-top-size: 60px;
+        --scroll-top-offset: 20px;
+    }
+
+    @include bp.mq(tablet) {
+        --scroll-top-size: 48px;
+        --scroll-top-offset: 12px;
+    }
+
+    // Fancybox прячет полосу прокрутки — сдвигаем кнопку как шапку
+    html.with-fancybox & {
+        right: calc(var(--scroll-top-right) + var(--f-scrollbar-compensate, 0px));
+    }
+
+    .icon {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    // --------------------------------------
+    // Состояния
+    // --------------------------------------
+
+    &.is-visible {
+        visibility: visible;
+        opacity: 1;
+        transform: none;
+    }
+
+    &:focus-visible {
+        outline: 1px solid var(--color-gold);
+        outline-offset: 3px;
+    }
+
+    @media (hover: hover) {
+        &:hover {
+            background: rgb(239 237 216 / 100%);
+            transition:
+                background var(--transition),
+                opacity 0.4s ease,
+                transform 0.4s ease,
+                visibility 0.4s ease;
+        }
+    }
+
+    // Открыто меню или модалка — кнопку не показываем
+    body.is-fixed &,
+    html.with-fancybox & {
+        visibility: hidden;
+        opacity: 0;
+    }
+}

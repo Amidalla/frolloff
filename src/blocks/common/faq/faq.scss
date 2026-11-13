@@ -1,0 +1,54 @@
+@use "core/breakpoints" as bp;
+@use "core/mixins" as mix;
+
+// --------------------------------------
+// FAQ — «Отвечаем на главное» (Figma: 1920 / 1440 / 768 / 375)
+// Шапка по центру + аккордеон (components/general/accordion) шириной 1001px.
+// --------------------------------------
+
+.faq-header {
+    margin-bottom: mix.fluid(32px, 33px);
+
+    @include bp.mq(desktop-s) {
+        margin-bottom: 32px;
+    }
+
+    @include bp.mq(tablet-l) {
+        margin-bottom: 28px;
+    }
+
+    .section-label {
+        margin-bottom: mix.fluid(15px, 20px);
+
+        @include bp.mq(desktop-s) {
+            margin-bottom: 15px;
+        }
+
+        @include bp.mq(tablet-l) {
+            margin-bottom: 8px;
+        }
+    }
+}
+
+.faq-list {
+    max-width: 1001px;
+    margin: 0 auto;
+
+    @include bp.mq(tablet-l) {
+        max-width: none;
+    }
+}
+
+// --------------------------------------
+// Анимация появления (faq.js, GSAP)
+// До запуска скрипта элементы скрыты, чтобы не мелькнули до анимации.
+// --------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+    .faq:not(.is-ready) {
+        .faq-header > *,
+        .faq-list [data-accordion-item] {
+            visibility: hidden;
+        }
+    }
+}

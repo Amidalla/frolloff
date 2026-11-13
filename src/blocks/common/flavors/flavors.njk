@@ -26,14 +26,14 @@
     {% set _ = tabItems.push({ title: tab.title, content: panel }) %}
 {% endfor %}
 
-<section class="flavors" id="flavors">
+<section class="flavors" id="flavors" data-flavors>
     <div class="container">
         {{ sectionHeader(label=flavors.label, title=flavors.title, text=flavors.text, align="center", class="flavors-header") }}
 
         {{ tabs(items=tabItems, class="flavors-tabs") }}
 
         <div class="flavors-action">
-            {{ button(text=flavors.button.text, href=flavors.button.href, type="link", variant="blue", size="s", class="flavors-button") }}
+            {{ button(text=flavors.button.text, href="#modal-shop", type="link", variant="blue", size="s", class="flavors-button", data={ shop_open: "" }, aria={ haspopup: "dialog" }) }}
         </div>
     </div>
 </section>

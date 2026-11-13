@@ -18,11 +18,27 @@
     border-bottom: 1px solid rgb(215 155 87 / 60%);
     transition:
         background var(--transition),
-        backdrop-filter var(--transition);
+        backdrop-filter var(--transition),
+        transform 0.4s ease;
+
+    // Fancybox прячет полосу прокрутки и сдвигает body на её ширину (--f-scrollbar-compensate),
+    // фиксированную шапку сдвигаем так же — иначе она расширяется и содержимое дёргается
+    html.with-fancybox & {
+        right: var(--f-scrollbar-compensate, 0);
+    }
 
     &.is-sticky {
         background: rgb(12 35 72 / 92%);
         backdrop-filter: blur(10px);
+    }
+
+    // Прокрутка вверх — прилипшая шапка уезжает (header.js); при открытом меню остаётся
+    &.is-hidden {
+        transform: translateY(-100%);
+
+        body.is-fixed & {
+            transform: none;
+        }
     }
 
     .header-inner {
@@ -60,12 +76,12 @@
 
         flex: 0 0 auto;
 
-        // Целая ширина: кнопка прижата вправо, иначе её рамка встаёт на дробную координату
-        width: mix.fluid(231px, 291px);
+        // Ширина — по тексту: текст всегда помещается целиком, без многоточия.
+        // Если места мало — уменьшается шрифт (ниже по брейкпоинтам), а не обрезается текст.
+        width: auto;
+        max-width: none;
 
         @include bp.mq(desktop-s) {
-            width: 231px;
-
             --button-height: 39px;
             --button-padding: 0 15px;
             --button-font-size: 16px;
@@ -73,8 +89,11 @@
 
         @include bp.mq(laptop) {
             --button-font-size: 14px;
+        }
 
-            width: 206px;
+        > span {
+            overflow: visible;
+            text-overflow: clip;
         }
     }
 

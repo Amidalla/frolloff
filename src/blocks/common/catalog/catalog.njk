@@ -1,0 +1,38 @@
+{% from "data/home.njk" import catalog %}
+{% from "components/general/slider-arrow/slider-arrow.njk" import render as sliderArrow %}
+{% from "components/common/product-card/product-card.njk" import render as productCard %}
+
+{#
+    Каждая группа — слайдер. Если товаров 4 и меньше, слайдер не запускается (класс is-static):
+    карточки стоят сеткой, стрелок нет. В Битриксе — то же условие по count($arResult["ITEMS"]).
+#}
+<section class="catalog" id="catalog" data-catalog>
+    <div class="container">
+        <h2 class="catalog-title">{{ catalog.title }}</h2>
+
+        {% for group in catalog.groups %}
+            {% set isStatic = group.items | length <= 4 %}
+            <div class="catalog-group">
+                <h3 class="catalog-group-title">{{ group.title }}</h3>
+
+                <div class="catalog-slider{% if isStatic %} is-static{% endif %}" data-catalog-slider>
+                    <div class="swiper">
+                        <div class="swiper-wrapper">
+                            {% for item in group.items %}
+                                <div class="swiper-slide">
+                                    {{ productCard(item, theme=group.theme, buyText=catalog.buyText) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if not isStatic %}
+                        <div class="catalog-arrows">
+                            {{ sliderArrow(direction="prev", variant="light", size="l", class="catalog-prev") }}
+                            {{ sliderArrow(direction="next", variant="light", size="l", class="catalog-next") }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>

@@ -1,6 +1,10 @@
+// Аккордеон: открыт может быть один пункт, высота ответа анимируется.
+// Закрытый ответ скрыт атрибутом hidden (не читается скринридером и не фокусируется).
 export function accordion(context = document) {
     const roots = context.querySelectorAll('[data-accordion="component"]');
     if (!roots.length) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     roots.forEach((root) => {
         if (root.dataset.init === "true") return;
@@ -12,46 +16,60 @@ export function accordion(context = document) {
         const items = root.querySelectorAll("[data-accordion-item]");
         if (!items.length) return;
 
-        const collapseItem = (item) => {
-            const panel = item.querySelector(".panel");
-            const collapse = item.querySelector(".collapse");
-            if (collapse && panel) {
-                collapse.style.maxHeight = null;
-                item.classList.remove("is-open");
-                panel.setAttribute("aria-expanded", "false");
-            }
+        const parts = (item) => ({ panel: item.querySelector(".panel"), collapse: item.querySelector(".collapse") });
+
+        // После анимации снимаем фиксированную высоту, чтобы ответ подстраивался под ширину экрана
+        const onEnd = (item, open) => {
+            const { collapse } = parts(item);
+            collapse.style.height = "";
+            if (!open) collapse.hidden = true;
         };
 
-        const expandItem = (item) => {
-            const panel = item.querySelector(".panel");
-            const collapse = item.querySelector(".collapse");
-            if (collapse && panel) {
-                collapse.style.maxHeight = `${collapse.scrollHeight + 1}px`;
-                item.classList.add("is-open");
-                panel.setAttribute("aria-expanded", "true");
-            }
-        };
+        const animate = (item, open) => {
+            const { panel, collapse } = parts(item);
+            item.classList.toggle("is-open", open);
+            panel.setAttribute("aria-expanded", String(open));
 
-        const toggleItem = (targetItem) => {
-            const isOpen = targetItem.classList.contains("is-open");
-            items.forEach(collapseItem);
-            if (!isOpen) {
-                expandItem(targetItem);
+            if (reduceMotion.matches) {
+                collapse.hidden = !open;
+                return;
             }
+
+            collapse.hidden = false;
+            const from = open ? 0 : collapse.offsetHeight;
+            const to = open ? collapse.scrollHeight : 0;
+            collapse.style.height = `${from}px`;
+            collapse.getBoundingClientRect();
+            collapse.style.height = `${to}px`;
+
+            // Завершаем по transitionend, а если его не будет (переход отключён, вкладка в фоне) — по таймеру
+            let done = false;
+            const finish = () => {
+                if (done) return;
+                done = true;
+                if (item.classList.contains("is-open") === open) onEnd(item, open);
+            };
+            const duration = parseFloat(getComputedStyle(collapse).transitionDuration) * 1000 || 0;
+            collapse.addEventListener("transitionend", (event) => event.target === collapse && finish(), {
+                once: true,
+                signal
+            });
+            setTimeout(finish, duration + 50);
         };
 
         items.forEach((item) => {
-            const panel = item.querySelector(".panel");
-            if (panel) {
-                panel.addEventListener("click", () => toggleItem(item), { signal });
-            }
+            parts(item).panel.addEventListener(
+                "click",
+                () => {
+                    const open = !item.classList.contains("is-open");
+                    items.forEach((other) => {
+                        if (other !== item && other.classList.contains("is-open")) animate(other, false);
+                    });
+                    animate(item, open);
+                },
+                { signal }
+            );
         });
-
-        // Open first item if aria-expanded is true
-        const firstPanel = items[0]?.querySelector(".panel");
-        if (firstPanel?.getAttribute("aria-expanded") === "true") {
-            expandItem(items[0]);
-        }
 
         root.addEventListener("destroy", () => controller.abort(), { once: true });
     });
