@@ -62,7 +62,7 @@
 - [ ] **Картинки:** WebP/AVIF через `<picture>`, `srcset` (2–3 размера) для товаров. Самые тяжёлые сейчас: `vitamins/inositol-1200.png` (2,8 МБ), `reviews/reviews-sticks.png` (1,3 МБ), PNG карточек каталога (300–575 КБ каждая).
 - [ ] **SEO в `<head>`:** `description`, Open Graph, `canonical`, `theme-color`, иконка для iOS, микроразметка Product / Organization (через `SetPageProperty` и вывод в шаблоне).
 - [ ] **Заглушки → реальный контент:** фото всех вкусов и витаминов (сейчас одно на все), сертификаты, ссылки Max / WhatsApp / политики конфиденциальности (сейчас `#`), реквизиты в подвале.
-- [ ] **Продакшн:** исключить стили UI kit (`blocks/general/ui-kit`) из CSS, не выкладывать `index.html` и `ui-kit.html`.
+- [x] **Продакшн:** стили UI kit (`blocks/general/ui-kit`) исключены из CSS, `ui-kit.html` и ссылка на него в `index.html` не попадают в сборку.
 
 Подробное описание компонентов, анимаций и правил вёрстки — в [`AGENTS.md`](AGENTS.md).
 

@@ -25,6 +25,7 @@ const bs = browsersync.create();
 
 const paths = {
     html: "src/pages/**/*.njk",
+    prodHtml: ["src/pages/**/*.njk", "!src/pages/ui-kit.njk"],
     templates: "src",
     styles: "src/scss/index.scss",
     componentStyles: ["src/blocks/**/*.scss", "src/components/**/*.scss", "src/scss/core/*.scss"],
@@ -57,9 +58,9 @@ export const html = () =>
 // HTML compilation for production (outputs to build/)
 export const htmlProd = () =>
     gulp
-        .src(paths.html)
+        .src(paths.prodHtml)
         .pipe(
-            nunjucksRender({ path: [paths.templates] }).on("error", (err) => {
+            nunjucksRender({ path: [paths.templates], data: { isProduction: true } }).on("error", (err) => {
                 console.error("Nunjucks error:", err.message);
                 throw err;
             })
@@ -88,6 +89,8 @@ export const styles = () =>
 export const stylesProd = () =>
     gulp
         .src(paths.styles)
+        // The UI kit is kept for local development but is not part of the Bitrix build.
+        .pipe(replace(/@use "\.\.\/blocks\/general\/ui-kit\/ui-kit";\s*/, ""))
         .pipe(
             sassCompiler({
                 includePaths: ["src/blocks", "src/components", "src/scss/core"]

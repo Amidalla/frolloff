@@ -556,7 +556,9 @@
                 <ul class="list">
                     {{ pageLink("Главная (лендинг)", "home.html") }}
                     {{ pageLink("Страница 404", "404.html") }}
+                    {% if not isProduction %}
                     {{ pageLink("UI kit — общие элементы", "ui-kit.html") }}
+                    {% endif %}
                 </ul>
             </section>
 

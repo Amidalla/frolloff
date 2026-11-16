@@ -23,9 +23,15 @@ export function scrollTop(context = document) {
         const style = getComputedStyle(root);
         const offset = parseFloat(style.getPropertyValue("--scroll-top-offset")) || 0;
         const size = root.offsetHeight;
-        const lift = Math.round(window.innerHeight - footer.getBoundingClientRect().top - size / 2);
-        // Подвал выше экрана (мобильный): когда граница уходит за верх экрана, кнопка
-        // возвращается в нижний угол — иначе уехала бы вместе с границей
+        const footerRect = footer.getBoundingClientRect();
+        // У длинного подвала сразу оставляем кнопку в нижнем углу: привязка к его
+        // границе увела бы кнопку за экран и потребовала резкого возврата вниз.
+        if (footerRect.height > window.innerHeight - size - offset * 2) {
+            root.style.bottom = "";
+            return;
+        }
+
+        const lift = Math.round(window.innerHeight - footerRect.top - size / 2);
         const max = window.innerHeight - size - offset;
         root.style.bottom = lift > offset && lift <= max ? `${lift}px` : "";
     };
