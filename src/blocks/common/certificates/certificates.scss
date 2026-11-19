@@ -42,6 +42,24 @@
     .swiper {
         overflow: hidden;
     }
+
+    // Один документ: Swiper не запускается и .swiper-slide остаётся на 100% —
+    // как в каталоге (.is-static): сетка, карточка встаёт в первую колонку.
+    &.slider-single {
+        .swiper-wrapper {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: var(--certificates-gap);
+
+            @include bp.mq(tablet) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .swiper-slide {
+            width: auto;
+        }
+    }
 }
 
 // Карточка документа: молочная, золотая рамка, документ по центру

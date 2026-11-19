@@ -1,13 +1,14 @@
 {#
     Карточка эффекта: иконка + срок + текст (блок «Умная формула для суставов»).
-    card: { icon: { src, width, height }, term, text }
+    card: { icon: { src }, term, text }
+    Высота иконки — из стилей (.icon), ширина — по пропорциям самого файла.
 #}
 {% from "components/general/image/image.njk" import render as image %}
 
 {% macro render(card, class="") %}
     <li class="effect-card{% if class %} {{ class }}{% endif %}">
         <span class="icon">
-            {{ image(src=card.icon.src, width=card.icon.width, height=card.icon.height, decorative=true) }}
+            {{ image(src=card.icon.src, decorative=true) }}
         </span>
         <span class="term">{{ card.term }}</span>
         <span class="text">{{ card.text | safe }}</span>

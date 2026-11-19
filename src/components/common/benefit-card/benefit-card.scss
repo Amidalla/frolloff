@@ -81,7 +81,7 @@
         }
     }
 
-    .lead {
+    :is(strong, b, .lead) {
         font-weight: 500;
         color: var(--color-gold);
     }

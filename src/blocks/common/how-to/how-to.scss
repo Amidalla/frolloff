@@ -65,6 +65,16 @@
         max-width: 330px;
         margin: 0 auto;
     }
+
+    // Высота цифры каждого шага своя (по макету): 01 — 1.5, 02 — 1.53, 03 — 1.96
+    // от базового размера --how-to-number-size.
+    .how-to-step:nth-child(2) {
+        --number-ratio: 1.53;
+    }
+
+    .how-to-step:nth-child(3) {
+        --number-ratio: 1.96;
+    }
 }
 
 // --------------------------------------

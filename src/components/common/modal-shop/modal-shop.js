@@ -11,10 +11,15 @@ function openFor(card) {
     const root = document.getElementById("modal-shop");
     if (!root) return;
 
+    let hasLinks = false;
     root.querySelectorAll("[data-market]").forEach((link) => {
-        link.href = (card && card.dataset[link.dataset.market]) || "#";
+        const href = (card && card.dataset[link.dataset.market]) || "";
+        link.href = href || "#";
+        const item = link.closest("li");
+        if (item) item.hidden = !href;
+        if (href) hasLinks = true;
     });
-    openModal("modal-shop");
+    if (hasLinks) openModal("modal-shop");
 }
 
 export function modalShop() {

@@ -7,7 +7,7 @@
     <div class="container">
         {{ sectionHeader(title=certificates.title, align="center", class="certificates-header") }}
 
-        <div class="certificates-slider" data-certificates-slider>
+        <div class="certificates-slider{% if (certificates.items | length) === 1 %} slider-single{% endif %}" data-certificates-slider>
             <div class="swiper">
                 <div class="swiper-wrapper">
                     {% for item in certificates.items %}

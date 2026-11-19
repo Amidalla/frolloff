@@ -8,8 +8,10 @@
 // --------------------------------------
 
 .how-to-step {
-    // Базовый размер цифр: высота цифры = --number-ratio × этот размер
+    // Базовый размер цифр: высота цифры = --number-ratio × этот размер.
+    // --number-ratio переопределяется на уровне блока (.how-to-steps) по позиции шага.
     --how-to-number-size: #{mix.fluid(73px, 100px)};
+    --number-ratio: 1.5;
 
     display: flex;
     flex-direction: column;

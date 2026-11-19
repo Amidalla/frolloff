@@ -3,30 +3,53 @@ import { gsap, reducedMotion, pageReadyDone } from "../../../js/utils/reveal.js"
 // --------------------------------------
 // Прелоадер: появление, проценты по реальной загрузке, уход.
 // Появление: логотип выезжает вверх из-под невидимой линии, слоган съезжает вниз над ней.
-// Проценты: шрифты + все файлы страницы (window load) + фото первого экрана (lazy, lozad).
+// Проценты: шрифты + готовность DOM + фото первого экрана (запускаем сразу, без ожидания lozad).
 // На 100% (и не раньше, чем отыграло появление) — уход через расфокус (см. leave: логотип и слоган
 // не уезжают, а тают в размытии); pageReadyDone() запускает анимации секций (reveal.js), снимается body.is-loading.
 // Запускается сразу при подключении скрипта (bundle в конце body), не дожидаясь DOMContentLoaded.
 // --------------------------------------
 
-const MAX_WAIT = 6000; // страховка: дольше прелоадер не держим
+const MAX_WAIT = 3000; // страховка: дольше прелоадер не держим
 
-function heroImageLoaded(timeout = 8000) {
+function heroImageLoaded(timeout = 3000) {
     return new Promise((resolve) => {
-        const img = document.querySelector(".hero-picture img");
+        const img = document.querySelector('.hero-picture img');
         if (!img) return resolve();
-        if (img.dataset.loaded === "true" && img.complete) return resolve();
-        const done = () => resolve();
-        img.addEventListener("load", done, { once: true });
-        img.addEventListener("error", done, { once: true });
-        setTimeout(done, timeout);
+        let timer;
+        let settled = false;
+        const finish = () => {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            img.removeEventListener('load', onLoad);
+            img.removeEventListener('error', finish);
+            resolve();
+        };
+        const onLoad = () => {
+            // A queued load event for the SVG placeholder is not the hero photo.
+            if (img.complete && img.naturalWidth > 0 && !img.currentSrc.startsWith('data:')) finish();
+        };
+        img.addEventListener('load', onLoad);
+        img.addEventListener('error', finish);
+        timer = setTimeout(finish, timeout);
+        img.setAttribute('fetchpriority', 'high');
+        img.loading = 'eager';
+        if (img.dataset.srcset && img.getAttribute('srcset') !== img.dataset.srcset) {
+            img.setAttribute('srcset', img.dataset.srcset);
+        }
+        if (img.dataset.src && img.getAttribute('src') !== img.dataset.src) {
+            img.setAttribute('src', img.dataset.src);
+        }
+        // Lozad must not reassign the eager image or start another request.
+        img.dataset.loaded = 'true';
+        if (img.complete && !img.currentSrc.startsWith('data:')) finish();
     });
 }
 
-function windowLoaded() {
+function domReady() {
     return new Promise((resolve) => {
-        if (document.readyState === "complete") return resolve();
-        window.addEventListener("load", () => resolve(), { once: true });
+        if (document.readyState !== 'loading') return resolve();
+        document.addEventListener('DOMContentLoaded', resolve, { once: true });
     });
 }
 
@@ -70,16 +93,18 @@ export function preloader() {
     render();
     setTarget(5);
 
-    const tasks = [document.fonts ? document.fonts.ready : Promise.resolve(), windowLoaded(), heroImageLoaded()];
+    const tasks = [document.fonts ? document.fonts.ready : Promise.resolve(), domReady(), heroImageLoaded()];
     let done = 0;
+    let finished = false;
     tasks.forEach((task) =>
-        task.then(() => {
+        Promise.resolve(task).catch(() => {}).then(() => {
+            if (finished) return;
             done += 1;
             setTarget(5 + (95 * done) / tasks.length);
         })
     );
 
-    const loaded = Promise.race([Promise.all(tasks), new Promise((resolve) => setTimeout(resolve, MAX_WAIT))]);
+    const loaded = Promise.race([Promise.allSettled(tasks), new Promise((resolve) => setTimeout(resolve, MAX_WAIT))]);
 
     // --- Уход ---
     // Уход «через расфокус»: содержимое (логотип, слоган, проценты) не уезжает, а слегка приближается,
@@ -126,6 +151,8 @@ export function preloader() {
 
     // Как только загрузилось и появление отыграло — сразу 100% и уход (без лишних пауз)
     Promise.all([loaded, introDone]).then(() => {
+        // Поздняя загрузка не должна перезаписывать финальный tween и его onComplete.
+        finished = true;
         if (counter.value >= 99.5) {
             counter.value = 100;
             render();

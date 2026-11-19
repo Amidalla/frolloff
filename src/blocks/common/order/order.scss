@@ -260,6 +260,7 @@
 // --------------------------------------
 
 .order-form.form {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 32px;
@@ -343,4 +344,16 @@
             visibility: hidden;
         }
     }
+}
+
+// Ответ сервера не участвует во flex-раскладке и не сдвигает поля формы.
+.order-form [data-order-status] {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    margin: 12px 0 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--color-bordo);
 }
